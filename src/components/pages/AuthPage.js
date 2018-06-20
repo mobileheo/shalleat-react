@@ -1,9 +1,37 @@
 import React, { Component } from "react";
+import User from "../../requests/users";
 import SignInForm from "../users/SignInForm";
+import SignUpForm from "../users/SignUpForm";
+import { getAllFormData } from "../../helper/formHelper.js";
 
 class AuthPage extends Component {
+  handleSignIn = async e => {
+    e.preventDefault();
+    try {
+      const { currentTarget } = e;
+      const userData = getAllFormData(currentTarget);
+      const user = await User.signIn(userData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  handleSignUp = async e => {
+    e.preventDefault();
+
+    try {
+      const { currentTarget } = e;
+      const userData = getAllFormData(currentTarget);
+      console.log(userData);
+      const user = await User.signUp(userData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   render() {
-    return <SignInForm />;
+    // return <SignInForm onSignInClick={this.handleSignIp} />;
+    return <SignUpForm onSignUpClick={this.handleSignUp} />;
   }
 }
 
