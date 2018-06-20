@@ -9,13 +9,14 @@ class SignInForm extends Component {
     const email = formData.get("email");
     const password = formData.get("password");
     const user = { email, password };
+    console.log(user);
   };
   render() {
     return (
-      <form onClick={this.handleChange}>
+      <form onChagne={this.handleChange}>
         <div className="form-group">
           <div className="floating-label">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Email address</label>
             <input
               name="email"
               aria-describedby="emailHelp"
