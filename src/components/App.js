@@ -1,16 +1,15 @@
 import React, { Component } from "react";
-import { Button } from "./common/Buttons";
+import AuthPage from "./pages/AuthPage";
+
+// const onSubmit = event => {
+//   // console.log(event.target.value);
+// };
+
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button class="btn btn-primary" name="Link" type="submit" />
+      <div className="container mt-4">
+        <AuthPage />
       </div>
     );
   }
