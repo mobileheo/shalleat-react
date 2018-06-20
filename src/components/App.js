@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "./common/Button";
+import { Button } from "./common/Buttons";
 class App extends Component {
   render() {
     return (
@@ -10,7 +10,7 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <Button class="btn btn-primary" name="Link" />
+        <Button class="btn btn-primary" name="Link" type="submit" />
       </div>
     );
   }
