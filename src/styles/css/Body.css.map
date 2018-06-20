@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "",
-"sources": [],
+"mappings": "AAAA,IAAK;EACH,gBAAgB,EAAE,KAAK",
+"sources": ["../scss/Body.scss"],
 "names": [],
 "file": "Body.css"
 }
