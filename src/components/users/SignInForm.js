@@ -1,19 +1,30 @@
 import React, { Component } from "react";
 import { Button } from "../common/Buttons";
+import User from "../../requests/users";
+
+const getAllFormData = currentTarget => {
+  const formData = new FormData(currentTarget);
+  let formFields = Array.from(formData.keys());
+  let inputObj = {};
+  formFields.forEach(f => {
+    const field = formData.get(f);
+    inputObj[f] = field;
+  });
+  return inputObj;
+};
 
 class SignInForm extends Component {
-  handleChange = e => {
+  handleChange = async e => {
     e.preventDefault();
     const { currentTarget } = e;
-    const formData = new FormData(currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const user = { email, password };
-    console.log(user);
+    const userData = getAllFormData(currentTarget);
+    const user = await User.signIn(userData);
+
+    // console.log(getForms(formData));
   };
   render() {
     return (
-      <form onChagne={this.handleChange}>
+      <form onSubmit={this.handleChange} autoComplete="off">
         <div className="form-group">
           <div className="floating-label">
             <label htmlFor="email">Email address</label>
