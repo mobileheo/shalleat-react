@@ -4,32 +4,30 @@ import anime from "animejs";
 const checkCircle = `<i class="material-icons btn-check">check_circle</i>`;
 
 const animation = e => {
-  e.preventDefault();
-  const { currentTarget } = e;
-  currentTarget.innerHTML = checkCircle;
-
-  anime({
-    targets: currentTarget,
-    duration: 1000,
-    borderRadius: ["0em", "2em"],
-    opacity: [0.8, 1],
-    backgroundColor: "#4CAE4F",
-    easing: "easeInOutCubic",
-    update: function() {
-      currentTarget.innerHTML = checkCircle;
-    }
-  }).finished.then(() => {
-    anime({
-      targets: ".btn-check",
-      duration: 500,
-      translateY: -10,
-      direction: "alternate",
-      easing: "easeInBack"
-    });
-  });
-  // .finished.then(() => {
-  // const form = document.querySelector("form");
-  // form.submit();
+  // e.preventDefault();
+  // const { currentTarget } = e;
+  // currentTarget.innerHTML = checkCircle;
+  // anime({
+  //   targets: currentTarget,
+  //   duration: 1000,
+  //   borderRadius: ["0em", "2em"],
+  //   opacity: [0.8, 1],
+  //   backgroundColor: "#4CAE4F",
+  //   easing: "easeInOutCubic",
+  //   update: function() {
+  //     currentTarget.innerHTML = checkCircle;
+  //   }
+  // }).finished.then(() => {
+  //   anime({
+  //     targets: ".btn-check",
+  //     duration: 500,
+  //     translateY: -10,
+  //     direction: "alternate",
+  //     easing: "easeInBack"
+  //   }).finished.then(() => {
+  //     const form = document.querySelector("form");
+  //     form.submit();
+  //   });
   // });
 };
 
