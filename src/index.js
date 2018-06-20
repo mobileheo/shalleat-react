@@ -1,8 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+// import daemonite from "daemonite-material";
+// /Users/mobileheo/shall_eat/react-shalleat/node_modules/daemonite-material/css
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import "./styles/css/index.css";
+import App from "./App";
+import registerServiceWorker from "./registerServiceWorker";
+
+// console.log(daemonite);
+ReactDOM.render(<App />, document.getElementById("root"));
 registerServiceWorker();
