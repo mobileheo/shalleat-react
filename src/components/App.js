@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import AuthPage from "./pages/AuthPage";
-import Navbar from "./navbar/Navbar";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
+import Navbar from "./navbar/Navbar";
 
 class App extends Component {
   constructor(props) {
@@ -18,12 +20,17 @@ class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Navbar />
-        <div className="container mt-4">
-          <AuthPage onAuthComplete={this.getToken} />
+      <Router>
+        <div className="App">
+          <Navbar />
+          <div className="container mt-4">
+            <Switch>
+              <Route exact path="/signin" component={SignInPage} />
+              <Route exact path="/signup" component={SignUpPage} />
+            </Switch>
+          </div>
         </div>
-      </React.Fragment>
+      </Router>
     );
   }
 }
