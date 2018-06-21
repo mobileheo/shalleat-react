@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AuthPage from "./pages/AuthPage";
 import Navbar from "./navbar/Navbar";
 
+
 class App extends Component {
   constructor(props) {
     super(props);
