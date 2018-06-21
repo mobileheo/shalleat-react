@@ -5,6 +5,14 @@ import SignUpForm from "../users/SignUpForm";
 import { getAllFormData } from "../../helper/formHelper.js";
 
 class AuthPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      error: {}
+    };
+  }
+
   handleSignIn = async e => {
     e.preventDefault();
     try {
@@ -24,6 +32,7 @@ class AuthPage extends Component {
       const userData = getAllFormData(currentTarget);
       console.log(userData);
       const user = await User.signUp(userData);
+      console.log(user);
     } catch (error) {
       console.log(error);
     }

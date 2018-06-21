@@ -14,21 +14,16 @@ export default {
     } catch (error) {
       throw new Error(error);
     }
+  },
+  async signUp(user) {
+    try {
+      const newUser = await postData(`${BASE_URL}/users/signup`, user);
+      return newUser;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  // async signUp(user) {
-  //   try {
-  //     const res = await fetch(
-  //       `${BASE_URL}/users/signup`,
-  //       fetchObj("POST", user)
-  //     );
-  //     console.log(res);
-  //     const { token } = await res.json();
-  //     return token;
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
-  // },
   // async secret() {
   //   try {
   //     const res = await fetch(`${BASE_URL}/users/secret`, {
