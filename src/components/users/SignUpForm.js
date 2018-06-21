@@ -82,7 +82,11 @@ const SignUpForm = props => {
           />
         </div>
       </div>
-      <Button class="btn btn-primary" name="signup" type="submit" />
+      <Button
+        class="btn btn-primary text-capitalize"
+        name="sign up"
+        type="submit"
+      />
     </form>
   );
 };

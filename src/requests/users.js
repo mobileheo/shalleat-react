@@ -1,11 +1,6 @@
 import { BASE_URL } from "./fetchConfig";
 import { postData } from "./fetch";
 
-const headers = {
-  Accept: "application/json",
-  "Content-Type": "application/json"
-};
-
 export default {
   async signIn(user) {
     try {
@@ -15,6 +10,7 @@ export default {
       throw new Error(error);
     }
   },
+
   async signUp(user) {
     try {
       const newUser = await postData(`${BASE_URL}/users/signup`, user);
