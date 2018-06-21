@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import AuthPage from "./pages/AuthPage";
+import Navbar from "./navbar/Navbar";
+
 
 class App extends Component {
   constructor(props) {
@@ -16,9 +18,12 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container mt-4">
-        <AuthPage onAuthComplete={this.getToken} />
-      </div>
+      <React.Fragment>
+        <Navbar />
+        <div className="container mt-4">
+          <AuthPage onAuthComplete={this.getToken} />
+        </div>
+      </React.Fragment>
     );
   }
 }
