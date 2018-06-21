@@ -2,33 +2,32 @@ import React from "react";
 import anime from "animejs";
 
 const checkCircle = `<i class="material-icons btn-check">check_circle</i>`;
+const fingerPrint = `<i class="material-icons" id="icon-fingerprint">fingerprint</i>`;
+// console.log(`${SignUpIcon()}`);
 
 const animation = e => {
   // e.preventDefault();
-  // const { currentTarget } = e;
-  // currentTarget.innerHTML = checkCircle;
-  // anime({
-  //   targets: currentTarget,
-  //   duration: 1000,
-  //   borderRadius: ["0em", "2em"],
-  //   opacity: [0.8, 1],
-  //   backgroundColor: "#4CAE4F",
-  //   easing: "easeInOutCubic",
-  //   update: function() {
-  //     currentTarget.innerHTML = checkCircle;
-  //   }
-  // }).finished.then(() => {
-  //   anime({
-  //     targets: ".btn-check",
-  //     duration: 500,
-  //     translateY: -10,
-  //     direction: "alternate",
-  //     easing: "easeInBack"
-  //   }).finished.then(() => {
-  //     const form = document.querySelector("form");
-  //     form.submit();
-  //   });
-  // });
+  const { currentTarget } = e;
+  // currentTarget.innerHTML = "";
+  anime({
+    targets: currentTarget,
+    duration: 1000,
+    borderRadius: ["0em", "2em"],
+    opacity: [0.5, 1],
+    backgroundColor: "#4CAE4F",
+    easing: "easeInOutCubic",
+    update: function() {
+      currentTarget.innerHTML = fingerPrint;
+    }
+  }).finished.then(() => {
+    anime({
+      targets: "#icon-fingerprint",
+      duration: 500,
+      scale: 1.3,
+      direction: "alternate",
+      easing: "easeInBack"
+    });
+  });
 };
 
 export const Button = props => {
