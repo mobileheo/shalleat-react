@@ -6,9 +6,7 @@ const fingerPrint = `<i class="material-icons" id="icon-fingerprint">fingerprint
 // console.log(`${SignUpIcon()}`);
 
 const animation = e => {
-  // e.preventDefault();
   const { currentTarget } = e;
-  // currentTarget.innerHTML = "";
   anime({
     targets: currentTarget,
     duration: 1000,

@@ -9,13 +9,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      token: null
+      currentUser: null
     };
   }
 
-  getToken = token => {
-    console.log(token);
-    this.setState({ token });
+  getUser = currentUser => {
+    console.log(currentUser);
+    this.setState({ currentUser });
   };
 
   render() {
@@ -25,8 +25,20 @@ class App extends Component {
           <Navbar />
           <div className="container mt-4">
             <Switch>
-              <Route exact path="/signin" component={SignInPage} />
-              <Route exact path="/signup" component={SignUpPage} />
+              <Route
+                exact
+                path="/signin"
+                render={props => (
+                  <SignInPage {...props} onAuthComplete={this.getUser} />
+                )}
+              />
+              <Route
+                exact
+                path="/signup"
+                render={props => (
+                  <SignUpPage {...props} onAuthComplete={this.getUser} />
+                )}
+              />
             </Switch>
           </div>
         </div>

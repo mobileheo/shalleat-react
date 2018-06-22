@@ -19,9 +19,6 @@ const SignInForm = props => {
               placeholder="sunny@shalleat.com"
               type="text"
             />
-            <small id="emailHelp" className="form-text text-muted">
-              We'll never share your email with anyone else.
-            </small>
           </div>
         </div>
         <div className="form-group">

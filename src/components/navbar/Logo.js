@@ -17,7 +17,7 @@ let morphingLogo = () =>
     ],
     rotate: 360,
     easing: "easeInOutExpo",
-    duration: 7000,
+    duration: 5000,
     loop: true
   });
 
@@ -36,9 +36,7 @@ let colorClosure = () => {
 let rotateClosure = () => {
   let deg = 0;
   return () => {
-    document.querySelector(
-      "#logo-svg polygon"
-    ).style.transform = `rotate(${deg}deg)`;
+    document.querySelector("#logo-svg").style.transform = `rotate(${deg}deg)`;
     deg = deg === 360 || deg + 1;
   };
 };
