@@ -2,7 +2,9 @@ body {
   .auth-title {
     text-align: center;
   }
-  div.gmnoprint {
-    display: none;
+  .gm-style .gm-style-cc span,
+  .gm-style .gm-style-cc a,
+  .gm-style .gm-style-mtc div {
+    font-size: 0;
   }
 }

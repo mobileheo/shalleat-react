@@ -7,7 +7,7 @@ const AnyReactComponent = ({ text }) => (
   <div
     className="d-flex justify-content-center"
     style={{
-      border: "solid 1px black",
+      // border: "solid 1px black",
       width: "50px",
       height: "50px",
       transform: "translate(-25px, -25px)"
@@ -15,16 +15,15 @@ const AnyReactComponent = ({ text }) => (
   >
     <div className="d-flex flex-column align-items-center">
       <i
-        class="material-icons"
+        className="material-icons text-info"
         style={{
           fontSize: "36px",
-          color: "blue",
           lineHeight: 1
         }}
       >
         person_pin
       </i>
-      <span>You</span>
+      <span className="badge badge-info">You</span>
     </div>
   </div>
 );
@@ -37,7 +36,7 @@ class MapPage extends Component {
       loading: true,
       currentLocation: null,
       center: null,
-      zoom: 30
+      zoom: 13
     };
   }
 
@@ -81,9 +80,6 @@ class MapPage extends Component {
             defaultCenter={center}
             defaultZoom={zoom}
           >
-            <div>
-              <i class="material-icons">outline_near_me</i>
-            </div>
             <AnyReactComponent
               lat={center.lat}
               lng={center.lng}
@@ -93,34 +89,7 @@ class MapPage extends Component {
         </div>
       );
     }
-
-    // return !this.props.isGeolocationAvailable ? (
-    //   <div>Your browser does not support Geolocation</div>
-    // ) : !this.props.isGeolocationEnabled ? (
-    //   <div>Geolocation is not enabled</div>
-    // ) : this.props.coords ? (
-    //   <table>
-    //     <tbody>
-    //       <tr>
-    //         <td>latitude</td>
-    //         <td>{this.props.coords.latitude}</td>
-    //       </tr>
-    //       <tr>
-    //         <td>longitude</td>
-    //         <td>{this.props.coords.longitude}</td>
-    //       </tr>
-    //     </tbody>
-    //   </table>
-    // ) : (
-    //   <div>Getting the location data&hellip; </div>
-    // );
   }
 }
 
 export default MapPage;
-// export default geolocated({
-//   positionOptions: {
-//     enableHighAccuracy: true
-//   },
-//   userDecisionTimeout: null
-// })(MapPage);
