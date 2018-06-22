@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import Navbar from "./navbar/Navbar";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import Navbar from "./navbar/Navbar";
+import MapPage from "./pages/MapPage";
 
 class App extends Component {
   constructor(props) {
@@ -25,6 +26,13 @@ class App extends Component {
           <Navbar />
           <div className="container mt-4">
             <Switch>
+              <Route
+                exact
+                path="/"
+                render={props => (
+                  <MapPage {...props} onAuthComplete={this.getUser} />
+                )}
+              />
               <Route
                 exact
                 path="/signin"
