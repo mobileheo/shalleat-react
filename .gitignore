@@ -2,6 +2,7 @@
 .sass-cache
 # Ignore all css files
 src/styles/css/*
+configuration.js
 
 
 
