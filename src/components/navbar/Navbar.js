@@ -30,8 +30,11 @@ class NavBar extends React.Component {
       <div className="NavBar">
         <Navbar color="dark" dark expand="sm">
           {/* <NavbarBrand href="/"> */}
-          <NavLink exact to="/" className="navbar-brand">
+          <NavLink exact to="/" className="navbar-brand mr-0">
             <Logo />
+          </NavLink>
+          <NavLink exact to="/" className="navbar-brand mx-0">
+            ShallEat
           </NavLink>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
