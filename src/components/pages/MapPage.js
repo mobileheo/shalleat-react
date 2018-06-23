@@ -57,6 +57,7 @@ class MapPage extends Component {
     const currentLocation = { lat, lng };
     const center = currentLocation;
     const loading = false;
+
     this.setState({
       loading,
       currentLocation,
@@ -70,6 +71,7 @@ class MapPage extends Component {
 
   render() {
     const { loading, center, zoom } = this.state;
+
     if (loading) {
       return <CircularProgress />;
     } else {

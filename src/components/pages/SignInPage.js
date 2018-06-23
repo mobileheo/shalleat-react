@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import User from "../../requests/users";
+import User from "../../requests/user";
 import SignInForm from "../users/SignInForm";
 import { getAllFormData } from "../../helper/formHelper.js";
 

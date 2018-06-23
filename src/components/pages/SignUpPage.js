@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import User from "../../requests/users";
-import SignInForm from "../users/SignInForm";
+import User from "../../requests/user";
 import SignUpForm from "../users/SignUpForm";
 import { SignUpIcon } from "../common/Icons";
 import { getAllFormData } from "../../helper/formHelper.js";

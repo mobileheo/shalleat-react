@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "../common/Buttons";
-import { SignUpIcon } from "../common/Icons";
 
 const SignUpForm = props => {
   const { onSignUpClick } = props;

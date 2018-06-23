@@ -6,7 +6,7 @@ const SignInForm = props => {
 
   return (
     <div className="SignUpForm">
-      <h1 class="display-4 auth-title">Sign</h1>
+      <h1 className="display-4 auth-title">Sign</h1>
       <form onSubmit={onSignInClick}>
         <div className="form-group">
           <div className="floating-label">

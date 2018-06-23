@@ -19,7 +19,6 @@ export default {
       throw new Error(error);
     }
   }
-
   // async secret() {
   //   try {
   //     const res = await fetch(`${BASE_URL}/users/secret`, {
