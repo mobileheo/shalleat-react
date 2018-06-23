@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import GoogleMapReact from "google-map-react";
 import { googleMapAPI } from "../../requests/configuration";
 import CurrentMarker from "./CurrentMarker";
+import RestaurantMarker from "./RestaurantMarker";
 import CircularProgress from "../common/CircularProgress";
 import Restaurant from "../../requests/restaurant";
 
@@ -13,7 +14,9 @@ class GoogleMap extends Component {
       loading: true,
       currentLocation: null,
       center: null,
-      zoom: 13
+      zoom: 13,
+      restaurants: [],
+      radius: 500
     };
   }
 
@@ -42,17 +45,26 @@ class GoogleMap extends Component {
     });
   };
 
+  async findNearby() {
+    const { currentLocation, radius } = this.state;
+    const filters = { ...currentLocation, ...radius };
+    try {
+      const restaurants = await Restaurant.findNearby(filters);
+      this.setState({
+        restaurants
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   componentDidMount() {
     this.getLocation();
+    this.findNearby();
   }
 
   render() {
     const { loading, center, zoom } = this.state;
-    Restaurant.findNearby({
-      lat: 49.282205100000006,
-      lng: -123.1084132,
-      radius: 500
-    }).then(res => console.log(res));
     if (loading) {
       return <CircularProgress />;
     } else {
@@ -64,6 +76,11 @@ class GoogleMap extends Component {
             defaultZoom={zoom}
           >
             <CurrentMarker lat={center.lat} lng={center.lng} text={"You"} />
+            <RestaurantMarker
+              lat={center.lat + 1}
+              lng={center.lng + 1}
+              name={"name"}
+            />
           </GoogleMapReact>
         </div>
       );
