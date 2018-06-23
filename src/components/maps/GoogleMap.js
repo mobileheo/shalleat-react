@@ -38,16 +38,20 @@ class GoogleMap extends Component {
     const center = currentLocation;
     const loading = false;
 
-    this.setState({
-      loading,
-      currentLocation,
-      center
-    });
+    this.setState(
+      {
+        loading,
+        currentLocation,
+        center
+      },
+      this.findNearby
+    );
   };
 
   async findNearby() {
     const { currentLocation, radius } = this.state;
-    const filters = { ...currentLocation, ...radius };
+    const filters = { ...currentLocation, radius };
+
     try {
       const restaurants = await Restaurant.findNearby(filters);
       this.setState({
@@ -60,14 +64,15 @@ class GoogleMap extends Component {
 
   componentDidMount() {
     this.getLocation();
-    this.findNearby();
   }
 
   render() {
-    const { loading, center, zoom } = this.state;
-    if (loading) {
+    const { loading, center, zoom, restaurants } = this.state;
+    if (loading || restaurants.length === 0) {
       return <CircularProgress />;
     } else {
+      const { results } = restaurants;
+      // console.log(results);
       return (
         <div className="MapPage" style={{ height: "80vh", width: "100%" }}>
           <GoogleMapReact
@@ -81,6 +86,19 @@ class GoogleMap extends Component {
               lng={center.lng + 1}
               name={"name"}
             />
+            {results.map(r => {
+              const { geometry, icon, name, place_id } = r;
+              const { lat, lng } = geometry.location;
+              return (
+                <RestaurantMarker
+                  lat={lat}
+                  lng={lng}
+                  icon={icon}
+                  name={name}
+                  key={place_id}
+                />
+              );
+            })}
           </GoogleMapReact>
         </div>
       );
