@@ -37,7 +37,7 @@ let rotateClosure = () => {
   let deg = 0;
   return () => {
     document.querySelector("#logo-svg").style.transform = `rotate(${deg}deg)`;
-    // deg = deg === 360 || deg + 1;
+    deg = deg === 360 || deg + 1;
   };
 };
 
@@ -47,7 +47,8 @@ const componentDidMount = props => {
 
   morphingLogo();
   setInterval(() => {
-    rotateLogo(), changeLogoColor();
+    rotateLogo();
+    changeLogoColor();
   }, 30);
 };
 

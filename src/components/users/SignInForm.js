@@ -18,6 +18,7 @@ const SignInForm = props => {
               id="email"
               placeholder="sunny@shalleat.com"
               type="text"
+              autoComplete="username email"
             />
           </div>
         </div>
@@ -30,6 +31,7 @@ const SignInForm = props => {
               className="form-control"
               id="password"
               type="password"
+              autoComplete="current-password"
             />
           </div>
         </div>

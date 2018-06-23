@@ -1,9 +1,8 @@
 import React from "react";
 import anime from "animejs";
 
-const checkCircle = `<i class="material-icons btn-check">check_circle</i>`;
+// const checkCircle = `<i class="material-icons btn-check">check_circle</i>`;
 const fingerPrint = `<i class="material-icons" id="icon-fingerprint">fingerprint</i>`;
-// console.log(`${SignUpIcon()}`);
 
 const animation = e => {
   const { currentTarget } = e;

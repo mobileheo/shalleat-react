@@ -6,6 +6,22 @@ import RestaurantMarker from "./RestaurantMarker";
 import CircularProgress from "../common/CircularProgress";
 import Restaurant from "../../requests/restaurant";
 
+const restaurantMarkers = restaurants =>
+  restaurants.map((r, i) => {
+    const { geometry, icon, name, place_id } = r;
+    const { lat, lng } = geometry.location;
+    return (
+      <RestaurantMarker
+        id={i}
+        lat={lat}
+        lng={lng}
+        icon={icon}
+        name={name}
+        key={place_id}
+      />
+    );
+  });
+
 class GoogleMap extends Component {
   constructor(props) {
     super(props);
@@ -14,9 +30,9 @@ class GoogleMap extends Component {
       loading: true,
       currentLocation: null,
       center: null,
-      zoom: 13,
+      zoom: 15,
       restaurants: [],
-      radius: 500
+      radius: 1000
     };
   }
 
@@ -36,11 +52,9 @@ class GoogleMap extends Component {
     const { latitude: lat, longitude: lng } = position.coords;
     const currentLocation = { lat, lng };
     const center = currentLocation;
-    const loading = false;
 
     this.setState(
       {
-        loading,
         currentLocation,
         center
       },
@@ -51,10 +65,11 @@ class GoogleMap extends Component {
   async findNearby() {
     const { currentLocation, radius } = this.state;
     const filters = { ...currentLocation, radius };
-
+    const loading = false;
     try {
       const restaurants = await Restaurant.findNearby(filters);
       this.setState({
+        loading,
         restaurants
       });
     } catch (error) {
@@ -68,7 +83,7 @@ class GoogleMap extends Component {
 
   render() {
     const { loading, center, zoom, restaurants } = this.state;
-    if (loading || restaurants.length === 0) {
+    if (loading) {
       return <CircularProgress />;
     } else {
       const { results } = restaurants;
@@ -81,24 +96,7 @@ class GoogleMap extends Component {
             defaultZoom={zoom}
           >
             <CurrentMarker lat={center.lat} lng={center.lng} text={"You"} />
-            <RestaurantMarker
-              lat={center.lat + 1}
-              lng={center.lng + 1}
-              name={"name"}
-            />
-            {results.map(r => {
-              const { geometry, icon, name, place_id } = r;
-              const { lat, lng } = geometry.location;
-              return (
-                <RestaurantMarker
-                  lat={lat}
-                  lng={lng}
-                  icon={icon}
-                  name={name}
-                  key={place_id}
-                />
-              );
-            })}
+            {restaurantMarkers(results)}
           </GoogleMapReact>
         </div>
       );
