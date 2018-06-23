@@ -3,6 +3,7 @@ import GoogleMapReact from "google-map-react";
 import { googleMapAPI } from "../../requests/configuration";
 import CurrentMarker from "./CurrentMarker";
 import CircularProgress from "../common/CircularProgress";
+import Restaurant from "../../requests/restaurant";
 
 class GoogleMap extends Component {
   constructor(props) {
@@ -47,7 +48,11 @@ class GoogleMap extends Component {
 
   render() {
     const { loading, center, zoom } = this.state;
-
+    Restaurant.findNearby({
+      lat: 49.282205100000006,
+      lng: -123.1084132,
+      radius: 500
+    }).then(res => console.log(res));
     if (loading) {
       return <CircularProgress />;
     } else {

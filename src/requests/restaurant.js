@@ -1,7 +1,7 @@
 import { BASE_URL } from "./fetchConfig";
 import { postData } from "./fetch";
 
-const url = `${BASE_URL}/restaurnats/all`;
+const url = `${BASE_URL}/restaurnats`;
 
 export default {
   async findNearby(filters) {
