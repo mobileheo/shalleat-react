@@ -8,17 +8,18 @@ import Restaurant from "../../requests/restaurant";
 
 const restaurantMarkers = restaurants =>
   restaurants.map((r, i) => {
-    const { geometry, icon, name, place_id } = r;
+    const { geometry, icon, name, place_id: placeId } = r;
     const { lat, lng } = geometry.location;
     return (
       <RestaurantMarker
+        key={placeId}
         id={i}
-        place_id={place_id}
+        placeId={placeId}
+        filters={["name", "opening_hours"]}
         lat={lat}
         lng={lng}
         icon={icon}
         name={name}
-        key={place_id}
       />
     );
   });
@@ -33,7 +34,7 @@ class GoogleMap extends Component {
       center: null,
       zoom: 15,
       restaurants: [],
-      radius: 1000
+      radius: 580
     };
   }
 
@@ -88,7 +89,6 @@ class GoogleMap extends Component {
       return <CircularProgress />;
     } else {
       const { results } = restaurants;
-      // console.log(results);
       return (
         <div className="MapPage" style={{ height: "80vh", width: "100%" }}>
           <GoogleMapReact

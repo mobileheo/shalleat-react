@@ -12,7 +12,7 @@ export default {
       throw new Error(error);
     }
   },
-  async getDetail(placeId, filters) {
+  async getSchedule(placeId, filters) {
     try {
       const restaurants = await postData(`${url}/detail`, { placeId, filters });
       return restaurants;
