@@ -19,7 +19,7 @@ class MapPage extends Component {
         className="d-flex justify-content-center align-items-center"
         style={{ height: "95vh" }}
       >
-        <GoogleMap />;
+        <GoogleMap />
       </div>
     );
   }
