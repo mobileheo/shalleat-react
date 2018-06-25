@@ -1,5 +1,5 @@
 import { BASE_URL } from "./fetchConfig";
-import { postData } from "./fetch";
+import { postData } from "../helper/fetchHelper";
 
 const url = `${BASE_URL}/restaurants`;
 

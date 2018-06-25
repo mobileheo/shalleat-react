@@ -1,5 +1,5 @@
 import { BASE_URL } from "./fetchConfig";
-import { postData } from "./fetch";
+import { postData } from "../helper/fetchHelper";
 
 export default {
   async signIn(user) {
