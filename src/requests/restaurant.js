@@ -11,5 +11,13 @@ export default {
     } catch (error) {
       throw new Error(error);
     }
+  },
+  async getDetail(placeId, filters) {
+    try {
+      const restaurants = await postData(`${url}/detail`, { placeId, filters });
+      return restaurants;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 };

@@ -1,10 +1,14 @@
 import React from "react";
-
 import RestaurantInfoBox from "./RestaurantInfoBox";
+import lifecycle from "react-pure-lifecycle";
 
-const RestaurantMarker = ({ id, icon, name }) => {
+// const methods = {
+//   componentDidMount
+// };
+
+const RestaurantMarker = ({ place_id, icon, name }) => {
   return (
-    <div>
+    <div className="RestaurantMarker">
       <div
         className="d-flex justify-content-center"
         style={{
@@ -13,16 +17,16 @@ const RestaurantMarker = ({ id, icon, name }) => {
           transform: "translate(-25px, -25px)"
         }}
       >
-        <RestaurantInfoBox id={id} />
         <div className="d-flex flex-column align-items-center">
           <img
             src={icon}
             style={{
-              height: 20,
-              width: 20
+              height: 40,
+              width: 40
             }}
             alt={"marker-icon"}
           />
+          <RestaurantInfoBox place_id={place_id} name={name} />
           <span className="badge badge-info">{name}</span>
         </div>
       </div>

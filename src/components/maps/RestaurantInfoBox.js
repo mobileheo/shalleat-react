@@ -1,21 +1,25 @@
 import React, { Component } from "react";
 import { withState } from "recompose";
 import { Button, Popover, PopoverHeader, PopoverBody } from "reactstrap";
-
+import Restaurant from "../../requests/restaurant";
+// const restaurants = await Restaurant.findNearby(filters);
 const enhance = withState("popoverOpen", "toggle", false);
-const RestaurantInfoBox = enhance(({ id, popoverOpen, toggle }) => (
+const RestaurantInfoBox = enhance(({ place_id, name, popoverOpen, toggle }) => (
   <div>
-    {console.log(id)}
     <Button
-      id={`Popover-${id}`}
-      onClick={() => toggle(popoverOpen => !popoverOpen)}
+      id={`Popover-${place_id}`}
+      onClick={() =>
+        toggle(popoverOpen => {
+          return !popoverOpen;
+        })
+      }
     >
-      toggle
+      {name}
     </Button>
     <Popover
       placement="auto"
       isOpen={popoverOpen}
-      target={`Popover-${id}`}
+      target={`Popover-${place_id}`}
       toggle={toggle}
     >
       <PopoverHeader>Popover Title</PopoverHeader>

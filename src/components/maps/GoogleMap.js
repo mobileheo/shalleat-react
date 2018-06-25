@@ -13,6 +13,7 @@ const restaurantMarkers = restaurants =>
     return (
       <RestaurantMarker
         id={i}
+        place_id={place_id}
         lat={lat}
         lng={lng}
         icon={icon}

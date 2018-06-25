@@ -3,8 +3,9 @@ body {
     text-align: center;
   }
   .gm-style .gm-style-cc span,
-  .gm-style .gm-style-cc a,
+  .gm-style .gm-style-cc,
+  .gm-style-cc a,
   .gm-style .gm-style-mtc div {
-    font-size: 0;
+    display: none;
   }
 }
