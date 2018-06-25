@@ -5,11 +5,6 @@ import RestaurantInfoBox from "./RestaurantInfoBox";
 import { Button, Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
 
-// const spinnerWhileLoading = isLoading =>
-//   branch(
-//     isLoading,
-//     renderComponent(CircularProgress) // `Spinner` is a React component
-//   );
 const getSchedule = async (placeId, filters) => {
   try {
     const schedule = await Restaurant.getSchedule(placeId, filters);
@@ -54,8 +49,8 @@ const RestaurantMarker = enhance(
             id={`Popover-${placeId}`}
             className={"btn d-flex justify-content-center align-items-center"}
             style={{
-              "min-width": "50px",
-              "border-radius": "1rem"
+              minWidth: "50px",
+              borderRadius: "1rem"
             }}
             onClick={() => setPopover(!popoverOpen)}
             alt={"marker-icon"}

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { withState } from "recompose";
-import { Button, Popover, PopoverHeader, PopoverBody } from "reactstrap";
+import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
 
 // const enhance = withState("popoverOpen", "setPopover", false);
+const 
 const RestaurantInfoBox = ({ placeId, name, schedule, popoverOpen }) => (
   <div variant="RestaurantInfoBox">
     <Popover

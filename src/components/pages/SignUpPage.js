@@ -3,8 +3,7 @@ import User from "../../requests/user";
 import SignUpForm from "../users/SignUpForm";
 import { SignUpIcon } from "../common/Icons";
 import { getAllFormData } from "../../helper/formHelper.js";
-
-const delay = duration => new Promise(res => setTimeout(res, duration));
+import { delay } from "../../helper/asyncHelper";
 
 class SignUpPage extends Component {
   constructor(props) {
@@ -30,9 +29,7 @@ class SignUpPage extends Component {
   render() {
     return (
       <div className="SignUpPage">
-        <h1 className="display-4 auth-title">
-          Sign up<SignUpIcon />
-        </h1>
+        <h1 className="display-4 auth-title">Sign up</h1>
         <SignUpForm onSignUpClick={this.handleSignUp} />
       </div>
     );

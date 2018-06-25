@@ -68,6 +68,7 @@ class GoogleMap extends Component {
     const { currentLocation, radius } = this.state;
     const filters = { ...currentLocation, radius };
     const loading = false;
+    debugger;
     try {
       const restaurants = await Restaurant.findNearby(filters);
       this.setState({
@@ -90,7 +91,7 @@ class GoogleMap extends Component {
     } else {
       const { results } = restaurants;
       return (
-        <div className="MapPage" style={{ height: "80vh", width: "100%" }}>
+        <div className="MapPage" style={{ height: "95vh", width: "100%" }}>
           <GoogleMapReact
             bootstrapURLKeys={{ key: googleMapAPI }}
             defaultCenter={center}

@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import User from "../../requests/user";
 import SignInForm from "../users/SignInForm";
 import { getAllFormData } from "../../helper/formHelper.js";
-
-const delay = duration => new Promise(res => setTimeout(res, duration));
+import { delay } from "../../helper/asyncHelper";
 
 class SignInPage extends Component {
   constructor(props) {
