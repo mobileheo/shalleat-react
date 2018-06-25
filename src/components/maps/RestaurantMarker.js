@@ -1,14 +1,46 @@
 import React from "react";
-import { withState, lifecycle } from "recompose";
+import { compose, withState, lifecycle } from "recompose";
 import CircularProgress from "../common/CircularProgress";
 import RestaurantInfoBox from "./RestaurantInfoBox";
+import { Button, Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
 
-const enhance = withState("loading", "schedule", {});
+// const spinnerWhileLoading = isLoading =>
+//   branch(
+//     isLoading,
+//     renderComponent(CircularProgress) // `Spinner` is a React component
+//   );
+const getSchedule = async (placeId, filters) => {
+  try {
+    const schedule = await Restaurant.getSchedule(placeId, filters);
+    return schedule;
+  } catch (error) {
+    console.log(error);
+  }
+};
+const enhance = compose(
+  withState("schedule", "setSchedule", {}),
+  withState("loading", "setLoading", true),
+  withState("popoverOpen", "setPopover", false),
+  lifecycle({
+    async componentDidMount(props) {
+      console.log(props);
+
+      const schedule = await getSchedule(
+        this.props.placeId,
+        this.props.filters
+      );
+      this.props.setSchedule(schedule);
+      this.props.setLoading(!this.props.loading);
+    }
+  })
+);
+
 const RestaurantMarker = enhance(
-  ({ placeId, icon, name, loading = true, schedule }) => {
-    // if (loading) return <CircularProgress />;
-    return (
+  ({ placeId, icon, name, loading, schedule, popoverOpen, setPopover }) => {
+    return loading ? (
+      <CircularProgress />
+    ) : (
       <div className="RestaurantMarker">
         <div
           className="d-flex justify-content-center"
@@ -18,22 +50,33 @@ const RestaurantMarker = enhance(
             transform: "translate(-25px, -25px)"
           }}
         >
-          <div className="d-flex flex-column align-items-center" style={{}}>
+          <button
+            id={`Popover-${placeId}`}
+            className={"btn d-flex justify-content-center align-items-center"}
+            style={{
+              "min-width": "50px",
+              "border-radius": "1rem"
+            }}
+            onClick={() => setPopover(!popoverOpen)}
+            alt={"marker-icon"}
+          >
             <img
               src={icon}
               style={{
+                position: "absolute",
                 height: 40,
                 width: 40
               }}
               alt={"marker-icon"}
             />
-            <RestaurantInfoBox
-              placeId={placeId}
-              name={name}
-              schedule={schedule}
-            />
-            {/* <span className="badge badge-info">{name}</span> */}
-          </div>
+          </button>
+          <RestaurantInfoBox
+            placeId={placeId}
+            name={name}
+            schedule={schedule}
+            popoverOpen={popoverOpen}
+            setPopover={setPopover}
+          />
         </div>
       </div>
     );
