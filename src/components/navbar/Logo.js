@@ -29,7 +29,7 @@ let colorClosure = () => {
       "#logo-svg polygon"
     ).style.fill = `rgb(255, ${green}, 0)`;
     !isMax ? ++green : --green;
-    if (!(green > 0 == green < 255)) isMax = green === 255;
+    if (green <= 0 || green >= 255) isMax = green === 255;
   };
 };
 
@@ -47,7 +47,8 @@ const componentDidMount = props => {
 
   morphingLogo();
   setInterval(() => {
-    rotateLogo(), changeLogoColor();
+    rotateLogo();
+    changeLogoColor();
   }, 30);
 };
 

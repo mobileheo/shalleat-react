@@ -1,5 +1,5 @@
 import { BASE_URL } from "./fetchConfig";
-import { postData } from "./fetch";
+import { getData, postData } from "../helper/fetchHelper";
 
 export default {
   async signIn(user) {
@@ -18,8 +18,16 @@ export default {
     } catch (error) {
       throw new Error(error);
     }
-  }
+  },
 
+  async signOut() {
+    try {
+      const signOutMessage = await getData(`${BASE_URL}/users/signout`);
+      return signOutMessage;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
   // async secret() {
   //   try {
   //     const res = await fetch(`${BASE_URL}/users/secret`, {
