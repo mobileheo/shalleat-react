@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
+import "daemonite-material/css/material.css";
+import "daemonite-material/js/material.min";
 import Navbar from "./navbar/Navbar";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
