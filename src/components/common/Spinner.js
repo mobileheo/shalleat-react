@@ -1,6 +1,6 @@
 import React from "react";
 
-const CircularProgress = () => {
+const Spinner = () => {
   return (
     <div className="progress-circular">
       <div className="progress-circular-wrapper">
@@ -18,4 +18,4 @@ const CircularProgress = () => {
   );
 };
 
-export default CircularProgress;
+export default Spinner;

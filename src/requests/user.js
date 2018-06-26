@@ -22,7 +22,7 @@ export default {
 
   async signOut() {
     try {
-      const signOutMessage = await getData(`${BASE_URL}/users/signup`, user);
+      const signOutMessage = await getData(`${BASE_URL}/users/signout`);
       return signOutMessage;
     } catch (error) {
       throw new Error(error);

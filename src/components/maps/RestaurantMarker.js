@@ -1,6 +1,6 @@
 import React from "react";
 import { compose, withState, lifecycle } from "recompose";
-import CircularProgress from "../common/CircularProgress";
+import Spinner from "../common/Spinner";
 import RestaurantInfoBox from "./RestaurantInfoBox";
 import { Button, Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
@@ -34,7 +34,7 @@ const enhance = compose(
 const RestaurantMarker = enhance(
   ({ placeId, icon, name, loading, schedule, popoverOpen, setPopover }) => {
     return loading ? (
-      <CircularProgress />
+      <Spinner />
     ) : (
       <div className="RestaurantMarker">
         <div

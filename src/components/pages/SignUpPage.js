@@ -5,35 +5,24 @@ import { SignUpIcon } from "../common/Icons";
 import { getAllFormData } from "../../helper/formHelper.js";
 import { delay } from "../../helper/asyncHelper";
 
-class SignUpPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      error: {}
-    };
-  }
-  handleSignUp = async e => {
+const SignUpPage = ({ updateUser }) => {
+  const handleSignUp = async e => {
     e.preventDefault();
     try {
       const { currentTarget } = e;
       const userData = getAllFormData(currentTarget);
       await delay(1500);
       const user = await User.signUp(userData);
-      this.props.onAuthComplete(user);
+      updateUser(user);
     } catch (error) {
       console.log(error);
     }
   };
-
-  render() {
-    return (
-      <div className="SignUpPage">
-        <h1 className="display-4 auth-title">Sign up</h1>
-        <SignUpForm onSignUpClick={this.handleSignUp} />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="SignUpPage">
+      <SignUpForm onSignUpClick={handleSignUp} />
+    </div>
+  );
+};
 
 export default SignUpPage;
