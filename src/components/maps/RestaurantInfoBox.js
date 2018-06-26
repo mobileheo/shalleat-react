@@ -5,7 +5,7 @@ import moment from "moment";
 import "moment-precise-range-plugin";
 import Spinner from "../common/Spinner";
 
-const textObj = {
+const testObj = {
   name: "54th Ave Cafe",
   isOpenToday: true,
   isOpenNow: false,
@@ -42,32 +42,41 @@ const textObj = {
 
 const timeHelper = ({ notAvailable, isOpenToday, isOpenNow, todayHours }) => {
   if (notAvailable) return notAvailable;
-  const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
+  let closeTime, openTime;
   if (isOpenToday) {
     if (isOpenNow) {
       const { time } = todayHours.close;
-      console.log(time);
+      const closeHours = time.slice(0, 2) + ":" + time.slice(2);
+      closeTime = moment().format(`YYYY-MM-DD ${closeHours}:00`);
+      // return { closeTime };
     } else {
       const { time } = todayHours.open;
       const openhours = time.slice(0, 2) + ":" + time.slice(2);
-      const openTime = moment().format(`YYYY-MM-DD ${openhours}:00`);
-      return { openTime };
+      openTime = moment().format(`YYYY-MM-DD ${openhours}:00`);
+      // return { openTime };
     }
   }
-  return "test";
+  return { openTime, closeTime };
 };
-let timerID;
+
 const currentTime = () => moment().format("YYYY-MM-DD HH:mm:ss");
+
+const calcRemainTime = ({ openTime = false, closeTime }) => {
+  console.log(openTime);
+  return openTime
+    ? moment(currentTime()).preciseDiff(openTime)
+    : moment(currentTime()).preciseDiff(closeTime);
+};
+
+let timerID;
 const enhence = compose(
   withState("remainingTime", "setRemainingTime", ""),
   lifecycle({
     componentDidMount() {
       const { schedule, setRemainingTime } = this.props;
-      const { openTime } = timeHelper(schedule);
-      timerID = setInterval(
-        () => setRemainingTime(moment(currentTime()).preciseDiff(openTime)),
-        1000
-      );
+      calcRemainTime(timeHelper(schedule));
+      const time = timeHelper(schedule);
+      timerID = setInterval(() => setRemainingTime(calcRemainTime(time)), 1000);
     },
     componentWillUnmount() {
       clearInterval(timerID);
@@ -75,19 +84,25 @@ const enhence = compose(
   })
 );
 const RestaurantInfoBox = enhence(
-  ({ placeId, name, schedule, popoverOpen, remainingTime }) => (
-    <div variant="RestaurantInfoBox">
-      <Popover
-        placement="auto"
-        isOpen={popoverOpen}
-        target={`Popover-${placeId}`}
-      >
-        <PopoverHeader>{name}</PopoverHeader>
-        <PopoverBody>{schedule.name}</PopoverBody>
-        <span>{remainingTime}</span>
-      </Popover>
-    </div>
-  )
+  ({ placeId, name, schedule, popoverOpen, remainingTime }) => {
+    if (popoverOpen)
+      return (
+        <div variant="RestaurantInfoBox">
+          {
+            <Popover
+              placement="auto"
+              isOpen={true}
+              target={`Popover-${placeId}`}
+            >
+              <PopoverHeader>{name}</PopoverHeader>
+              <PopoverBody>{schedule.name}</PopoverBody>
+              <span>{remainingTime}</span>
+            </Popover>
+          }
+        </div>
+      );
+    else return <div variant="RestaurantInfoBox" />;
+  }
 );
 
 export default RestaurantInfoBox;

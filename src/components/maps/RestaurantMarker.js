@@ -2,7 +2,6 @@ import React from "react";
 import { compose, withState, lifecycle } from "recompose";
 import Spinner from "../common/Spinner";
 import RestaurantInfoBox from "./RestaurantInfoBox";
-import { Button, Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
 
 const getSchedule = async (placeId, filters) => {
@@ -18,8 +17,8 @@ const enhance = compose(
   withState("loading", "setLoading", true),
   withState("popoverOpen", "setPopover", false),
   lifecycle({
-    async componentDidMount(props) {
-      console.log(props);
+    async componentDidMount() {
+      console.log(this.props);
 
       const schedule = await getSchedule(
         this.props.placeId,
@@ -65,13 +64,17 @@ const RestaurantMarker = enhance(
               alt={"marker-icon"}
             />
           </button>
-          <RestaurantInfoBox
-            placeId={placeId}
-            name={name}
-            schedule={schedule}
-            popoverOpen={popoverOpen}
-            setPopover={setPopover}
-          />
+          {popoverOpen ? (
+            <RestaurantInfoBox
+              placeId={placeId}
+              name={name}
+              schedule={schedule}
+              popoverOpen={popoverOpen}
+              setPopover={setPopover}
+            />
+          ) : (
+            <div />
+          )}
         </div>
       </div>
     );

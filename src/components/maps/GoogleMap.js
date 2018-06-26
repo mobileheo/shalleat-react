@@ -42,7 +42,11 @@ class GoogleMap extends Component {
 
   getLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoError);
+      this.watchID = navigator.geolocation.watchPosition(
+        this.geoSuccess,
+        this.geoError
+      );
+      console.log(this.watchID);
     } else {
       alert("Geolocation is not supported by this browser.");
     }
@@ -85,6 +89,10 @@ class GoogleMap extends Component {
     this.getLocation();
   }
 
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
+  }
+
   render() {
     const { user } = this.props;
     console.log(user);
@@ -101,7 +109,11 @@ class GoogleMap extends Component {
           defaultCenter={center}
           defaultZoom={zoom}
         >
-          <CurrentMarker lat={center.lat} lng={center.lng} text={"You"} />
+          <CurrentMarker
+            lat={center.lat}
+            lng={center.lng}
+            text={user.firstName}
+          />
           {restaurantMarkers(results)}
         </GoogleMapReact>
       </div>
