@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 // import { compose, withState, lifecycle } from "recompose";
 import GoogleMapReact from "google-map-react";
 import { googleMapAPI } from "../../requests/configuration";
@@ -85,24 +86,26 @@ class GoogleMap extends Component {
   }
 
   render() {
+    const { user } = this.props;
+    console.log(user);
     const { loading, center, zoom, restaurants } = this.state;
-    if (loading) {
-      return <Spinner />;
-    } else {
-      const { results } = restaurants;
-      return (
-        <div className="MapPage" style={{ height: "95vh", width: "100%" }}>
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: googleMapAPI }}
-            defaultCenter={center}
-            defaultZoom={zoom}
-          >
-            <CurrentMarker lat={center.lat} lng={center.lng} text={"You"} />
-            {restaurantMarkers(results)}
-          </GoogleMapReact>
-        </div>
-      );
-    }
+    const { results } = restaurants;
+    return !user ? (
+      <Redirect to="/signin" />
+    ) : loading ? (
+      <Spinner />
+    ) : (
+      <div className="MapPage" style={{ height: "95vh", width: "100%" }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: googleMapAPI }}
+          defaultCenter={center}
+          defaultZoom={zoom}
+        >
+          <CurrentMarker lat={center.lat} lng={center.lng} text={"You"} />
+          {restaurantMarkers(results)}
+        </GoogleMapReact>
+      </div>
+    );
   }
 }
 

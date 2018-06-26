@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import GoogleMap from "../maps/GoogleMap";
 
-const MapPage = () => (
+const MapPage = ({ user }) => (
   <div
     className="MapPage d-flex justify-content-center align-items-center"
     style={{ height: "95vh" }}
   >
-    <GoogleMap />
+    <GoogleMap user={user} />
   </div>
 );
 

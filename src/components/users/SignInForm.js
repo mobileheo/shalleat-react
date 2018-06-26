@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "../common/Buttons";
 
 const SignInForm = ({ onSignInClick }) => (
-  <div className="SignUpForm mt-4">
+  <div className="SignInForm mt-4">
     <h1 className="display-4 auth-title">Sign In</h1>
     <form onSubmit={onSignInClick}>
       <div className="form-group">

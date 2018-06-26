@@ -19,7 +19,9 @@ const App = enhance(({ user, updateUser }) => {
             <Route
               exact
               path="/"
-              render={props => <MapPage {...props} updateUser={updateUser} />}
+              render={props => (
+                <MapPage {...props} user={user} updateUser={updateUser} />
+              )}
             />
             <Route
               exact
