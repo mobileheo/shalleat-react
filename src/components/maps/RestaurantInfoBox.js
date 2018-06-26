@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { withState } from "recompose";
+import { compose, withState, lifecycle } from "recompose";
 import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import moment from "moment";
 import "moment-precise-range-plugin";
+import Spinner from "../common/Spinner";
 
 const textObj = {
   name: "54th Ave Cafe",
@@ -41,36 +42,52 @@ const textObj = {
 
 const timeHelper = ({ notAvailable, isOpenToday, isOpenNow, todayHours }) => {
   if (notAvailable) return notAvailable;
-  const currentTime = moment().format("HH:mm:ss");
-  const currentTimes = moment().format("YYYY-MM-DD HH:mm:ss");
+  const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
   if (isOpenToday) {
     if (isOpenNow) {
       const { time } = todayHours.close;
       console.log(time);
     } else {
       const { time } = todayHours.open;
-
-      console.log(
-        moment("2014-01-01 12:00:00").preciseDiff("2015-03-04 16:05:06")
-      );
+      const openhours = time.slice(0, 2) + ":" + time.slice(2);
+      const openTime = moment().format(`YYYY-MM-DD ${openhours}:00`);
+      return { openTime };
     }
   }
   return "test";
 };
-
-const RestaurantInfoBox = ({ placeId, name, schedule, popoverOpen }) => (
-  <div variant="RestaurantInfoBox">
-    <Popover
-      placement="auto"
-      isOpen={popoverOpen}
-      target={`Popover-${placeId}`}
-    >
-      <PopoverHeader>{name}</PopoverHeader>
-      <PopoverBody>{schedule.name}</PopoverBody>
-      <span>{moment().format("HHmm")}</span>
-      <span>{timeHelper(textObj)}</span>
-    </Popover>
-  </div>
+let timerID;
+const currentTime = () => moment().format("YYYY-MM-DD HH:mm:ss");
+const enhence = compose(
+  withState("remainingTime", "setRemainingTime", ""),
+  lifecycle({
+    componentDidMount() {
+      const { schedule, setRemainingTime } = this.props;
+      const { openTime } = timeHelper(schedule);
+      timerID = setInterval(
+        () => setRemainingTime(moment(currentTime()).preciseDiff(openTime)),
+        1000
+      );
+    },
+    componentWillUnmount() {
+      clearInterval(timerID);
+    }
+  })
+);
+const RestaurantInfoBox = enhence(
+  ({ placeId, name, schedule, popoverOpen, remainingTime }) => (
+    <div variant="RestaurantInfoBox">
+      <Popover
+        placement="auto"
+        isOpen={popoverOpen}
+        target={`Popover-${placeId}`}
+      >
+        <PopoverHeader>{name}</PopoverHeader>
+        <PopoverBody>{schedule.name}</PopoverBody>
+        <span>{remainingTime}</span>
+      </Popover>
+    </div>
+  )
 );
 
 export default RestaurantInfoBox;

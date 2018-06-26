@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { compose, withState } from "recompose";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import Navbar from "./navbar/Navbar";
+import NavBar from "./navbar/NavBar";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import MapPage from "./pages/MapPage";
@@ -13,7 +13,7 @@ const App = enhance(({ user, updateUser }) => {
   return (
     <Router>
       <div className="App">
-        <Navbar />
+        <NavBar />
         <div className="container">
           <Switch>
             <Route
