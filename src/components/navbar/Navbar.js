@@ -1,12 +1,18 @@
-import React from "react";
-import { withState } from "recompose";
+import React, { Fragment } from "react";
+// import { withState } from "recompose";
 import { NavLink } from "react-router-dom";
-import { Collapse, Navbar, NavbarToggler, Nav, NavItem } from "reactstrap";
-
+import { Nav, NavItem } from "reactstrap";
 import Logo from "./Logo";
+import User from "../../requests/user";
 
-const enhance = withState("isOpen", "toggle", false);
-const NavBar = () => {
+// const enhance = withState("isOpen", "toggle", false);
+const NavBar = ({ user, updateUser }) => {
+  const signOut = async e => {
+    e.preventDefault();
+    await User.signOut();
+    updateUser(null);
+  };
+
   return (
     <div className="NavBar">
       <header className="navbar navbar-dark navbar-full bg-dark doc-navbar-default">
@@ -27,21 +33,31 @@ const NavBar = () => {
           </NavLink>
         </span>
         <Nav className="ml-auto" navbar>
-          <NavItem>
-            <NavLink exact to="/signin" className="nav-link">
-              Sign in
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink exact to="/" className="nav-link disabled px-0">
-              or
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink exact to="/signup" className="nav-link">
-              Sign up
-            </NavLink>
-          </NavItem>
+          {user ? (
+            <NavItem>
+              {/* <NavLink exact to="/signout" className="nav-link"> */}
+              <button onClick={signOut}> Sign out </button>
+              {/* </NavLink> */}
+            </NavItem>
+          ) : (
+            <Fragment>
+              <NavItem>
+                <NavLink exact to="/signin" className="nav-link">
+                  Sign in
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink exact to="/" className="nav-link disabled px-0">
+                  or
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink exact to="/signup" className="nav-link">
+                  Sign up
+                </NavLink>
+              </NavItem>
+            </Fragment>
+          )}
         </Nav>
       </header>
       <div

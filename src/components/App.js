@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { compose, withState } from "recompose";
+import React from "react";
+import { compose, withState, lifecycle } from "recompose";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import NavBar from "./navbar/NavBar";
@@ -7,32 +7,52 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import MapPage from "./pages/MapPage";
 
-const enhance = compose(withState("user", "updateUser", null));
+import User from "../requests/user";
+
+const enhance = compose(
+  withState("user", "updateUser", null),
+  lifecycle({
+    async componentDidMount() {
+      const { user, updateUser } = this.props;
+      try {
+        if (!user) {
+          const currentUser = await User.current();
+          updateUser(currentUser);
+          console.log(currentUser);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  })
+);
 
 const App = enhance(({ user, updateUser }) => {
   return (
     <Router>
       <div className="App">
-        <NavBar />
+        <NavBar user={user} updateUser={updateUser} />
         <div className="container">
           <Switch>
             <Route
               exact
               path="/"
-              render={props => <MapPage {...props} updateUser={updateUser} />}
+              render={props => (
+                <MapPage {...props} user={user} updateUser={updateUser} />
+              )}
             />
             <Route
               exact
               path="/signin"
               render={props => (
-                <SignInPage {...props} updateUser={updateUser} />
+                <SignInPage {...props} user={user} updateUser={updateUser} />
               )}
             />
             <Route
               exact
               path="/signup"
               render={props => (
-                <SignUpPage {...props} updateUser={updateUser} />
+                <SignUpPage {...props} user={user} updateUser={updateUser} />
               )}
             />
           </Switch>
