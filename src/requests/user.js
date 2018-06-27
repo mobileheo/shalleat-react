@@ -4,8 +4,8 @@ import { getData, postData } from "../helper/fetchHelper";
 export default {
   async signIn(user) {
     try {
-      const newUser = await postData(`${BASE_URL}/users/signin`, user);
-      return newUser;
+      const signedInUser = await postData(`${BASE_URL}/users/signin`, user);
+      return signedInUser;
     } catch (error) {
       throw new Error(error);
     }
@@ -24,6 +24,15 @@ export default {
     try {
       const signOutMessage = await getData(`${BASE_URL}/users/signout`);
       return signOutMessage;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  async current() {
+    try {
+      const currentUser = await getData(`${BASE_URL}/users/current_user`);
+      return currentUser;
     } catch (error) {
       throw new Error(error);
     }

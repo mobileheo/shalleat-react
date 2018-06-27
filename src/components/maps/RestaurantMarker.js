@@ -1,40 +1,46 @@
 import React from "react";
 import { compose, withState, lifecycle } from "recompose";
 import Spinner from "../common/Spinner";
+import { MapProvider, MapConsumer } from "../context/MapContext";
 import RestaurantInfoBox from "./RestaurantInfoBox";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
 
-const getSchedule = async (placeId, filters) => {
-  try {
-    const schedule = await Restaurant.getSchedule(placeId, filters);
-    return schedule;
-  } catch (error) {
-    console.log(error);
+const setSchedule = schedule => state => ({ schedule });
+
+class RestaurantMarker extends React.PureComponent {
+  state = {
+    popoverOpen: false,
+    loading: true,
+    schedule: {}
+  };
+
+  componentDidMount() {
+    this._isMounted = true;
+    getSchedule(this.props.placeId, this.props.filters)
+      .then(schedule => {
+        this.setSchedule({ schedule, loading: false });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
-};
-const enhance = compose(
-  withState("schedule", "setSchedule", {}),
-  withState("loading", "setLoading", true),
-  withState("popoverOpen", "setPopover", false),
-  lifecycle({
-    async componentDidMount() {
-      console.log(this.props);
 
-      const schedule = await getSchedule(
-        this.props.placeId,
-        this.props.filters
-      );
-      this.props.setSchedule(schedule);
-      this.props.setLoading(!this.props.loading);
+  setSchedule = options => {
+    if (this._isMounted) {
+      this.setState(options);
     }
-  })
-);
+  };
 
-const RestaurantMarker = enhance(
-  ({ placeId, icon, name, loading, schedule, popoverOpen, setPopover }) => {
-    return loading ? (
-      <Spinner />
-    ) : (
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  setPopover = popoverOpen => this.setState({ popoverOpen });
+
+  render() {
+    const { popoverOpen, loading, schedule } = this.state;
+    const { placeId, icon, name, chosenId, setChosenId } = this.props;
+    return loading ? null : (
       <div className="RestaurantMarker">
         <div
           className="d-flex justify-content-center"
@@ -51,7 +57,8 @@ const RestaurantMarker = enhance(
               minWidth: "50px",
               borderRadius: "1rem"
             }}
-            onClick={() => setPopover(!popoverOpen)}
+            // onClick={() => this.setPopover(!popoverOpen)}
+            onClick={() => setChosenId(placeId)}
             alt={"marker-icon"}
           >
             <img
@@ -64,13 +71,26 @@ const RestaurantMarker = enhance(
               alt={"marker-icon"}
             />
           </button>
-          {popoverOpen ? (
+
+          {/* {placeId === chosenId ? (
+            <RestaurantInfoBox
+              placeId={placeId}
+              chosenId={chosenId}
+              name={name}
+              schedule={schedule}
+              popoverOpen={popoverOpen}
+              setPopover={() => this.setPopover}
+            />
+          ) : (
+            <div />
+          )} */}
+          {placeId === chosenId ? (
             <RestaurantInfoBox
               placeId={placeId}
               name={name}
               schedule={schedule}
-              popoverOpen={popoverOpen}
-              setPopover={setPopover}
+              popoverOpen={placeId === chosenId}
+              setPopover={() => this.setPopover}
             />
           ) : (
             <div />
@@ -79,7 +99,86 @@ const RestaurantMarker = enhance(
       </div>
     );
   }
-);
+}
+
+const getSchedule = async (placeId, filters) => {
+  try {
+    const schedule = await Restaurant.getSchedule(placeId, filters);
+
+    return schedule;
+  } catch (error) {
+    console.log(error);
+  }
+};
+// const enhance = compose(
+//   withState("schedule", "setSchedule", {}),
+//   withState("loading", "setLoading", true),
+//   withState("popoverOpen", "setPopover", false),
+//   lifecycle({
+//     async componentDidMount() {
+//       try {
+//         getSchedule(this.props.placeId, this.props.filters).then(schedule => {
+//           this.props.setSchedule(schedule);
+//           this.props.setLoading(!this.props.loading);
+//         });
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     },
+//     componentWillUnmount() {
+//       console.log("componentWillUnmount");
+//     }
+//   })
+// );
+
+// const RestaurantMarker = enhance(
+//   ({ placeId, icon, name, loading, schedule, popoverOpen, setPopover }) => {
+//     return loading ? null : (
+//       <div className="RestaurantMarker">
+//         <div
+//           className="d-flex justify-content-center"
+//           style={{
+//             width: "50px",
+//             height: "50px",
+//             transform: "translate(-25px, -25px)"
+//           }}
+//         >
+//           <button
+//             id={`Popover-${placeId}`}
+//             className={"btn d-flex justify-content-center align-items-center"}
+//             style={{
+//               minWidth: "50px",
+//               borderRadius: "1rem"
+//             }}
+//             onClick={() => setPopover(!popoverOpen)}
+//             alt={"marker-icon"}
+//           >
+//             <img
+//               src={icon}
+//               style={{
+//                 position: "absolute",
+//                 height: 40,
+//                 width: 40
+//               }}
+//               alt={"marker-icon"}
+//             />
+//           </button>
+//           {popoverOpen ? (
+//             <RestaurantInfoBox
+//               placeId={placeId}
+//               name={name}
+//               schedule={schedule}
+//               popoverOpen={popoverOpen}
+//               setPopover={setPopover}
+//             />
+//           ) : (
+//             <div />
+//           )}
+//         </div>
+//       </div>
+//     );
+//   }
+// );
 
 // const PostsListWithData = lifecycle({
 //   async componentDidMount() {

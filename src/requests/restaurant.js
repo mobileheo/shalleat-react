@@ -14,7 +14,10 @@ export default {
   },
   async getSchedule(placeId, filters) {
     try {
-      const restaurants = await postData(`${url}/detail`, { placeId, filters });
+      const restaurants = await postData(`${url}/schedule`, {
+        placeId,
+        filters
+      });
       return restaurants;
     } catch (error) {
       throw new Error(error);

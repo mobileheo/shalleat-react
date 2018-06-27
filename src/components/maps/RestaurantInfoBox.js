@@ -62,7 +62,7 @@ const timeHelper = ({ notAvailable, isOpenToday, isOpenNow, todayHours }) => {
 const currentTime = () => moment().format("YYYY-MM-DD HH:mm:ss");
 
 const calcRemainTime = ({ openTime = false, closeTime }) => {
-  console.log(openTime);
+  // console.log(openTime);
   return openTime
     ? moment(currentTime()).preciseDiff(openTime)
     : moment(currentTime()).preciseDiff(closeTime);
@@ -76,6 +76,7 @@ const enhence = compose(
       const { schedule, setRemainingTime } = this.props;
       calcRemainTime(timeHelper(schedule));
       const time = timeHelper(schedule);
+      setRemainingTime(calcRemainTime(time));
       timerID = setInterval(() => setRemainingTime(calcRemainTime(time)), 1000);
     },
     componentWillUnmount() {
@@ -84,7 +85,7 @@ const enhence = compose(
   })
 );
 const RestaurantInfoBox = enhence(
-  ({ placeId, name, schedule, popoverOpen, remainingTime }) => {
+  ({ chosenId, placeId, name, schedule, popoverOpen, remainingTime }) => {
     if (popoverOpen)
       return (
         <div variant="RestaurantInfoBox">

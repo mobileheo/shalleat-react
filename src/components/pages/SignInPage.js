@@ -7,7 +7,7 @@ import { getAllFormData } from "../../helper/formHelper.js";
 import { delay } from "../../helper/asyncHelper";
 
 const enhance = withState("redirect", "updateRedirect", false);
-const SignInPage = enhance(({ updateUser, redirect, updateRedirect }) => {
+const SignInPage = enhance(({ user, updateUser, redirect, updateRedirect }) => {
   const handleSignIn = async e => {
     e.preventDefault();
     try {
@@ -16,12 +16,11 @@ const SignInPage = enhance(({ updateUser, redirect, updateRedirect }) => {
       await delay(1500);
       const user = await User.signIn(userData);
       updateUser(user);
-      updateRedirect(!redirect);
     } catch (error) {
       console.log(error);
     }
   };
-  return redirect ? (
+  return user ? (
     <Redirect to="/" />
   ) : (
     <div className="SignInPage">
