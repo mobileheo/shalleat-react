@@ -8,8 +8,8 @@ class Test extends Component {
         <MapConsumer>
           {/* {context => <button onClick={context.inc}>{context.number}</button>} */}
           {context => (
-            <button onClick={() => context.setPlaceId(100)}>
-              {context.placeId}
+            <button onClick={() => context.setPopover(100, true)}>
+              {context.popover}
             </button>
           )}
         </MapConsumer>

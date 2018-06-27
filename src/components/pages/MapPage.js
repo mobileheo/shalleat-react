@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import GoogleMap from "../maps/GoogleMap";
-import Test from "../../Test";
+// import Test from "../../Test";
 import { MapProvider } from "../context/MapContext";
 const MapPage = ({ user }) => (
   <MapProvider>

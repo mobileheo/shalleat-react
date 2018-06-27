@@ -5,9 +5,9 @@ import { googleMapAPI } from "../../requests/configuration";
 import CurrentMarker from "./CurrentMarker";
 import RestaurantMarker from "./RestaurantMarker";
 import Spinner from "../common/Spinner";
-import { MapProvider, MapConsumer } from "../context/MapContext";
+import { MapConsumer } from "../context/MapContext";
 
-const restaurantMarkers = (restaurants, chosenId, setChosenId) =>
+const restaurantMarkers = (restaurants, popover, setPopover) =>
   restaurants.map((r, i) => {
     const { geometry, icon, name, place_id: placeId } = r;
     const { lat, lng } = geometry.location;
@@ -16,8 +16,8 @@ const restaurantMarkers = (restaurants, chosenId, setChosenId) =>
         key={placeId}
         id={i}
         placeId={placeId}
-        chosenId={chosenId}
-        setChosenId={setChosenId}
+        popover={popover}
+        setPopover={setPopover}
         filters={["name", "opening_hours"]}
         lat={lat}
         lng={lng}
@@ -33,7 +33,7 @@ class GoogleMap extends PureComponent {
     const { user } = this.props;
     return (
       <MapConsumer>
-        {({ loading, center, zoom, restaurants, chosenId, setChosenId }) =>
+        {({ loading, center, zoom, restaurants, popover, setPopover }) =>
           !user ? (
             <Redirect to="/signin" />
           ) : loading ? (
@@ -50,7 +50,7 @@ class GoogleMap extends PureComponent {
                   lng={center.lng}
                   text={user.firstName}
                 />
-                {restaurantMarkers(restaurants, chosenId, setChosenId)}
+                {restaurantMarkers(restaurants, popover, setPopover)}
               </GoogleMapReact>
             </div>
           )

@@ -1,44 +1,43 @@
-import React, { Component } from "react";
+import React from "react";
 import { compose, withState, lifecycle } from "recompose";
 import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import moment from "moment";
 import "moment-precise-range-plugin";
-import Spinner from "../common/Spinner";
 
-const testObj = {
-  name: "54th Ave Cafe",
-  isOpenToday: true,
-  isOpenNow: false,
-  todayHours: {
-    close: {
-      day: 1,
-      time: "2300"
-    },
-    open: {
-      day: 1,
-      time: "1100"
-    }
-  },
-  nextDayHours: {
-    close: {
-      day: 2,
-      time: "2300"
-    },
-    open: {
-      day: 2,
-      time: "1100"
-    }
-  },
-  weekDays: [
-    "Monday: 11:00 AM – 11:00 PM",
-    "Tuesday: 11:00 AM – 11:00 PM",
-    "Wednesday: 11:00 AM – 11:00 PM",
-    "Thursday: 11:00 AM – 11:00 PM",
-    "Friday: 11:00 AM – 11:00 PM",
-    "Saturday: 11:00 AM – 11:00 PM",
-    "Sunday: 11:00 AM – 11:00 PM"
-  ]
-};
+// const testObj = {
+//   name: "54th Ave Cafe",
+//   isOpenToday: true,
+//   isOpenNow: false,
+//   todayHours: {
+//     close: {
+//       day: 1,
+//       time: "2300"
+//     },
+//     open: {
+//       day: 1,
+//       time: "1100"
+//     }
+//   },
+//   nextDayHours: {
+//     close: {
+//       day: 2,
+//       time: "2300"
+//     },
+//     open: {
+//       day: 2,
+//       time: "1100"
+//     }
+//   },
+//   weekDays: [
+//     "Monday: 11:00 AM – 11:00 PM",
+//     "Tuesday: 11:00 AM – 11:00 PM",
+//     "Wednesday: 11:00 AM – 11:00 PM",
+//     "Thursday: 11:00 AM – 11:00 PM",
+//     "Friday: 11:00 AM – 11:00 PM",
+//     "Saturday: 11:00 AM – 11:00 PM",
+//     "Sunday: 11:00 AM – 11:00 PM"
+//   ]
+// };
 
 const timeHelper = ({ notAvailable, isOpenToday, isOpenNow, todayHours }) => {
   if (notAvailable) return notAvailable;
@@ -85,10 +84,11 @@ const enhence = compose(
   })
 );
 const RestaurantInfoBox = enhence(
-  ({ chosenId, placeId, name, schedule, popoverOpen, remainingTime }) => {
-    if (popoverOpen)
+  ({ placeId, name, schedule, remainingTime, popover }) => {
+    const { chosenId, isOpen } = popover;
+    if (chosenId === placeId && isOpen) {
       return (
-        <div variant="RestaurantInfoBox">
+        <div className="RestaurantInfoBox">
           {
             <Popover
               placement="auto"
@@ -102,7 +102,7 @@ const RestaurantInfoBox = enhence(
           }
         </div>
       );
-    else return <div variant="RestaurantInfoBox" />;
+    } else return <div variant="RestaurantInfoBox" />;
   }
 );
 

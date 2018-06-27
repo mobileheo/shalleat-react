@@ -15,9 +15,10 @@ export class MapProvider extends Component {
     zoom: 15,
     restaurants: [],
     radius: 580,
-    chosenId: null,
-    setChosenId: chosenId => {
-      this.setState({ chosenId });
+    popover: { chosenId: null, isOpen: false },
+    setPopover: (chosenId, isOpen) => {
+      const popover = { chosenId, isOpen };
+      this.setState({ popover });
     }
   };
   // setPlaceId(number) {

@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
-import { withState } from "recompose";
-import { NavLink, Redirect } from "react-router-dom";
+// import { withState } from "recompose";
+import { NavLink } from "react-router-dom";
 import { Nav, NavItem } from "reactstrap";
 import Logo from "./Logo";
 import User from "../../requests/user";
 
-const enhance = withState("isOpen", "toggle", false);
+// const enhance = withState("isOpen", "toggle", false);
 const NavBar = ({ user, updateUser }) => {
   const signOut = async e => {
     e.preventDefault();
