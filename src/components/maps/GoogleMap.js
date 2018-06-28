@@ -7,7 +7,15 @@ import RestaurantMarker from "./RestaurantMarker";
 import Spinner from "../common/Spinner";
 import { MapConsumer } from "../context/MapContext";
 
-const restaurantMarkers = (restaurants, popover, setPopover, view, setView) =>
+const restaurantMarkers = (
+  restaurants,
+  popover,
+  setPopover,
+  view,
+  setView,
+  btnRotate,
+  setBtnRotateDeg
+) =>
   restaurants.map((r, i) => {
     const { geometry, icon, name, place_id: placeId } = r;
     const { lat, lng } = geometry.location;
@@ -25,6 +33,8 @@ const restaurantMarkers = (restaurants, popover, setPopover, view, setView) =>
         lng={lng}
         icon={icon}
         name={name}
+        btnRotate={btnRotate}
+        setBtnRotateDeg={setBtnRotateDeg}
       />
     );
   });
@@ -53,7 +63,9 @@ class GoogleMap extends Component {
           popover,
           setPopover,
           view,
-          setView
+          setView,
+          btnRotate,
+          setBtnRotateDeg
         }) => {
           const { center, zoom } = view;
           console.log(center);
@@ -81,7 +93,9 @@ class GoogleMap extends Component {
                   popover,
                   setPopover,
                   view,
-                  setView
+                  setView,
+                  btnRotate,
+                  setBtnRotateDeg
                 )}
               </GoogleMapReact>
             </div>

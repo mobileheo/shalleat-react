@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import anime from "animejs";
 import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
@@ -24,6 +25,17 @@ export class MapProvider extends Component {
     setPopover: (chosenId, isOpen) => {
       const popover = { chosenId, isOpen };
       this.setState({ popover });
+    },
+    btnRotate: 0,
+    setBtnRotateDeg: (id, btnRotate) => {
+      anime({
+        targets: id,
+        scale: 1,
+        duration: 3000,
+        rotate: btnRotate
+      }).finished.then(() => {
+        this.setState({ btnRotate });
+      });
     }
   };
 

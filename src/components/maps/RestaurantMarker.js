@@ -1,12 +1,47 @@
 import React from "react";
+import anime from "animejs";
 import Spinner from "../common/Spinner";
 import RestaurantInfoBox from "./RestaurantInfoBox";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
+import "react-tippy/dist/tippy.css";
+import { Tooltip } from "react-tippy";
+
+const btnReTrun = id =>
+  anime({
+    targets: id,
+    scale: 1.2,
+    duration: 3000
+  });
 
 class RestaurantMarker extends React.PureComponent {
   state = {
     loading: true,
     schedule: {}
+  };
+  btnTrun = id => {
+    let isRotated = false;
+    console.log(isRotated);
+    if (isRotated) {
+      return () => {
+        isRotated = !isRotated;
+        anime({
+          targets: id,
+          scale: 1,
+          duration: 3000,
+          rotate: 45
+        });
+      };
+    } else {
+      return () => {
+        isRotated = !isRotated;
+        anime({
+          targets: id,
+          scale: 1,
+          duration: 3000,
+          rotate: 45
+        });
+      };
+    }
   };
 
   componentDidMount() {
@@ -31,9 +66,6 @@ class RestaurantMarker extends React.PureComponent {
   }
 
   render() {
-    // console.log("placeId => ", this.props.placeId);
-    // console.log("center => ", this.props.lat);
-    // console.log("-----------------------------");
     const { loading, schedule } = this.state;
     const {
       placeId,
@@ -46,10 +78,14 @@ class RestaurantMarker extends React.PureComponent {
       view,
       setView
     } = this.props;
+    const { chosenId, isOpen } = popover;
     return loading ? (
       <Spinner />
     ) : (
-      <div className="RestaurantMarker">
+      <div
+        className="RestaurantMarker"
+        style={chosenId === placeId && isOpen ? { zIndex: 1000000000 } : {}}
+      >
         <div
           className="d-flex justify-content-center"
           style={{
@@ -58,37 +94,47 @@ class RestaurantMarker extends React.PureComponent {
             transform: "translate(-50%, -50%)"
           }}
         >
-          <button
-            id={`Popover-${placeId}`}
-            className={"btn d-flex justify-content-center align-items-center"}
+          <Tooltip
+            title={name}
+            arrow={true}
+            position="top"
             style={{
-              minWidth: "50px",
-              borderRadius: "1rem"
+              minWidth: "50px"
             }}
-            onClick={() => {
-              let { center, zoom } = view;
-              center = { lat, lng };
-              zoom = 15;
-              setView(center, zoom);
-              console.log(view);
-              const { chosenId, isOpen } = popover;
-              if (isOpen) {
-                if (chosenId === placeId) {
-                  setPopover(placeId, !isOpen);
-                } else {
-                  setPopover(placeId, isOpen);
-                }
-              } else {
-                if (chosenId === placeId) {
-                  setPopover(placeId, !isOpen);
-                } else {
-                  setPopover(placeId, !isOpen);
-                }
-              }
-            }}
-            alt={"marker-icon"}
           >
-            <img
+            <button
+              data-tippy
+              data-original-title="I'm a tooltip!"
+              id={`Popover-${placeId}`}
+              className={
+                "btn btn-secondary d-flex justify-content-center align-items-center rounded"
+              }
+              style={{
+                minWidth: "50px"
+              }}
+              onClick={() => {
+                let { center, zoom } = view;
+                center = { lat, lng };
+                zoom = 16;
+                setView(center, zoom);
+
+                if (isOpen) {
+                  if (chosenId === placeId) {
+                    setPopover(placeId, !isOpen);
+                  } else {
+                    setPopover(placeId, isOpen);
+                  }
+                } else {
+                  setPopover(placeId, !isOpen);
+                }
+              }}
+              onMouseOver={e => {
+                const { currentTarget } = e;
+                console.log(currentTarget);
+              }}
+              alt={"marker-icon"}
+            >
+              {/* <img
               src={icon}
               style={{
                 position: "absolute",
@@ -96,18 +142,29 @@ class RestaurantMarker extends React.PureComponent {
                 width: 40
               }}
               alt={"marker-icon"}
-            />
-          </button>
-          {popover.chosenId === placeId && popover.isOpen ? (
-            <RestaurantInfoBox
-              placeId={placeId}
-              name={name}
-              schedule={schedule}
-              popover={popover}
-            />
-          ) : (
-            <div />
-          )}
+            /> */}
+              <i
+                className="material-icons"
+                style={{
+                  fontSize: "3.8vh"
+                }}
+              >
+                {chosenId === placeId && isOpen
+                  ? "restaurant_menu"
+                  : "restaurant"}
+              </i>
+            </button>
+            {popover.chosenId === placeId && popover.isOpen ? (
+              <RestaurantInfoBox
+                placeId={placeId}
+                name={name}
+                schedule={schedule}
+                popover={popover}
+              />
+            ) : (
+              <div />
+            )}
+          </Tooltip>
         </div>
       </div>
     );
