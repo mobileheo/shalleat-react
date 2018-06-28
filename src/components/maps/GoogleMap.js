@@ -39,7 +39,10 @@ class GoogleMap extends PureComponent {
           ) : loading ? (
             <Spinner />
           ) : (
-            <div className="MapPage" style={{ height: "95vh", width: "100%" }}>
+            <div
+              className="MapPage"
+              style={{ height: "92vh", width: "100%", borderRadius: "25px" }}
+            >
               <GoogleMapReact
                 bootstrapURLKeys={{ key: googleMapAPI }}
                 center={center}
