@@ -7,18 +7,28 @@ import { MapProvider } from "../context/MapContext";
 const MapPage = ({ user }) => (
   <MapProvider>
     <div
-      class="d-flex justify-content-center"
+      className="d-flex justify-content-center"
       style={{ height: "92vh", width: "100%" }}
     >
-      <div class="GoogleMap-container w-75">
+      <div className="GoogleMap-container w-75">
         <div
           className="MapPage d-flex justify-content-center align-items-center"
           style={{ height: "92vh" }}
         >
           <GoogleMap user={user} />
         </div>
+        <div
+          style={{
+            position: "absolute",
+            left: "0px",
+            top: "0px",
+            zIndex: "999999999"
+          }}
+        >
+          <span>Hello</span>
+        </div>
       </div>
-      <div class="RestList-container w-25" style={{ overflow: "scroll" }}>
+      <div className="RestList-container w-25" style={{ overflow: "scroll" }}>
         <RestList />
       </div>
     </div>

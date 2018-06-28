@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component, PureComponent } from "react";
 import { Redirect } from "react-router-dom";
 import GoogleMapReact from "google-map-react";
 import { googleMapAPI } from "../../requests/configuration";
@@ -7,7 +7,7 @@ import RestaurantMarker from "./RestaurantMarker";
 import Spinner from "../common/Spinner";
 import { MapConsumer } from "../context/MapContext";
 
-const restaurantMarkers = (restaurants, popover, setPopover) =>
+const restaurantMarkers = (restaurants, popover, setPopover, view, setView) =>
   restaurants.map((r, i) => {
     const { geometry, icon, name, place_id: placeId } = r;
     const { lat, lng } = geometry.location;
@@ -18,6 +18,8 @@ const restaurantMarkers = (restaurants, popover, setPopover) =>
         placeId={placeId}
         popover={popover}
         setPopover={setPopover}
+        view={view}
+        setView={setView}
         filters={["name", "opening_hours"]}
         lat={lat}
         lng={lng}
@@ -27,14 +29,25 @@ const restaurantMarkers = (restaurants, popover, setPopover) =>
     );
   });
 
-class GoogleMap extends PureComponent {
+class GoogleMap extends Component {
   render() {
     console.log("GoogleMap");
     const { user } = this.props;
     return (
       <MapConsumer>
-        {({ loading, center, zoom, restaurants, popover, setPopover }) =>
-          !user ? (
+        {({
+          loading,
+          defaultCenter,
+          defaultZoom,
+          restaurants,
+          popover,
+          setPopover,
+          view,
+          setView
+        }) => {
+          const { center, zoom } = view;
+          console.log(center);
+          return !user ? (
             <Redirect to="/signin" />
           ) : loading ? (
             <Spinner />
@@ -46,18 +59,24 @@ class GoogleMap extends PureComponent {
               <GoogleMapReact
                 bootstrapURLKeys={{ key: googleMapAPI }}
                 center={center}
-                defaultZoom={zoom}
+                zoom={zoom}
               >
                 <CurrentMarker
-                  lat={center.lat}
-                  lng={center.lng}
+                  lat={defaultCenter.lat}
+                  lng={defaultCenter.lng}
                   text={user.firstName}
                 />
-                {restaurantMarkers(restaurants, popover, setPopover)}
+                {restaurantMarkers(
+                  restaurants,
+                  popover,
+                  setPopover,
+                  view,
+                  setView
+                )}
               </GoogleMapReact>
             </div>
-          )
-        }
+          );
+        }}
       </MapConsumer>
     );
   }
