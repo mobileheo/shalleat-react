@@ -110,7 +110,8 @@ class RestaurantMarker extends React.PureComponent {
                 "btn btn-secondary d-flex justify-content-center align-items-center rounded"
               }
               style={{
-                minWidth: "50px"
+                minWidth: "50px",
+                minHeight: "50px"
               }}
               onClick={() => {
                 let { center, zoom } = view;

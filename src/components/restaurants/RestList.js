@@ -24,7 +24,7 @@ const RestList = ({}) => (
                     : "list-group-item list-group-item-action mb-2"
                 }
                 key={placeId}
-                // style={{ border: "1px solid black" }}
+                style={{ borderLeft: "solid red 3px" }}
                 onClick={() => {
                   let { center, zoom } = view;
                   center = { lat, lng };

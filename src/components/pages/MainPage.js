@@ -15,7 +15,7 @@ const MapPage = ({ user }) => (
         className="d-flex justify-content-center"
         style={{ height: "92vh", width: "100%" }}
       >
-        <div className="GoogleMap-container w-75">
+        <div className="GoogleMap-container w-75 mr-3">
           <div
             className="MapPage d-flex justify-content-center align-items-center"
             style={{ height: "92vh" }}
@@ -23,7 +23,10 @@ const MapPage = ({ user }) => (
             <GoogleMap user={user} />
           </div>
         </div>
-        <div className="RestList-container w-25" style={{ overflow: "scroll" }}>
+        <div
+          className="RestList-container w-25 ml-3"
+          style={{ overflow: "scroll" }}
+        >
           <RestList />
         </div>
       </div>
