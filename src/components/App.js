@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import NavBar from "./navbar/NavBar";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import MapPage from "./pages/MapPage";
+import MainPage from "./pages/MainPage";
 
 import User from "../requests/user";
 
@@ -32,13 +32,13 @@ const App = enhance(({ user, updateUser }) => {
     <Router>
       <div className="App">
         <NavBar user={user} updateUser={updateUser} />
-        <div className="container">
+        <div className="MainPage d-flex justify-content-center align-items-center  m-4">
           <Switch>
             <Route
               exact
               path="/"
               render={props => (
-                <MapPage {...props} user={user} updateUser={updateUser} />
+                <MainPage {...props} user={user} updateUser={updateUser} />
               )}
             />
             <Route
@@ -61,54 +61,5 @@ const App = enhance(({ user, updateUser }) => {
     </Router>
   );
 });
-
-// class App extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       currentUser: null
-//     };
-//   }
-
-//   getUser = currentUser => {
-//     console.log(currentUser);
-//     this.setState({ currentUser });
-//   };
-
-//   render() {
-//     return (
-//       <Router>
-//         <div className="App">
-//           <Navbar />
-//           <div className="container">
-//             <Switch>
-//               <Route
-//                 exact
-//                 path="/"
-//                 render={props => (
-//                   <MapPage {...props} onAuthComplete={this.getUser} />
-//                 )}
-//               />
-//               <Route
-//                 exact
-//                 path="/signin"
-//                 render={props => (
-//                   <SignInPage {...props} onAuthComplete={this.getUser} />
-//                 )}
-//               />
-//               <Route
-//                 exact
-//                 path="/signup"
-//                 render={props => (
-//                   <SignUpPage {...props} onAuthComplete={this.getUser} />
-//                 )}
-//               />
-//             </Switch>
-//           </div>
-//         </div>
-//       </Router>
-//     );
-//   }
-// }
 
 export default App;

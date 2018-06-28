@@ -11,8 +11,13 @@ export class MapProvider extends Component {
     },
     loading: true,
     currentLocation: null,
-    center: null,
-    zoom: 15,
+    defaultCenter: null,
+    defaultZoom: 15,
+    view: { center: {}, zoom: null },
+    setView: (center, zoom) => {
+      const view = { center, zoom };
+      this.setState({ view });
+    },
     restaurants: [],
     radius: 580,
     popover: { chosenId: null, isOpen: false },
@@ -21,9 +26,6 @@ export class MapProvider extends Component {
       this.setState({ popover });
     }
   };
-  // setPlaceId(number) {
-  //   return () => this.setState({ placeId: number });
-  // }
 
   getLocation() {
     if (navigator.geolocation) {
@@ -43,21 +45,24 @@ export class MapProvider extends Component {
   geoSuccess = position => {
     const { latitude: lat, longitude: lng } = position.coords;
     const currentLocation = { lat, lng };
-    const center = currentLocation;
-    this.findNearby(currentLocation, center);
+    const defaultCenter = currentLocation;
+    this.findNearby(currentLocation, defaultCenter);
   };
 
-  async findNearby(currentLocation, center) {
-    const { radius } = this.state;
+  async findNearby(currentLocation, defaultCenter) {
+    const { radius, defaultZoom } = this.state;
     const filters = { ...currentLocation, radius };
+    let view = { center: defaultCenter, zoom: defaultZoom };
+
     const loading = false;
     try {
       const restaurants = await Restaurant.findNearby(filters);
       this.setState({
         loading,
         currentLocation,
-        center,
-        restaurants
+        defaultCenter,
+        restaurants,
+        view
       });
     } catch (error) {
       console.log(error);
