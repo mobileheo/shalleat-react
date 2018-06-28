@@ -31,9 +31,9 @@ class RestaurantMarker extends React.PureComponent {
   }
 
   render() {
-    console.log("placeId => ", this.props.placeId);
-    console.log("center => ", this.props.lat);
-    console.log("-----------------------------");
+    // console.log("placeId => ", this.props.placeId);
+    // console.log("center => ", this.props.lat);
+    // console.log("-----------------------------");
     const { loading, schedule } = this.state;
     const {
       placeId,
@@ -55,7 +55,7 @@ class RestaurantMarker extends React.PureComponent {
           style={{
             width: "50px",
             height: "50px",
-            transform: "translate(-25px, -25px)"
+            transform: "translate(-50%, -50%)"
           }}
         >
           <button
@@ -67,9 +67,8 @@ class RestaurantMarker extends React.PureComponent {
             }}
             onClick={() => {
               let { center, zoom } = view;
-              console.log("onClick => ", center);
               center = { lat, lng };
-              zoom = 16;
+              zoom = 15;
               setView(center, zoom);
               console.log(view);
               const { chosenId, isOpen } = popover;

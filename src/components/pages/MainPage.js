@@ -17,16 +17,6 @@ const MapPage = ({ user }) => (
         >
           <GoogleMap user={user} />
         </div>
-        <div
-          style={{
-            position: "absolute",
-            left: "0px",
-            top: "0px",
-            zIndex: "999999999"
-          }}
-        >
-          <span>Hello</span>
-        </div>
       </div>
       <div className="RestList-container w-25" style={{ overflow: "scroll" }}>
         <RestList />

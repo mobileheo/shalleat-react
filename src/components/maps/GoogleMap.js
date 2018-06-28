@@ -28,8 +28,18 @@ const restaurantMarkers = (restaurants, popover, setPopover, view, setView) =>
       />
     );
   });
-
+const AddCurrentPositionButton = () => {
+  let fullScreenBtn = document.querySelector(".gm-fullscreen-control");
+  if (fullScreenBtn) {
+    let target = fullScreenBtn.parentNode;
+    target.setAttribute("id", "current-position-button");
+    target.innerHTML = `<i class="material-icons">my_location</i>`;
+  }
+};
 class GoogleMap extends Component {
+  componentDidMount() {
+    AddCurrentPositionButton();
+  }
   render() {
     console.log("GoogleMap");
     const { user } = this.props;
