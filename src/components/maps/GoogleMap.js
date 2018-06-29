@@ -57,7 +57,6 @@ class GoogleMap extends Component {
       <MapConsumer>
         {({
           loading,
-          mapLoading,
           defaultCenter,
           defaultZoom,
           restaurants,
@@ -69,7 +68,6 @@ class GoogleMap extends Component {
           setBtnRotateDeg
         }) => {
           const { center, zoom } = view;
-          console.log(center);
           return !user ? (
             <Redirect to="/signin" />
           ) : loading ? (

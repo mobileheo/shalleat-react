@@ -8,10 +8,6 @@ const calcZoom = radius => {};
 
 export class MapProvider extends Component {
   state = {
-    number: 10,
-    inc: () => {
-      this.setState({ number: this.state.number + 1 });
-    },
     loading: true,
     setLoading: () => this.setState({ loading: !this.state.loading }),
     mapLoading: true,
@@ -98,6 +94,7 @@ export class MapProvider extends Component {
   }
   async concatNext(pageToken) {
     if (!pageToken) {
+      navigator.geolocation.clearWatch(this.watchID);
       return;
     } else {
       let { restaurants } = this.state;
@@ -111,10 +108,6 @@ export class MapProvider extends Component {
 
   componentDidMount() {
     this.getLocation();
-  }
-
-  componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchID);
   }
 
   render() {
