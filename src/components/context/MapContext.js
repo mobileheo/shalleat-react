@@ -110,6 +110,10 @@ export class MapProvider extends Component {
     this.getLocation();
   }
 
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
+  }
+
   render() {
     const { children } = this.props;
     return <Provider value={this.state}>{children}</Provider>;

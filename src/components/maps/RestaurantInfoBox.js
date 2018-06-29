@@ -39,20 +39,6 @@ import "moment-precise-range-plugin";
 //     "Sunday: 11:00 AM – 11:00 PM"
 //   ]
 // };
-const btnTrun = (id, rotateDeg) =>
-  anime({
-    targets: id,
-    scale: 1,
-    duration: 3000,
-    rotate: rotateDeg
-  });
-// const btnReTrun = id =>
-//   anime({
-//     targets: id,
-//     scale: 1,
-//     duration: 3000,
-//     rotate: -45
-//   });
 
 const timeHelper = ({ notAvailable, isOpenToday, isOpenNow, todayHours }) => {
   if (notAvailable) return notAvailable;
@@ -89,6 +75,7 @@ const enhence = compose(
   lifecycle({
     componentDidMount() {
       const { schedule, setRemainingTime } = this.props;
+      console.log("schedule => ", schedule);
       calcRemainTime(timeHelper(schedule));
       const time = timeHelper(schedule);
       setRemainingTime(calcRemainTime(time));
