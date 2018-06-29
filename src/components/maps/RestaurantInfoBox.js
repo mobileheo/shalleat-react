@@ -1,5 +1,6 @@
 import React from "react";
 import { compose, withState, lifecycle } from "recompose";
+import anime from "animejs";
 import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import moment from "moment";
 import "moment-precise-range-plugin";
@@ -38,6 +39,20 @@ import "moment-precise-range-plugin";
 //     "Sunday: 11:00 AM – 11:00 PM"
 //   ]
 // };
+const btnTrun = (id, rotateDeg) =>
+  anime({
+    targets: id,
+    scale: 1,
+    duration: 3000,
+    rotate: rotateDeg
+  });
+// const btnReTrun = id =>
+//   anime({
+//     targets: id,
+//     scale: 1,
+//     duration: 3000,
+//     rotate: -45
+//   });
 
 const timeHelper = ({ notAvailable, isOpenToday, isOpenNow, todayHours }) => {
   if (notAvailable) return notAvailable;
@@ -70,6 +85,7 @@ const calcRemainTime = ({ openTime = false, closeTime }) => {
 let timerID;
 const enhence = compose(
   withState("remainingTime", "setRemainingTime", ""),
+  withState("rotateDeg", "setRotateDeg", 45),
   lifecycle({
     componentDidMount() {
       const { schedule, setRemainingTime } = this.props;
@@ -84,9 +100,22 @@ const enhence = compose(
   })
 );
 const RestaurantInfoBox = enhence(
-  ({ placeId, name, schedule, remainingTime, popover }) => {
+  ({
+    placeId,
+    name,
+    schedule,
+    remainingTime,
+    rotateDeg,
+    setRotateDeg,
+    popover
+  }) => {
     const { chosenId, isOpen } = popover;
+    // btnTrun(`#Popover-${chosenId}`, rotateDeg);
+    // let newDeg = rotateDeg * -1;
+    // setRotateDeg(newDeg);
     if (chosenId === placeId && isOpen) {
+      // setBtnRotateDeg(`#Popover-${placeId}`);
+      // btnReTrun(`#Popover-${placeId}`);
       return (
         <div className="RestaurantInfoBox">
           {
@@ -102,7 +131,11 @@ const RestaurantInfoBox = enhence(
           }
         </div>
       );
-    } else return <div variant="RestaurantInfoBox" />;
+    } else {
+      // btnTrun(`#Popover-${chosenId}`);
+      // console.log("btnTurn");
+      return <div className="RestaurantInfoBox" />;
+    }
   }
 );
 

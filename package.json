@@ -13,8 +13,10 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-pure-lifecycle": "^2.2.0",
+    "react-rating": "^1.2.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
+    "react-tippy": "^1.2.2",
     "reactstrap": "^6.1.0",
     "recompose": "^0.27.1"
   },
