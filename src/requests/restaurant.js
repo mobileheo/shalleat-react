@@ -1,24 +1,31 @@
 import { BASE_URL } from "./fetchConfig";
 import { postData } from "../helper/fetchHelper";
+import { delay } from "../helper/asyncHelper";
 
 const url = `${BASE_URL}/restaurants`;
 
 export default {
   async findNearby(filters) {
     try {
-      const restaurants = await postData(`${url}/all`, filters);
-      return restaurants;
+      return await postData(`${url}/all`, filters);
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  async getNextRests(pageToken) {
+    try {
+      await delay(2000);
+      return await postData(`${url}/next`, pageToken);
     } catch (error) {
       throw new Error(error);
     }
   },
   async getSchedule(placeId, filters) {
     try {
-      const restaurants = await postData(`${url}/schedule`, {
+      return await postData(`${url}/schedule`, {
         placeId,
         filters
       });
-      return restaurants;
     } catch (error) {
       throw new Error(error);
     }

@@ -57,6 +57,7 @@ class GoogleMap extends Component {
       <MapConsumer>
         {({
           loading,
+          mapLoading,
           defaultCenter,
           defaultZoom,
           restaurants,
@@ -72,7 +73,16 @@ class GoogleMap extends Component {
           return !user ? (
             <Redirect to="/signin" />
           ) : loading ? (
-            <Spinner />
+            <div
+              className="MapPage d-flex flex-column justify-content-center align-items-center w-100 mt-4"
+              style={{
+                height: "100vh",
+                width: "100%",
+                border: "1px soild black"
+              }}
+            >
+              <Spinner />
+            </div>
           ) : (
             <div
               className="MapPage"

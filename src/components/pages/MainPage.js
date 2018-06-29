@@ -3,23 +3,23 @@ import GoogleMap from "../maps/GoogleMap";
 import RestList from "../restaurants/RestList";
 // import Test from "../../Test";
 import { MapProvider } from "../context/MapContext";
-import SearchBar from "../maps/SearchBar";
 import RadiusInputBar from "../maps/RadiusInputBar";
+import MapInputs from "../maps/MapInputs";
 
-const MapPage = ({ user }) => (
+const MainPage = ({ user }) => (
   <MapProvider>
     <div className="d-flex justify-content-center align-items-center flex-wrap">
-      <SearchBar />
-      <RadiusInputBar />
+      {/* <MapInputs /> */}
       <div
         className="d-flex justify-content-center"
         style={{ height: "92vh", width: "100%" }}
       >
         <div className="GoogleMap-container w-75 mr-3">
           <div
-            className="MapPage d-flex justify-content-center align-items-center"
+            className="MapPage d-flex flex-column justify-content-center align-items-center"
             style={{ height: "92vh" }}
           >
+            <RadiusInputBar />
             <GoogleMap user={user} />
           </div>
         </div>
@@ -38,4 +38,4 @@ const MapPage = ({ user }) => (
   </MapProvider>
 );
 
-export default MapPage;
+export default MainPage;

@@ -6,13 +6,6 @@ import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
 import "react-tippy/dist/tippy.css";
 import { Tooltip } from "react-tippy";
 
-const btnReTrun = id =>
-  anime({
-    targets: id,
-    scale: 1.2,
-    duration: 3000
-  });
-
 class RestaurantMarker extends React.PureComponent {
   state = {
     loading: true,
@@ -76,10 +69,11 @@ class RestaurantMarker extends React.PureComponent {
       popover,
       setPopover,
       view,
-      setView
+      setView,
+      mapLoading
     } = this.props;
     const { chosenId, isOpen } = popover;
-    return loading ? (
+    return mapLoading ? (
       <Spinner />
     ) : (
       <div
