@@ -4,7 +4,12 @@ import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
 
-const calcZoom = radius => {};
+const RADIUS = 10000;
+const calcZoom = radius => {
+  const scale = radius / 500;
+  return +(16 - Math.log(scale) / Math.log(2));
+};
+const ZOOM = calcZoom(RADIUS);
 
 export class MapProvider extends Component {
   state = {
@@ -14,25 +19,35 @@ export class MapProvider extends Component {
     setMapLoading: () => this.setState({ mapLoading: !this.state.mapLoading }),
     currentLocation: null,
     defaultCenter: null,
-    defaultZoom: 15,
+    radius: RADIUS,
+    defaultZoom: ZOOM,
     view: { center: {}, zoom: null },
     setView: (center = this.state.currentLocation, zoom) => {
       const view = { center, zoom };
       this.setState({ view });
+      // let view = { center, zoom };
+      // const interval = 200;
+      // const step = zoom / 60;
+      // let total = 0;
+      // this.setState({ view });
+      // setInterval(() => {
+      //   total += step;
+      //   view = { center, zoom: total };
+      //   this.setState({ view });
+      // }, interval);
     },
     restaurants: [],
-    radius: 40000,
     setRestaurants: async radius => {
       try {
         const filters = { ...this.state.currentLocation, radius };
         const restaurants = await Restaurant.findNearby(filters);
-        const mapLoading = false;
-        this.setState({
-          mapLoading,
-          restaurants,
-          radius
-        });
-        console.log(restaurants.length);
+        // const mapLoading = false;
+        // this.setState({
+        //   mapLoading,
+        //   restaurants,
+        //   radius
+        // });
+        console.log(restaurants);
       } catch (error) {
         console.lig(error);
       }

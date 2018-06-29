@@ -1,11 +1,14 @@
 import React from "react";
 import anime from "animejs";
-import Spinner from "../common/Spinner";
+// import Spinner from "../common/Spinner";
+import Spinner from "react-spinkit";
 import RestaurantInfoBox from "./RestaurantInfoBox";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
 import "react-tippy/dist/tippy.css";
 import { Tooltip } from "react-tippy";
 
+const WIDTH = "35px";
+const HEIGHT = WIDTH;
 class RestaurantMarker extends React.PureComponent {
   state = {
     loading: true,
@@ -69,12 +72,11 @@ class RestaurantMarker extends React.PureComponent {
       popover,
       setPopover,
       view,
-      setView,
-      mapLoading
+      setView
     } = this.props;
     const { chosenId, isOpen } = popover;
-    return mapLoading ? (
-      <Spinner />
+    return loading ? (
+      <Spinner name="ball-scale-multiple" color="steelblue" />
     ) : (
       <div
         className="RestaurantMarker"
@@ -83,8 +85,8 @@ class RestaurantMarker extends React.PureComponent {
         <div
           className="d-flex justify-content-center"
           style={{
-            width: "50px",
-            height: "50px",
+            width: WIDTH,
+            height: HEIGHT,
             transform: "translate(-50%, -50%)"
           }}
         >
@@ -93,7 +95,7 @@ class RestaurantMarker extends React.PureComponent {
             arrow={true}
             position="top"
             style={{
-              minWidth: "50px"
+              minWidth: WIDTH
             }}
           >
             <button
@@ -104,13 +106,13 @@ class RestaurantMarker extends React.PureComponent {
                 "btn btn-secondary d-flex justify-content-center align-items-center rounded"
               }
               style={{
-                minWidth: "50px",
-                minHeight: "50px"
+                minWidth: WIDTH,
+                minHeight: HEIGHT
               }}
               onClick={() => {
                 let { center, zoom } = view;
                 center = { lat, lng };
-                zoom = 16;
+                zoom = 14;
                 setView(center, zoom);
 
                 if (isOpen) {
@@ -141,7 +143,7 @@ class RestaurantMarker extends React.PureComponent {
               <i
                 className="material-icons"
                 style={{
-                  fontSize: "3.8vh"
+                  fontSize: "2.5vh"
                 }}
               >
                 {chosenId === placeId && isOpen

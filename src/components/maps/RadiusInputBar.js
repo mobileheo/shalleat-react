@@ -11,16 +11,8 @@ const WAIT_INTERVAL = 1500;
 const calcZoom = radius => {
   const scale = radius / 500;
   return +(16 - Math.log(scale) / Math.log(2));
-  // return radius / 7;
 };
 class RadiusInputBar extends React.Component {
-  // constructor(props) {
-  //   super();
-
-  //   this.state = {
-  //     value: props.value
-  //   };
-  // }
   state = {
     currentRadius: this.props.radius
   };
@@ -29,23 +21,6 @@ class RadiusInputBar extends React.Component {
   }
   componentWillMount() {
     this.timer = null;
-  }
-
-  updateRaidus(setRestaurants) {
-    return e => {
-      const { currentTarget } = e;
-      const currentRadius = +currentTarget.value;
-      // console.log(typeof currentRadius);
-      // console.log("radius => ", currentRadius);
-      // setMapLoading();
-
-      // this.timer = await setTimeout(
-      //   setRestaurants(currentRadius),
-      //   WAIT_INTERVAL
-      // );
-      // await clearTimeout(this.timer);
-      // document.querySelector("input.custom-range").value = radius;
-    };
   }
 
   render() {
