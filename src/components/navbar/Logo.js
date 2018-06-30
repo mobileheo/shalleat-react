@@ -61,8 +61,8 @@ const Logo = () => {
     <svg
       id="logo-svg"
       viewBox="0 0 240.4 240.4"
-      width="50"
-      height="50"
+      width="40"
+      height="40"
       className="d-inline-block align-top"
     >
       <polygon

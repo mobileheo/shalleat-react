@@ -1,40 +1,40 @@
 import React, { Component } from "react";
-import anime from "animejs";
 import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
 
-const calcZoom = radius => {};
+const RADIUS = 1500;
+const calcZoom = radius => {
+  const scale = radius / 500;
+  return +(16 - Math.log(scale) / Math.log(2));
+};
+const ZOOM = calcZoom(RADIUS);
 
 export class MapProvider extends Component {
   state = {
     loading: true,
-    setLoading: () => this.setState({ loading: !this.state.loading }),
-    mapLoading: true,
-    setMapLoading: () => this.setState({ mapLoading: !this.state.mapLoading }),
+    setLoading: this.setLoading,
     currentLocation: null,
     defaultCenter: null,
-    defaultZoom: 15,
+    radius: RADIUS,
+    defaultZoom: ZOOM,
     view: { center: {}, zoom: null },
     setView: (center = this.state.currentLocation, zoom) => {
       const view = { center, zoom };
       this.setState({ view });
     },
     restaurants: [],
-    radius: 40000,
     setRestaurants: async radius => {
       try {
         const filters = { ...this.state.currentLocation, radius };
-        const restaurants = await Restaurant.findNearby(filters);
-        const mapLoading = false;
-        this.setState({
-          mapLoading,
-          restaurants,
-          radius
-        });
-        console.log(restaurants.length);
+        this.setState({ restaurants: [] });
+        console.log("Before restaurants =>", this.state.restaurants);
+        const fullBatch = await Restaurant.findNearby(filters);
+        const { results: restaurants } = fullBatch;
+        this.setState({ restaurants });
+        console.log("After restaurants =>", restaurants);
       } catch (error) {
-        console.lig(error);
+        console.log(error);
       }
     },
     popover: { chosenId: null, isOpen: false },
@@ -43,6 +43,15 @@ export class MapProvider extends Component {
       this.setState({ popover });
     }
   };
+
+  setLoading() {
+    this.setState({ loading: !this.state.loading });
+  }
+
+  // setPopover(chosenId, isOpen) {
+  //   const popover = { chosenId, isOpen };
+  //   this.setState({ popover });
+  // }
 
   getLocation() {
     if (navigator.geolocation) {
@@ -72,22 +81,21 @@ export class MapProvider extends Component {
     let view = { center: defaultCenter, zoom: defaultZoom };
 
     const loading = false;
-    const mapLoading = false;
     try {
-      const {
-        next_page_token: pageToken,
-        results: restaurants
-      } = await Restaurant.findNearby(filters);
-      await this.concatNext(pageToken);
-      this.setState({
-        loading,
-        mapLoading,
-        currentLocation,
-        defaultCenter,
-        restaurants,
-        view
-      });
-      console.log("in findnearby => ", pageToken);
+      const firstBatch = await Restaurant.findNearby(filters);
+      if (firstBatch) {
+        const { next_page_token: pageToken, results: restaurants } = firstBatch;
+        this.setState({
+          loading,
+          currentLocation,
+          defaultCenter,
+          restaurants,
+          view
+        });
+        // this.fixLayout();
+        this.concatNext(pageToken);
+        console.log("in findnearby => ", pageToken);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -98,16 +106,29 @@ export class MapProvider extends Component {
       return;
     } else {
       let { restaurants } = this.state;
-      const nextRests = await Restaurant.getNextRests({ pageToken });
-      const { next_page_token: nextToken = null, results: next } = nextRests;
-      restaurants = restaurants.concat(next);
-      this.setState({ restaurants });
-      this.concatNext(nextToken);
+      const nextBatch = await Restaurant.getNextRests({ pageToken });
+      if (nextBatch) {
+        const { next_page_token: nextToken = null, results: next } = nextBatch;
+        restaurants = restaurants.concat(next);
+        this.setState({ restaurants });
+        this.concatNext(nextToken);
+      }
     }
   }
 
+  // fixLayout() {
+  //   const target = document.querySelector(".input-container");
+  //   this.state.restaurants.length === 0
+  //     ? target.classList.remove("mb-5")
+  //     : target.classList.add("mb-5");
+  // }
+
   componentDidMount() {
     this.getLocation();
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   render() {

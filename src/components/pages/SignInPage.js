@@ -23,7 +23,7 @@ const SignInPage = enhance(({ user, updateUser, redirect, updateRedirect }) => {
   return user ? (
     <Redirect to="/" />
   ) : (
-    <div className="SignInPage">
+    <div className="SignInPage w-25 m-auto">
       <SignInForm onSignInClick={handleSignIn} />
     </div>
   );

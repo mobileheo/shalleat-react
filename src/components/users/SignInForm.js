@@ -32,7 +32,11 @@ const SignInForm = ({ onSignInClick }) => (
           />
         </div>
       </div>
-      <Button class="btn btn-primary" name="signin" type="submit" />
+      <Button
+        class="btn btn-secondary text-capitalize"
+        name="sign in"
+        type="submit"
+      />
     </form>
   </div>
 );

@@ -4,38 +4,39 @@ import RestList from "../restaurants/RestList";
 // import Test from "../../Test";
 import { MapProvider } from "../context/MapContext";
 import RadiusInputBar from "../maps/RadiusInputBar";
-import MapInputs from "../maps/MapInputs";
+import SerachBar from "../maps/SearchBar";
 
 const MainPage = ({ user }) => (
-  <MapProvider>
-    <div className="d-flex justify-content-center align-items-center flex-wrap">
-      {/* <MapInputs /> */}
-      <div
-        className="d-flex justify-content-center"
-        style={{ height: "92vh", width: "100%" }}
-      >
-        <div className="GoogleMap-container w-75 mr-3">
-          <div
-            className="MapPage d-flex flex-column justify-content-center align-items-center"
-            style={{ height: "92vh" }}
-          >
-            <RadiusInputBar />
-            <GoogleMap user={user} />
-          </div>
+  <div
+    className="MainPage d-flex flex-column justify-content-center mb-4 mt-2 ml-4 mr-3"
+    style={{ height: "91vh" }}
+  >
+    <MapProvider>
+      <div className="input-container d-flex align-items-center">
+        <div className="RadiusInputBar-container w-75">
+          <RadiusInputBar />
+        </div>
+
+        <div
+          className="SearchBar-container w-25 ml-3"
+          style={{ marginBottom: "19px" }}
+        >
+          <SerachBar />
+        </div>
+      </div>
+      <div className="d-flex h-100">
+        <div className="GoogleMap-container w-75 pt-2">
+          <GoogleMap user={user} />
         </div>
         <div
-          className="RestList-container w-25 ml-3"
+          className="RestList-container w-25 ml-3 px-2 pt-2"
           style={{ overflow: "scroll" }}
         >
           <RestList />
         </div>
       </div>
-
-      {/* <div className="red">
-      <Test />
-    </div> */}
-    </div>
-  </MapProvider>
+    </MapProvider>
+  </div>
 );
 
 export default MainPage;
