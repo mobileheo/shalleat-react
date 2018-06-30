@@ -3,7 +3,7 @@ import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
 
-const RADIUS = 10000;
+const RADIUS = 1500;
 const calcZoom = radius => {
   const scale = radius / 500;
   return +(16 - Math.log(scale) / Math.log(2));
@@ -92,7 +92,7 @@ export class MapProvider extends Component {
           restaurants,
           view
         });
-        this.fixLayout();
+        // this.fixLayout();
         this.concatNext(pageToken);
         console.log("in findnearby => ", pageToken);
       }
@@ -116,12 +116,12 @@ export class MapProvider extends Component {
     }
   }
 
-  fixLayout() {
-    const target = document.querySelector(".input-container");
-    this.state.restaurants.length === 0
-      ? target.classList.remove("mb-4")
-      : target.classList.add("mb-4");
-  }
+  // fixLayout() {
+  //   const target = document.querySelector(".input-container");
+  //   this.state.restaurants.length === 0
+  //     ? target.classList.remove("mb-5")
+  //     : target.classList.add("mb-5");
+  // }
 
   componentDidMount() {
     this.getLocation();

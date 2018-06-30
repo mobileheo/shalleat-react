@@ -97,6 +97,7 @@ class RestaurantMarker extends React.PureComponent {
             title={name}
             arrow={true}
             position="top"
+            // open={true}
             style={{
               width: "inherit",
               height: "inherit"

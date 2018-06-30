@@ -18,7 +18,7 @@ const SignUpPage = ({ updateUser }) => {
     }
   };
   return (
-    <div className="SignUpPage">
+    <div className="SignUpPage w-50 mt-4 m-auto">
       <SignUpForm onSignUpClick={handleSignUp} />
     </div>
   );

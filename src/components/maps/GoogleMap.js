@@ -84,7 +84,7 @@ class GoogleMap extends PureComponent {
           ) : (
             <div
               className="GoogleMap mb-8"
-              style={{ height: "83vh", width: "100%", borderRadius: "25px" }}
+              style={{ height: "100%", width: "100%" }}
             >
               <GoogleMapReact
                 bootstrapURLKeys={{ key: googleMapAPI }}

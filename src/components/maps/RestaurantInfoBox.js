@@ -39,8 +39,15 @@ import "moment-precise-range-plugin";
 //   ]
 // };
 
-const timeHelper = ({ notAvailable, isOpenToday, isOpenNow, todayHours }) => {
+const timeHelper = ({
+  notAvailable,
+  immortal,
+  isOpenToday,
+  isOpenNow,
+  todayHours
+}) => {
   if (notAvailable) return notAvailable;
+  if (immortal) return "Open 24 hours";
   let closeTime, openTime;
   if (isOpenToday) {
     if (isOpenNow) {
@@ -49,6 +56,7 @@ const timeHelper = ({ notAvailable, isOpenToday, isOpenNow, todayHours }) => {
       closeTime = moment().format(`YYYY-MM-DD ${closeHours}:00`);
       // return { closeTime };
     } else {
+      // if
       const { time } = todayHours.open;
       const openhours = time.slice(0, 2) + ":" + time.slice(2);
       openTime = moment().format(`YYYY-MM-DD ${openhours}:00`);
@@ -74,11 +82,19 @@ const enhence = compose(
   lifecycle({
     componentDidMount() {
       const { schedule, setRemainingTime } = this.props;
-      console.log("schedule => ", schedule);
-      calcRemainTime(timeHelper(schedule));
-      const time = timeHelper(schedule);
-      setRemainingTime(calcRemainTime(time));
-      timerID = setInterval(() => setRemainingTime(calcRemainTime(time)), 1000);
+      const businessHours = timeHelper(schedule);
+      if (typeof businessHours === "string")
+        return setRemainingTime(businessHours);
+      else {
+        console.log("schedule => ", schedule);
+        calcRemainTime(timeHelper(schedule));
+        const time = timeHelper(schedule);
+        setRemainingTime(calcRemainTime(time));
+        timerID = setInterval(
+          () => setRemainingTime(calcRemainTime(time)),
+          1000
+        );
+      }
     },
     componentWillUnmount() {
       clearInterval(timerID);
@@ -96,12 +112,7 @@ const RestaurantInfoBox = enhence(
     popover
   }) => {
     const { chosenId, isOpen } = popover;
-    // btnTrun(`#Popover-${chosenId}`, rotateDeg);
-    // let newDeg = rotateDeg * -1;
-    // setRotateDeg(newDeg);
     if (chosenId === placeId && isOpen) {
-      // setBtnRotateDeg(`#Popover-${placeId}`);
-      // btnReTrun(`#Popover-${placeId}`);
       return (
         <div className="RestaurantInfoBox">
           {

@@ -82,7 +82,7 @@ const SignUpForm = ({ onSignUpClick }) => (
         </div>
       </div>
       <Button
-        class="btn btn-primary text-capitalize"
+        class="btn btn-secondary text-capitalize"
         name="sign up"
         type="submit"
       />

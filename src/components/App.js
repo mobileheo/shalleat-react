@@ -32,34 +32,29 @@ const App = enhance(({ user, updateUser }) => {
     <Router>
       <div className="App">
         <NavBar user={user} updateUser={updateUser} />
-        <div
-          className="MainPage d-flex flex-column justify-content-center my-4 ml-4 mr-3"
-          style={{ height: "89vh" }}
-        >
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={props => (
-                <MainPage {...props} user={user} updateUser={updateUser} />
-              )}
-            />
-            <Route
-              exact
-              path="/signin"
-              render={props => (
-                <SignInPage {...props} user={user} updateUser={updateUser} />
-              )}
-            />
-            <Route
-              exact
-              path="/signup"
-              render={props => (
-                <SignUpPage {...props} user={user} updateUser={updateUser} />
-              )}
-            />
-          </Switch>
-        </div>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={props => (
+              <MainPage {...props} user={user} updateUser={updateUser} />
+            )}
+          />
+          <Route
+            exact
+            path="/signin"
+            render={props => (
+              <SignInPage {...props} user={user} updateUser={updateUser} />
+            )}
+          />
+          <Route
+            exact
+            path="/signup"
+            render={props => (
+              <SignUpPage {...props} user={user} updateUser={updateUser} />
+            )}
+          />
+        </Switch>
       </div>
     </Router>
   );

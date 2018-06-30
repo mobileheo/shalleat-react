@@ -20,7 +20,7 @@ const NavBar = enhance(({ user, updateUser, isHover, toggleHover }) => {
           aria-controls="navdrawerDefault"
           aria-expanded="false"
           aria-label="Toggle Navdrawer"
-          className="navbar-toggler"
+          className="navbar-toggler border border-white-hint"
           data-target="#navdrawerDefault"
           data-toggle="navdrawer"
         >
@@ -43,7 +43,7 @@ const NavBar = enhance(({ user, updateUser, isHover, toggleHover }) => {
               <NavLink
                 exact
                 to="/signin"
-                className="nav-link px-2 bg-transparent"
+                className="nav-link px-2 bg-transparent border border-white"
                 onClick={signOut}
               >
                 Sign out
@@ -55,13 +55,13 @@ const NavBar = enhance(({ user, updateUser, isHover, toggleHover }) => {
                 <NavLink
                   exact
                   to="/signin"
-                  className="nav-link px-2 bg-transparent"
+                  className="nav-link px-2 bg-transparent border border-white"
                 >
                   Sign in
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink exact to="/" className="nav-link disabled px-2">
+                <NavLink exact to="/" className="nav-link disabled px-0">
                   or
                 </NavLink>
               </NavItem>
@@ -69,7 +69,7 @@ const NavBar = enhance(({ user, updateUser, isHover, toggleHover }) => {
                 <NavLink
                   exact
                   to="/signup"
-                  className="nav-link px-2 bg-transparent"
+                  className="nav-link px-2 bg-transparent border border-white"
                 >
                   Sign up
                 </NavLink>
