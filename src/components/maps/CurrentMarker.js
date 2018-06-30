@@ -2,7 +2,6 @@ import React from "react";
 
 const WIDTH = "50px";
 const HEIGHT = WIDTH;
-
 const AddCurrentPositionButton = () => {
   let p = document.querySelector(".gm-fullscreen-control");
   if (p) {

@@ -2,8 +2,8 @@ import React from "react";
 import { MapConsumer } from "../context/MapContext";
 const RestList = () => (
   <MapConsumer>
-    {({ loading, restaurants, popover, setPopover, view, setView, radius }) =>
-      loading ? null : restaurants.length === 0 ? (
+    {({ loading, listFilter, popover, setPopover, view, setView, radius }) =>
+      loading ? null : listFilter().length === 0 ? (
         // <div style={{ height: "inherit !important" }}>
         <a
           className={"list-group-item list-group-item-action mb-2"}
@@ -13,7 +13,7 @@ const RestList = () => (
         </a>
       ) : (
         <div className="RestList list-group">
-          {restaurants.map(
+          {listFilter().map(
             ({
               geometry,
               name,
