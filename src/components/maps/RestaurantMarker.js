@@ -1,6 +1,5 @@
 import React from "react";
 import anime from "animejs";
-// import Spinner from "../common/Spinner";
 import Spinner from "react-spinkit";
 import RestaurantInfoBox from "./RestaurantInfoBox";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
