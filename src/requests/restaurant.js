@@ -8,6 +8,7 @@ export default {
   async findNearby(filters) {
     try {
       return await postData(`${url}/all`, filters);
+      // return { results: [] };
     } catch (error) {
       throw new Error(error);
     }
@@ -16,6 +17,7 @@ export default {
     try {
       await delay(4000);
       return await postData(`${url}/next`, pageToken);
+      return {};
     } catch (error) {
       throw new Error(error);
     }
@@ -26,6 +28,7 @@ export default {
         placeId,
         filters
       });
+      // return {};
     } catch (error) {
       throw new Error(error);
     }

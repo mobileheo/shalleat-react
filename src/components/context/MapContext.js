@@ -47,11 +47,6 @@ export class MapProvider extends Component {
     this.setState({ loading: !this.state.loading });
   }
 
-  // setPopover(chosenId, isOpen) {
-  //   const popover = { chosenId, isOpen };
-  //   this.setState({ popover });
-  // }
-
   getLocation() {
     if (navigator.geolocation) {
       this.watchID = navigator.geolocation.watchPosition(
@@ -113,13 +108,6 @@ export class MapProvider extends Component {
       }
     }
   }
-
-  // fixLayout() {
-  //   const target = document.querySelector(".input-container");
-  //   this.state.restaurants.length === 0
-  //     ? target.classList.remove("mb-5")
-  //     : target.classList.add("mb-5");
-  // }
 
   componentDidMount() {
     this.getLocation();
