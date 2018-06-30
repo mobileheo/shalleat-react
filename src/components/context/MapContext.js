@@ -40,6 +40,10 @@ export class MapProvider extends Component {
     setPopover: (chosenId, isOpen) => {
       const popover = { chosenId, isOpen };
       this.setState({ popover });
+    },
+    keyword: "",
+    setKeyword: keyword => {
+      this.setState({ keyword });
     }
   };
 
