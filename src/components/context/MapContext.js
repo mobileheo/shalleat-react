@@ -17,6 +17,7 @@ export class MapProvider extends Component {
     currentLocation: null,
     defaultCenter: null,
     radius: RADIUS,
+    setRadius: radius => this.setState({ radius }),
     defaultZoom: ZOOM,
     view: { center: {}, zoom: null },
     setView: (center = this.state.currentLocation, zoom) => {
@@ -28,11 +29,9 @@ export class MapProvider extends Component {
       try {
         const filters = { ...this.state.currentLocation, radius };
         this.setState({ restaurants: [] });
-        console.log("Before restaurants =>", this.state.restaurants);
         const fullBatch = await Restaurant.findNearby(filters);
         const { results: restaurants } = fullBatch;
         this.setState({ restaurants });
-        console.log("After restaurants =>", restaurants);
       } catch (error) {
         console.log(error);
       }

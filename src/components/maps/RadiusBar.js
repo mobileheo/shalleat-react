@@ -3,10 +3,11 @@ import "react-tippy/dist/tippy.css";
 import { Tooltip } from "react-tippy";
 import { MapConsumer } from "../context/MapContext";
 // const bar = document.querySelector("input.custom-range");
-const MIN_RADIUS = "50";
-const MAX_RADIUS = "1000";
+const MIN_RADIUS = "0";
+const MAX_RADIUS = "50000";
 const RADIUS_STEP = "1";
 const WAIT_INTERVAL = 1500;
+const RADIUS = 1500;
 
 const calcZoom = radius => {
   const scale = radius / 500;
@@ -14,10 +15,10 @@ const calcZoom = radius => {
 };
 class RadiusBar extends React.Component {
   state = {
-    currentRadius: this.props.radius
+    currentRadius: RADIUS
   };
   componentDidMount() {
-    // document.querySelector("input.custom-range").value = 580;
+    // document.querySelector("input.custom-range").value = RADIUS;
   }
   componentWillMount() {
     clearTimeout(this.timerId);
@@ -26,12 +27,23 @@ class RadiusBar extends React.Component {
   render() {
     return (
       <MapConsumer>
-        {({ loading, setRestaurants, currentLocation, setView }) =>
-          loading ? null : (
+        {({
+          loading,
+          setRestaurants,
+          radius,
+          setRadius,
+          currentLocation,
+          setView,
+          view
+        }) => {
+          const { currentRadius } = this.state;
+          return loading ? null : (
             <div className="RadiusInputBar">
-              <label htmlFor="radius">Within</label>
+              <label htmlFor="radius">
+                Within <span>{currentRadius + "m"}</span>
+              </label>
               <Tooltip
-                title={`Within ${this.state.currentRadius}m`}
+                title={`Within ${currentRadius}m`}
                 followCursor={true}
                 arrow={true}
                 position="top"
@@ -42,6 +54,7 @@ class RadiusBar extends React.Component {
                   min={MIN_RADIUS}
                   max={MAX_RADIUS}
                   step={RADIUS_STEP}
+                  value={currentRadius}
                   onChange={e => {
                     const { currentTarget } = e;
                     const currentRadius = +currentTarget.value;
@@ -49,15 +62,16 @@ class RadiusBar extends React.Component {
                     clearTimeout(this.timerId);
                     this.timerId = setTimeout(() => {
                       setRestaurants(currentRadius);
+                      setRadius(currentRadius);
                       const zoom = calcZoom(currentRadius);
-                      setView(undefined, zoom);
+                      setView(currentLocation, zoom);
                     }, WAIT_INTERVAL);
                   }}
                 />
               </Tooltip>
             </div>
-          )
-        }
+          );
+        }}
       </MapConsumer>
     );
   }
