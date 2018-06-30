@@ -1,6 +1,5 @@
 import React from "react";
 import { compose, withState, lifecycle } from "recompose";
-import anime from "animejs";
 import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import moment from "moment";
 import "moment-precise-range-plugin";

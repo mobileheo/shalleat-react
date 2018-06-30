@@ -1,12 +1,12 @@
 import React, { Fragment } from "react";
-// import { withState } from "recompose";
+import { withState } from "recompose";
 import { NavLink } from "react-router-dom";
 import { Nav, NavItem } from "reactstrap";
 import Logo from "./Logo";
 import User from "../../requests/user";
 
-// const enhance = withState("isOpen", "toggle", false);
-const NavBar = ({ user, updateUser }) => {
+const enhance = withState("isHover", "toggleHover", false);
+const NavBar = enhance(({ user, updateUser, isHover, toggleHover }) => {
   const signOut = async e => {
     e.preventDefault();
     await User.signOut();
@@ -27,32 +27,50 @@ const NavBar = ({ user, updateUser }) => {
           <span className="navbar-toggler-icon" />
         </button>
         <span className="navbar-brand mr-auto">
-          <NavLink exact to="/" className="navbar-brand mx-0">
+          <NavLink exact to="/" className="navbar-brand mx-0 bg-transparent">
             <Logo />
             ShallEat
           </NavLink>
         </span>
+        {/* className={
+                  chosenId === placeId && isOpen
+                    ? "list-group-item list-group-item-action bg-secondary text-white mb-2"
+                    : "list-group-item list-group-item-action mb-2"
+                } */}
         <Nav className="ml-auto" navbar>
           {user ? (
             <NavItem>
-              {/* <NavLink exact to="/signout" className="nav-link"> */}
-              <button onClick={signOut}> Sign out </button>
-              {/* </NavLink> */}
+              <NavLink
+                exact
+                to="/signin"
+                className="nav-link px-2 bg-transparent"
+                onClick={signOut}
+              >
+                Sign out
+              </NavLink>
             </NavItem>
           ) : (
             <Fragment>
               <NavItem>
-                <NavLink exact to="/signin" className="nav-link">
+                <NavLink
+                  exact
+                  to="/signin"
+                  className="nav-link px-2 bg-transparent"
+                >
                   Sign in
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink exact to="/" className="nav-link disabled px-0">
+                <NavLink exact to="/" className="nav-link disabled px-2">
                   or
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink exact to="/signup" className="nav-link">
+                <NavLink
+                  exact
+                  to="/signup"
+                  className="nav-link px-2 bg-transparent"
+                >
                   Sign up
                 </NavLink>
               </NavItem>
@@ -107,6 +125,6 @@ const NavBar = ({ user, updateUser }) => {
       </div>
     </div>
   );
-};
+});
 
 export default NavBar;

@@ -9,6 +9,7 @@ import { Tooltip } from "react-tippy";
 
 const WIDTH = "35px";
 const HEIGHT = WIDTH;
+
 class RestaurantMarker extends React.PureComponent {
   state = {
     loading: true,
@@ -65,7 +66,7 @@ class RestaurantMarker extends React.PureComponent {
     const { loading, schedule } = this.state;
     const {
       placeId,
-      icon,
+      // icon,
       name,
       lat,
       lng,
@@ -80,7 +81,9 @@ class RestaurantMarker extends React.PureComponent {
     ) : (
       <div
         className="RestaurantMarker"
-        style={chosenId === placeId && isOpen ? { zIndex: 1000000000 } : {}}
+        // style={
+        //   chosenId === placeId && isOpen ? { border: "solid 1px black" } : {}
+        // }
       >
         <div
           className="d-flex justify-content-center"
@@ -95,12 +98,13 @@ class RestaurantMarker extends React.PureComponent {
             arrow={true}
             position="top"
             style={{
-              minWidth: WIDTH
+              width: "inherit",
+              height: "inherit"
             }}
           >
             <button
               data-tippy
-              data-original-title="I'm a tooltip!"
+              // data-original-title="I'm a tooltip!"
               id={`Popover-${placeId}`}
               className={
                 "btn btn-secondary d-flex justify-content-center align-items-center rounded"
@@ -125,10 +129,10 @@ class RestaurantMarker extends React.PureComponent {
                   setPopover(placeId, !isOpen);
                 }
               }}
-              onMouseOver={e => {
-                const { currentTarget } = e;
-                console.log(currentTarget);
-              }}
+              // onMouseOver={e => {
+              //   const { currentTarget } = e;
+              //   console.log(currentTarget);
+              // }}
               alt={"marker-icon"}
             >
               {/* <img
@@ -142,9 +146,9 @@ class RestaurantMarker extends React.PureComponent {
             /> */}
               <i
                 className="material-icons"
-                style={{
-                  fontSize: "2.5vh"
-                }}
+                // style={{
+                //   fontSize: "2.5vh"
+                // }}
               >
                 {chosenId === placeId && isOpen
                   ? "restaurant_menu"

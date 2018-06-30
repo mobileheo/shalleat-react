@@ -20,7 +20,7 @@ class RadiusInputBar extends React.Component {
     // document.querySelector("input.custom-range").value = 580;
   }
   componentWillMount() {
-    this.timer = null;
+    clearTimeout(this.timerId);
   }
 
   render() {
@@ -28,7 +28,7 @@ class RadiusInputBar extends React.Component {
       <MapConsumer>
         {({ loading, setRestaurants, currentLocation, setView }) =>
           loading ? null : (
-            <div className="RadiusInputBar w-100 mb-3 mt-4">
+            <div className="RadiusInputBar">
               <label htmlFor="radius">Within</label>
               <Tooltip
                 title={`Within ${this.state.currentRadius}m`}
@@ -46,11 +46,11 @@ class RadiusInputBar extends React.Component {
                     const { currentTarget } = e;
                     const currentRadius = +currentTarget.value;
                     this.setState({ currentRadius });
-                    clearTimeout(this.timeout);
-                    this.timer = setTimeout(() => {
+                    clearTimeout(this.timerId);
+                    this.timerId = setTimeout(() => {
                       setRestaurants(currentRadius);
                       const zoom = calcZoom(currentRadius);
-                      setView(null, zoom);
+                      setView(undefined, zoom);
                     }, WAIT_INTERVAL);
                   }}
                 />

@@ -1,11 +1,14 @@
 import React from "react";
 
+const WIDTH = "50px";
+const HEIGHT = WIDTH;
+
 const AddCurrentPositionButton = () => {
   let p = document.querySelector(".gm-fullscreen-control");
   if (p) {
     const target = p.parentNode;
-    p.parentNode.setAttribute("id", "current-position-button");
-    p.parentNode.innerHTML = `<i class="material-icons">my_location</i>`;
+    target.setAttribute("id", "current-position-button");
+    target.innerHTML = `<i class="material-icons">my_location</i>`;
   }
 };
 
@@ -15,8 +18,8 @@ const CurrentMarker = props => {
     <div
       className="d-flex justify-content-center"
       style={{
-        width: "50px",
-        height: "50px",
+        width: WIDTH,
+        height: HEIGHT,
         transform: "translate(-50%, -50%)"
       }}
     >

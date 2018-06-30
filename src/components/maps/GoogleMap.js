@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { Redirect } from "react-router-dom";
 import GoogleMapReact from "google-map-react";
 import { googleMapAPI } from "../../requests/configuration";
@@ -46,7 +46,7 @@ const AddCurrentPositionButton = () => {
     target.innerHTML = `<i class="material-icons">my_location</i>`;
   }
 };
-class GoogleMap extends Component {
+class GoogleMap extends PureComponent {
   componentDidMount() {
     AddCurrentPositionButton();
   }
@@ -83,8 +83,8 @@ class GoogleMap extends Component {
             </div>
           ) : (
             <div
-              className="MapPage"
-              style={{ height: "92vh", width: "100%", borderRadius: "25px" }}
+              className="GoogleMap mb-8"
+              style={{ height: "83vh", width: "100%", borderRadius: "25px" }}
             >
               <GoogleMapReact
                 bootstrapURLKeys={{ key: googleMapAPI }}

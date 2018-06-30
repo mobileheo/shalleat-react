@@ -32,7 +32,10 @@ const App = enhance(({ user, updateUser }) => {
     <Router>
       <div className="App">
         <NavBar user={user} updateUser={updateUser} />
-        <div className="MainPage d-flex justify-content-center align-items-center m-4">
+        <div
+          className="MainPage d-flex flex-column justify-content-center my-4 ml-4 mr-3"
+          style={{ height: "89vh" }}
+        >
           <Switch>
             <Route
               exact
