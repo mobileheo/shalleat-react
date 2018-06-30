@@ -3,7 +3,7 @@ import GoogleMap from "../maps/GoogleMap";
 import RestList from "../restaurants/RestList";
 // import Test from "../../Test";
 import { MapProvider } from "../context/MapContext";
-import RadiusInputBar from "../maps/RadiusInputBar";
+import RadiusBar from "../maps/RadiusBar";
 import SerachBar from "../maps/SearchBar";
 
 const MainPage = ({ user }) => (
@@ -13,8 +13,8 @@ const MainPage = ({ user }) => (
   >
     <MapProvider>
       <div className="input-container d-flex align-items-center">
-        <div className="RadiusInputBar-container w-75">
-          <RadiusInputBar />
+        <div className="RadiusBar-container w-75">
+          <RadiusBar />
         </div>
 
         <div

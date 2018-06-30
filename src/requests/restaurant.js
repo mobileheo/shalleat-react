@@ -15,7 +15,7 @@ export default {
   },
   async getNextRests(pageToken) {
     try {
-      await delay(2000);
+      await delay(4000);
       return await postData(`${url}/next`, pageToken);
       return {};
     } catch (error) {

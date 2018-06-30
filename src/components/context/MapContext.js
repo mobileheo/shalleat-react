@@ -17,6 +17,7 @@ export class MapProvider extends Component {
     currentLocation: null,
     defaultCenter: null,
     radius: RADIUS,
+    setRadius: radius => this.setState({ radius }),
     defaultZoom: ZOOM,
     view: { center: {}, zoom: null },
     setView: (center = this.state.currentLocation, zoom) => {
@@ -28,11 +29,9 @@ export class MapProvider extends Component {
       try {
         const filters = { ...this.state.currentLocation, radius };
         this.setState({ restaurants: [] });
-        console.log("Before restaurants =>", this.state.restaurants);
         const fullBatch = await Restaurant.findNearby(filters);
         const { results: restaurants } = fullBatch;
         this.setState({ restaurants });
-        console.log("After restaurants =>", restaurants);
       } catch (error) {
         console.log(error);
       }
@@ -47,11 +46,6 @@ export class MapProvider extends Component {
   setLoading() {
     this.setState({ loading: !this.state.loading });
   }
-
-  // setPopover(chosenId, isOpen) {
-  //   const popover = { chosenId, isOpen };
-  //   this.setState({ popover });
-  // }
 
   getLocation() {
     if (navigator.geolocation) {
@@ -92,7 +86,6 @@ export class MapProvider extends Component {
           restaurants,
           view
         });
-        // this.fixLayout();
         this.concatNext(pageToken);
         console.log("in findnearby => ", pageToken);
       }
@@ -115,13 +108,6 @@ export class MapProvider extends Component {
       }
     }
   }
-
-  // fixLayout() {
-  //   const target = document.querySelector(".input-container");
-  //   this.state.restaurants.length === 0
-  //     ? target.classList.remove("mb-5")
-  //     : target.classList.add("mb-5");
-  // }
 
   componentDidMount() {
     this.getLocation();
