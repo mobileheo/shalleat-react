@@ -10,6 +10,25 @@ const calcZoom = radius => {
 };
 const ZOOM = calcZoom(RADIUS);
 
+const isContainKeyword = (r, keyword) => {
+  // console.log(r);
+  // debugger;
+  let { name, opening_hours = false, rating, types, vicinity } = r;
+  const { open_now = false } = opening_hours;
+  const k = keyword.toLowerCase();
+  name = name.toLowerCase();
+  if (k.includes("open") && open_now) return true;
+  if (name.includes(k)) return true;
+  if (types.filter(t => t.includes(k)).length !== 0) return true;
+  if (vicinity.includes(k)) return true;
+
+  return false;
+};
+
+const getFilterdList = (arr, keyword) => {
+  return arr.filter(r => isContainKeyword(r, keyword));
+};
+
 export class MapProvider extends Component {
   state = {
     loading: true,
@@ -44,6 +63,9 @@ export class MapProvider extends Component {
     keyword: "",
     setKeyword: keyword => {
       this.setState({ keyword });
+    },
+    listFilter: () => {
+      return getFilterdList(this.state.restaurants, this.state.keyword);
     }
   };
 

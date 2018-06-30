@@ -45,19 +45,24 @@ const SearchBar = enhance(({ style, input, setInput, timerId, setTimerId }) => {
     //   />
     // </div>
     <MapConsumer>
-      {({ loading }) => {
+      {({ loading, keyword, setKeyword }) => {
         return loading ? null : (
           <div className="input-group">
             <div className="floating-label pr-2">
               <label htmlFor="exampleIconInput8">Search</label>
               <input
-                aria-describedby="exampleIconInput8Help"
+                aria-describedby="SearchBar"
                 className="form-control"
                 id="exampleIconInput8"
                 placeholder="No raspberry pi please 🙏"
+                onChange={e => {
+                  const { value: keyword } = e.currentTarget;
+                  setKeyword(keyword);
+                  // console.log(keyword);
+                }}
               />
             </div>
-            <span className="input-group-icon mr-0" id="exampleIconInput8Help">
+            <span className="input-group-icon mr-0" id="SearchBar">
               <i className="material-icons">search</i>
             </span>
           </div>
