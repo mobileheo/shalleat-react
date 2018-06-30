@@ -13,6 +13,10 @@ const calcZoom = radius => {
   const scale = radius / 500;
   return +(16 - Math.log(scale) / Math.log(2));
 };
+
+const meterToKm = radius => {
+  return `Within ${(radius / 1000).toFixed(1)} km`;
+};
 class RadiusBar extends React.Component {
   state = {
     currentRadius: RADIUS
@@ -37,13 +41,14 @@ class RadiusBar extends React.Component {
           view
         }) => {
           const { currentRadius } = this.state;
+
           return loading ? null : (
             <div className="RadiusInputBar">
-              <label htmlFor="radius">
-                Within <span>{currentRadius + "m"}</span>
+              <label className="badge badge-secondary" htmlFor="radius">
+                {meterToKm(currentRadius)}
               </label>
               <Tooltip
-                title={`Within ${currentRadius}m`}
+                title={`${meterToKm(currentRadius)}`}
                 followCursor={true}
                 arrow={true}
                 position="top"

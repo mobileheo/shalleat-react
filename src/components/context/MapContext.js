@@ -91,7 +91,6 @@ export class MapProvider extends Component {
           restaurants,
           view
         });
-        // this.fixLayout();
         this.concatNext(pageToken);
         console.log("in findnearby => ", pageToken);
       }
