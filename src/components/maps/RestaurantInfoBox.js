@@ -110,7 +110,7 @@ const RestaurantInfoBox = enhence(
           {
             <Popover
               placement="auto"
-              isOpen={true}
+              isOpen={isOpen}
               target={`Popover-${placeId}`}
             >
               <PopoverHeader>{name}</PopoverHeader>

@@ -6,15 +6,16 @@ import CurrentMarker from "./CurrentMarker";
 import RestaurantMarker from "./RestaurantMarker";
 import Spinner from "../common/Spinner";
 import { MapConsumer } from "../context/MapContext";
+import createMapOptions from "../../helper/customeGoogleMap";
 
 const restaurantMarkers = (
   restaurants,
   popover,
   setPopover,
-  view,
-  setView,
-  btnRotate,
-  setBtnRotateDeg
+  center,
+  setCenter,
+  zoom,
+  setZoom
 ) =>
   restaurants.map((r, i) => {
     const { geometry, icon, name, place_id: placeId } = r;
@@ -24,32 +25,22 @@ const restaurantMarkers = (
         key={placeId}
         index={i}
         placeId={placeId}
+        center={center}
+        setCenter={setCenter}
+        zoom={zoom}
+        setZoom={setZoom}
         popover={popover}
         setPopover={setPopover}
-        view={view}
-        setView={setView}
         filters={["name", "opening_hours"]}
         lat={lat}
         lng={lng}
         icon={icon}
         name={name}
-        btnRotate={btnRotate}
-        setBtnRotateDeg={setBtnRotateDeg}
       />
     );
   });
-const AddCurrentPositionButton = () => {
-  let fullScreenBtn = document.querySelector(".gm-fullscreen-control");
-  if (fullScreenBtn) {
-    let target = fullScreenBtn.parentNode;
-    target.setAttribute("id", "current-position-button");
-    target.innerHTML = `<i class="material-icons">my_location</i>`;
-  }
-};
+
 class GoogleMap extends PureComponent {
-  componentDidMount() {
-    AddCurrentPositionButton();
-  }
   render() {
     console.log("GoogleMap");
     const { user } = this.props;
@@ -58,15 +49,16 @@ class GoogleMap extends PureComponent {
         {({
           loading,
           currentLocation,
+          center,
+          setCenter,
+          zoom,
+          setZoom,
           restaurants,
           popover,
           setPopover,
-          view,
-          setView,
           btnRotate,
           setBtnRotateDeg
         }) => {
-          const { zoom } = view;
           return !user ? (
             <Redirect to="/signin" />
           ) : loading ? (
@@ -87,20 +79,35 @@ class GoogleMap extends PureComponent {
             >
               <GoogleMapReact
                 bootstrapURLKeys={{ key: googleMapAPI }}
-                center={currentLocation}
+                center={center}
                 zoom={zoom}
+                options={createMapOptions}
+                onClick={props => {
+                  console.log(props);
+                  // {x: 404, y: 600.671875, lat: 49.21146879917674, lng: -123.03999263803712, event: Proxy}
+                }}
+                onChange={props => {
+                  console.log(props);
+                  setCenter(props.center);
+                }}
               >
                 <CurrentMarker
                   lat={currentLocation.lat}
                   lng={currentLocation.lng}
                   text={user.firstName}
+                  setCenter={setCenter}
+                  setZoom={setZoom}
+                  popover={popover}
+                  setPopover={setPopover}
                 />
                 {restaurantMarkers(
                   restaurants,
                   popover,
                   setPopover,
-                  view,
-                  setView,
+                  center,
+                  setCenter,
+                  zoom,
+                  setZoom,
                   btnRotate,
                   setBtnRotateDeg
                 )}

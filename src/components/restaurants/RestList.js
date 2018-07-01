@@ -4,7 +4,17 @@ import { Animated } from "react-animated-css";
 import RestItem from "./RestItem";
 const RestList = () => (
   <MapConsumer>
-    {({ loading, listFilter, popover, setPopover, view, setView, radius }) =>
+    {({
+      center,
+      setCenter,
+      zoom,
+      setZoom,
+      loading,
+      listFilter,
+      popover,
+      setPopover,
+      radius
+    }) =>
       loading ? null : listFilter().length === 0 ? (
         <a
           className={"list-group-item list-group-item-action mb-2"}
@@ -19,13 +29,15 @@ const RestList = () => (
         >
           {listFilter().map((r, i) => (
             <RestItem
-              restaurant={r}
-              popover={popover}
-              setPopover={setPopover}
-              view={view}
-              setView={setView}
               key={r.place_id}
               index={i}
+              restaurant={r}
+              center={center}
+              setCenter={setCenter}
+              zoom={zoom}
+              setZoom={setZoom}
+              popover={popover}
+              setPopover={setPopover}
             />
           ))}
         </div>

@@ -53,7 +53,7 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
               <NavLink
                 exact
                 to="/signin"
-                className="nav-link bg-transparent border border-white mx-3 px-2"
+                className="nav-link d-flex align-items-center bg-transparent border border-white mx-3 px-2"
                 onClick={signOut}
               >
                 Sign out
@@ -71,7 +71,7 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
               <NavLink
                 exact
                 to="/signin"
-                className="nav-link px-2 bg-transparent border border-white "
+                className="nav-link px-2 d-flex align-items-center bg-transparent border border-white "
                 onMouseOver={e => {
                   const { currentTarget } = e;
 
@@ -112,7 +112,11 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
             <NavItem
               style={user ? { display: "none" } : { display: "list-item" }}
             >
-              <NavLink exact to="/" className="nav-link disabled px-2">
+              <NavLink
+                exact
+                to="/"
+                className="nav-link d-flex align-items-center disabled px-2"
+              >
                 or
               </NavLink>
             </NavItem>
@@ -129,7 +133,7 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
               <NavLink
                 exact
                 to="/signup"
-                className="nav-link px-2 bg-transparent border border-white"
+                className="nav-link px-2 d-flex align-items-center bg-transparent border border-white"
               >
                 Sign up
               </NavLink>

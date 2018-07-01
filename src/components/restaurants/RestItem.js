@@ -2,12 +2,14 @@ import React from "react";
 import { MapConsumer } from "../context/MapContext";
 import { Animated } from "react-animated-css";
 const RestList = ({
+  restaurant,
+  index,
   popover,
   setPopover,
-  view,
-  setView,
-  restaurant,
-  index
+  center,
+  setCenter,
+  zoom,
+  setZoom
 }) => {
   const {
     geometry,
@@ -41,10 +43,8 @@ const RestList = ({
             : { borderLeft: "solid #ff4081 5px" }
         }
         onClick={() => {
-          let { center, zoom } = view;
-          center = { lat, lng };
-          zoom = 13;
-          setView(center, zoom);
+          setCenter({ lat, lng });
+          setZoom(14);
 
           if (isOpen) {
             if (chosenId === placeId) {
