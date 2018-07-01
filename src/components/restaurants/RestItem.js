@@ -46,6 +46,10 @@ const RestList = ({
           setCenter({ lat, lng });
           setZoom(14);
 
+          if (!chosenId) {
+            setPopover(placeId, !isOpen);
+          }
+
           if (isOpen) {
             if (chosenId === placeId) {
               setPopover(placeId, !isOpen);

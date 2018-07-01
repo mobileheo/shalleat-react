@@ -11,7 +11,7 @@ const RADIUS = 1500;
 
 const calcZoom = radius => {
   const scale = radius / 500;
-  return +(16 - Math.log(scale) / Math.log(2));
+  return +(17.5 - Math.log(scale) / Math.log(2));
 };
 
 class RadiusBar extends React.Component {
