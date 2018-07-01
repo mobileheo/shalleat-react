@@ -37,17 +37,13 @@ export class MapProvider extends Component {
     radius: RADIUS,
     setRadius: radius => this.setState({ radius }),
     center: null,
-    setCenter: center => this.setState({ center }),
+    setCenter: center => {
+      console.log("setCenter => ", center);
+      this.setState({ center });
+    },
     defaultZoom: ZOOM,
     zoom: ZOOM,
     setZoom: zoom => this.setState({ zoom }),
-
-    // view: { center: null, zoom: ZOOM },
-    // setView: (center = null, zoom = ZOOM) => {
-    //   // console.log("setView");
-    //   // const view = { center, zoom };
-    //   // this.setState({ view });
-    // },
     restaurants: [],
     setRestaurants: async radius => {
       try {

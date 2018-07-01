@@ -6,6 +6,7 @@ import CurrentMarker from "./CurrentMarker";
 import RestaurantMarker from "./RestaurantMarker";
 import Spinner from "../common/Spinner";
 import { MapConsumer } from "../context/MapContext";
+import createMapOptions from "../../helper/customeGoogleMap";
 
 const restaurantMarkers = (
   restaurants,
@@ -38,18 +39,8 @@ const restaurantMarkers = (
       />
     );
   });
-const AddCurrentPositionButton = () => {
-  let fullScreenBtn = document.querySelector(".gm-fullscreen-control");
-  if (fullScreenBtn) {
-    let target = fullScreenBtn.parentNode;
-    target.setAttribute("id", "current-position-button");
-    target.innerHTML = `<i class="material-icons">my_location</i>`;
-  }
-};
+
 class GoogleMap extends PureComponent {
-  componentDidMount() {
-    AddCurrentPositionButton();
-  }
   render() {
     console.log("GoogleMap");
     const { user } = this.props;
@@ -90,11 +81,24 @@ class GoogleMap extends PureComponent {
                 bootstrapURLKeys={{ key: googleMapAPI }}
                 center={center}
                 zoom={zoom}
+                options={createMapOptions}
+                onClick={props => {
+                  console.log(props);
+                  // {x: 404, y: 600.671875, lat: 49.21146879917674, lng: -123.03999263803712, event: Proxy}
+                }}
+                onChange={props => {
+                  console.log(props);
+                  setCenter(props.center);
+                }}
               >
                 <CurrentMarker
                   lat={currentLocation.lat}
                   lng={currentLocation.lng}
                   text={user.firstName}
+                  setCenter={setCenter}
+                  setZoom={setZoom}
+                  popover={popover}
+                  setPopover={setPopover}
                 />
                 {restaurantMarkers(
                   restaurants,
