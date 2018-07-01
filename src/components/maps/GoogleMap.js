@@ -66,7 +66,7 @@ class GoogleMap extends PureComponent {
           btnRotate,
           setBtnRotateDeg
         }) => {
-          const { center, zoom } = view;
+          const { zoom } = view;
           return !user ? (
             <Redirect to="/signin" />
           ) : loading ? (

@@ -3,11 +3,12 @@ import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
 
-const RADIUS = 1500;
 const calcZoom = radius => {
   const scale = radius / 500;
   return +(16 - Math.log(scale) / Math.log(2));
 };
+
+const RADIUS = 1500;
 const ZOOM = calcZoom(RADIUS);
 
 const isContainKeyword = (r, keyword) => {
@@ -29,6 +30,7 @@ const getFilterdList = (arr, keyword) => {
 
 export class MapProvider extends Component {
   state = {
+    // user: this.props.user,
     loading: true,
     setLoading: this.setLoading,
     currentLocation: null,
@@ -44,13 +46,8 @@ export class MapProvider extends Component {
     restaurants: [],
     setRestaurants: async radius => {
       try {
-        // const filters = { ...this.state.currentLocation, radius };
         this.setState({ restaurants: [], radius });
-        // await Restaurant.findNearby(filters);
         await this.findNearby();
-        console.log("setRestaurants");
-        // const { results: restaurants } = fullBatch;
-        // await this.setState({ restaurants });
       } catch (error) {
         console.log(error);
       }
@@ -88,11 +85,14 @@ export class MapProvider extends Component {
     alert("Geocoder failed.");
   }
 
-  geoSuccess = position => {
+  geoSuccess = async position => {
     const { latitude: lat, longitude: lng } = position.coords;
     const currentLocation = { lat, lng };
-    this.setState({ currentLocation });
-    this.findNearby();
+    if (this._isMounted) {
+      this.storeCurrentLocation(currentLocation);
+      await this.setState({ currentLocation });
+      await this.findNearby();
+    }
   };
 
   async findNearby() {
@@ -103,11 +103,11 @@ export class MapProvider extends Component {
       const firstBatch = await Restaurant.findNearby(filters);
       if (firstBatch) {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
-        this.setState({
+        await this.setState({
           loading,
           restaurants
         });
-        this.concatNext(pageToken);
+        await this.concatNext(pageToken);
         console.log("in findnearby => ", pageToken);
       }
     } catch (error) {
@@ -132,11 +132,34 @@ export class MapProvider extends Component {
     }
   }
 
-  componentDidMount() {
-    this.getLocation();
+  storeCurrentLocation(currentLocation) {
+    window.sessionStorage.setItem(
+      "shalleat",
+      JSON.stringify({ currentLocation })
+    );
+  }
+  getCurrentLocation() {
+    const currentLocation = JSON.parse(
+      window.sessionStorage.getItem("shalleat")
+    );
+    return currentLocation || {};
+  }
+
+  async componentDidMount() {
+    this._isMounted = true;
+    const { currentLocation = null } = this.getCurrentLocation();
+    console.log(this.getCurrentLocation());
+
+    if (currentLocation) {
+      await this.setState({ currentLocation });
+      await this.findNearby();
+    } else {
+      this.getLocation();
+    }
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     navigator.geolocation.clearWatch(this.watchID);
   }
 

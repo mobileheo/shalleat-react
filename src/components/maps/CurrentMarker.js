@@ -1,4 +1,5 @@
 import React from "react";
+import { MapConsumer } from "../context/MapContext";
 
 const WIDTH = "50px";
 const HEIGHT = WIDTH;
@@ -21,7 +22,8 @@ const addSvgIcon = currentPositionBtn => {
 };
 
 const addStyle = currentPositionBtn => {
-  currentPositionBtn.style.background = "transparent";
+  currentPositionBtn.style.color = "#fff";
+  currentPositionBtn.style.background = "#9c27b0";
 };
 
 const convertFullScreenBtnToAnchor = fullScreenBtn => {
@@ -51,27 +53,31 @@ const AddCurrentPositionBtn = () => {
 const CurrentMarker = ({ currentPosition, text }) => {
   AddCurrentPositionBtn();
   return (
-    <div
-      className="d-flex justify-content-center"
-      style={{
-        width: WIDTH,
-        height: HEIGHT,
-        transform: "translate(-50%, -50%)"
-      }}
-    >
-      <div className="d-flex flex-column align-items-center">
-        <i
-          className="material-icons text-info"
+    <MapConsumer>
+      {({ currentPosition }) => (
+        <div
+          className="d-flex justify-content-center"
           style={{
-            fontSize: "36px",
-            lineHeight: 1
+            width: WIDTH,
+            height: HEIGHT,
+            transform: "translate(-50%, -50%)"
           }}
         >
-          person_pin
-        </i>
-        <span className="badge badge-info">{text}</span>
-      </div>
-    </div>
+          <div className="d-flex flex-column align-items-center">
+            <i
+              className="material-icons text-info"
+              style={{
+                fontSize: "36px",
+                lineHeight: 1
+              }}
+            >
+              person_pin
+            </i>
+            <span className="badge badge-info">{text}</span>
+          </div>
+        </div>
+      )}
+    </MapConsumer>
   );
 };
 
