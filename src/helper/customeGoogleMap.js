@@ -21,6 +21,15 @@ const createMapOptions = maps => {
         ]
       },
       {
+        featureType: "poi",
+        elementType: "labels.icon",
+        stylers: [
+          {
+            visibility: "off"
+          }
+        ]
+      },
+      {
         featureType: "poi.park",
         elementType: "geometry.fill",
         stylers: [
