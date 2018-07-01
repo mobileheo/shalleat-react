@@ -3,16 +3,15 @@ import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
 
-const RADIUS = 1500;
 const calcZoom = radius => {
   const scale = radius / 500;
   return +(16 - Math.log(scale) / Math.log(2));
 };
+
+const RADIUS = 1500;
 const ZOOM = calcZoom(RADIUS);
 
 const isContainKeyword = (r, keyword) => {
-  // console.log(r);
-  // debugger;
   let { name, opening_hours = false, rating, types, vicinity } = r;
   const { open_now = false } = opening_hours;
   const k = keyword.toLowerCase();
@@ -31,6 +30,7 @@ const getFilterdList = (arr, keyword) => {
 
 export class MapProvider extends Component {
   state = {
+    // user: this.props.user,
     loading: true,
     setLoading: this.setLoading,
     currentLocation: null,
@@ -38,7 +38,7 @@ export class MapProvider extends Component {
     radius: RADIUS,
     setRadius: radius => this.setState({ radius }),
     defaultZoom: ZOOM,
-    view: { center: {}, zoom: null },
+    view: { center: {}, zoom: ZOOM },
     setView: (center = this.state.currentLocation, zoom) => {
       const view = { center, zoom };
       this.setState({ view });
@@ -46,11 +46,8 @@ export class MapProvider extends Component {
     restaurants: [],
     setRestaurants: async radius => {
       try {
-        const filters = { ...this.state.currentLocation, radius };
-        await this.setState({ restaurants: [] });
-        const fullBatch = await Restaurant.findNearby(filters);
-        const { results: restaurants } = fullBatch;
-        this.setState({ restaurants });
+        this.setState({ restaurants: [], radius });
+        await this.findNearby();
       } catch (error) {
         console.log(error);
       }
@@ -88,18 +85,19 @@ export class MapProvider extends Component {
     alert("Geocoder failed.");
   }
 
-  geoSuccess = position => {
+  geoSuccess = async position => {
     const { latitude: lat, longitude: lng } = position.coords;
     const currentLocation = { lat, lng };
-    const defaultCenter = currentLocation;
-    this.findNearby(currentLocation, defaultCenter);
+    if (this._isMounted) {
+      this.storeCurrentLocation(currentLocation);
+      await this.setState({ currentLocation });
+      await this.findNearby();
+    }
   };
 
-  async findNearby(currentLocation, defaultCenter) {
-    const { radius, defaultZoom } = this.state;
+  async findNearby() {
+    const { currentLocation, radius } = this.state;
     const filters = { ...currentLocation, radius };
-    let view = { center: defaultCenter, zoom: defaultZoom };
-
     const loading = false;
     try {
       const firstBatch = await Restaurant.findNearby(filters);
@@ -107,12 +105,9 @@ export class MapProvider extends Component {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
         await this.setState({
           loading,
-          currentLocation,
-          defaultCenter,
-          restaurants,
-          view
+          restaurants
         });
-        this.concatNext(pageToken);
+        await this.concatNext(pageToken);
         console.log("in findnearby => ", pageToken);
       }
     } catch (error) {
@@ -131,17 +126,39 @@ export class MapProvider extends Component {
       if (nextBatch) {
         const { next_page_token: nextToken = null, results: next } = nextBatch;
         restaurants = restaurants.concat(next);
-        this.setState({ restaurants });
-        this.concatNext(nextToken);
+        await this.setState({ restaurants });
+        await this.concatNext(nextToken);
       }
     }
   }
 
-  componentDidMount() {
-    this.getLocation();
+  storeCurrentLocation(currentLocation) {
+    window.sessionStorage.setItem(
+      "shalleat",
+      JSON.stringify({ currentLocation })
+    );
+  }
+  getCurrentLocation() {
+    const currentLocation = JSON.parse(
+      window.sessionStorage.getItem("shalleat")
+    );
+    return currentLocation || {};
+  }
+
+  async componentDidMount() {
+    this._isMounted = true;
+    const { currentLocation = null } = this.getCurrentLocation();
+
+    if (currentLocation) {
+      await this.setState({ currentLocation });
+      await this.findNearby();
+    } else {
+      this.getLocation();
+    }
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     navigator.geolocation.clearWatch(this.watchID);
   }
 

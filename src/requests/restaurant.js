@@ -3,7 +3,6 @@ import { postData } from "../helper/fetchHelper";
 import { delay } from "../helper/asyncHelper";
 
 const url = `${BASE_URL}/restaurants`;
-let timerId;
 
 export default {
   async findNearby(filters) {
@@ -15,7 +14,7 @@ export default {
   },
   async getNextRests(pageToken) {
     try {
-      await delay(4000);
+      await delay(2000);
       return await postData(`${url}/next`, pageToken);
     } catch (error) {
       throw new Error(error);
