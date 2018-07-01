@@ -28,7 +28,7 @@ const MainPage = ({ user }) => (
         <div className="GoogleMap-container w-75 pt-2">
           <GoogleMap user={user} />
         </div>
-        <div className="RestList-container w-25 ml-3 px-2 pt-2">
+        <div className="RestList-container w-25 ml-3">
           <RestList />
         </div>
       </div>

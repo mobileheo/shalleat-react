@@ -14,7 +14,7 @@ const RestList = () => (
         </a>
       ) : (
         <div
-          className="RestList list-group h-100"
+          className="RestList list-group h-100 px-2 pt-2"
           style={{ overflow: "scroll" }}
         >
           {listFilter().map(r => (
