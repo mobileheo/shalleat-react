@@ -10,9 +10,10 @@ const RestList = ({ popover, setPopover, view, setView, restaurant }) => {
     place_id: placeId,
     types
   } = restaurant;
+
   const { lat, lng } = geometry.location;
   const { chosenId, isOpen } = popover;
-  console.log(restaurant);
+
   return (
     <Animated
       animationIn="fadeInLeft"
@@ -25,7 +26,7 @@ const RestList = ({ popover, setPopover, view, setView, restaurant }) => {
             ? "list-group-item list-group-item-action bg-secondary text-white mb-2"
             : "list-group-item list-group-item-action mb-2"
         }
-        key={placeId}
+        // key={placeId}
         style={
           chosenId === placeId && isOpen
             ? { borderLeft: "solid #2196f3 5px" }

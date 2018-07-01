@@ -6,7 +6,6 @@ const RestList = () => (
   <MapConsumer>
     {({ loading, listFilter, popover, setPopover, view, setView, radius }) =>
       loading ? null : listFilter().length === 0 ? (
-        // <div style={{ height: "inherit !important" }}>
         <a
           className={"list-group-item list-group-item-action mb-2"}
           style={{ borderLeft: "solid #2196f3 5px" }}
@@ -25,6 +24,7 @@ const RestList = () => (
               setPopover={setPopover}
               view={view}
               setView={setView}
+              key={r.place_id}
             />
           ))}
         </div>
