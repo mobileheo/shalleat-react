@@ -23,13 +23,13 @@ const addSvgIcon = currentPositionBtn => {
 
 const addStyle = currentPositionBtn => {
   currentPositionBtn.style.color = "#fff";
-  currentPositionBtn.style.background = "#9c27b0";
+  // currentPositionBtn.style.background = "#9c27b0";
 };
 
 const convertFullScreenBtnToAnchor = fullScreenBtn => {
   let temp = fullScreenBtn.outerHTML.replace(
     `draggable="false" title="Toggle fullscreen view" aria-label="Toggle fullscreen view"`,
-    `id="current-position-btn"`
+    `class="bg-light text-dark" id="current-position-btn"`
   );
   // temp = temp.replace(`/button`, `/a`);
   fullScreenBtn.outerHTML = temp;

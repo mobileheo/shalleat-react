@@ -26,7 +26,7 @@ const RestList = ({
       animationIn="fadeInRight"
       animationOut="fadeOutRight"
       isVisible={true}
-      animationInDelay={index * 50}
+      animationInDelay={index * 150}
     >
       <a
         className={

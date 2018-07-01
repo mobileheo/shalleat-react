@@ -148,7 +148,6 @@ export class MapProvider extends Component {
   async componentDidMount() {
     this._isMounted = true;
     const { currentLocation = null } = this.getCurrentLocation();
-    console.log(this.getCurrentLocation());
 
     if (currentLocation) {
       await this.setState({ currentLocation });
