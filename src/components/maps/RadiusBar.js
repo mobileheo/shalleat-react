@@ -1,85 +1,154 @@
-import React from "react";
-import "react-tippy/dist/tippy.css";
-import { Tooltip } from "react-tippy";
-import { MapConsumer } from "../context/MapContext";
-// const bar = document.querySelector("input.custom-range");
-const MIN_RADIUS = "0";
-const MAX_RADIUS = "50000";
-const RADIUS_STEP = "1";
-const WAIT_INTERVAL = 1500;
-const RADIUS = 1500;
+import React, { Component } from "react";
+import Restaurant from "../../requests/restaurant";
 
+const { Consumer, Provider } = React.createContext({});
+
+const RADIUS = 1500;
 const calcZoom = radius => {
   const scale = radius / 500;
   return +(16 - Math.log(scale) / Math.log(2));
 };
+const ZOOM = calcZoom(RADIUS);
 
-const meterToKm = radius => {
-  return `Within ${(radius / 1000).toFixed(1)} km`;
+const isContainKeyword = (r, keyword) => {
+  // console.log(r);
+  // debugger;
+  let { name, opening_hours = false, rating, types, vicinity } = r;
+  const { open_now = false } = opening_hours;
+  const k = keyword.toLowerCase();
+  name = name.toLowerCase();
+  if (k.includes("open") && open_now) return true;
+  if (name.includes(k)) return true;
+  if (types.filter(t => t.includes(k)).length !== 0) return true;
+  if (vicinity.includes(k)) return true;
+
+  return false;
 };
-class RadiusBar extends React.Component {
+
+const getFilterdList = (arr, keyword) => {
+  return arr.filter(r => isContainKeyword(r, keyword));
+};
+
+export class MapProvider extends Component {
   state = {
-    currentRadius: RADIUS
+    loading: true,
+    setLoading: this.setLoading,
+    currentLocation: null,
+    defaultCenter: null,
+    radius: RADIUS,
+    setRadius: radius => this.setState({ radius }),
+    defaultZoom: ZOOM,
+    view: { center: {}, zoom: null },
+    setView: (center = this.state.currentLocation, zoom) => {
+      const view = { center, zoom };
+      this.setState({ view });
+    },
+    restaurants: [],
+    setRestaurants: async radius => {
+      try {
+        const filters = { ...this.state.currentLocation, radius };
+        await this.setState({ restaurants: [] });
+        const fullBatch = await Restaurant.findNearby(filters);
+        const { results: restaurants } = fullBatch;
+        this.setState({ restaurants });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    popover: { chosenId: null, isOpen: false },
+    setPopover: (chosenId, isOpen) => {
+      const popover = { chosenId, isOpen };
+      this.setState({ popover });
+    },
+    keyword: "",
+    setKeyword: keyword => {
+      this.setState({ keyword });
+    },
+    listFilter: () => {
+      return getFilterdList(this.state.restaurants, this.state.keyword);
+    }
   };
-  componentDidMount() {
-    // document.querySelector("input.custom-range").value = RADIUS;
+
+  setLoading() {
+    this.setState({ loading: !this.state.loading });
   }
-  componentWillMount() {
-    clearTimeout(this.timerId);
+
+  getLocation() {
+    if (navigator.geolocation) {
+      this.watchID = navigator.geolocation.watchPosition(
+        this.geoSuccess,
+        this.geoError
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  geoError() {
+    alert("Geocoder failed.");
+  }
+
+  geoSuccess = position => {
+    const { latitude: lat, longitude: lng } = position.coords;
+    const currentLocation = { lat, lng };
+    const defaultCenter = currentLocation;
+    this.findNearby(currentLocation, defaultCenter);
+  };
+
+  async findNearby(currentLocation, defaultCenter) {
+    const { radius, defaultZoom } = this.state;
+    const filters = { ...currentLocation, radius };
+    let view = { center: defaultCenter, zoom: defaultZoom };
+
+    const loading = false;
+    try {
+      const firstBatch = await Restaurant.findNearby(filters);
+      if (firstBatch) {
+        const { next_page_token: pageToken, results: restaurants } = firstBatch;
+        await this.setState({
+          loading,
+          currentLocation,
+          defaultCenter,
+          restaurants,
+          view
+        });
+        this.concatNext(pageToken);
+        console.log("in findnearby => ", pageToken);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async concatNext(pageToken) {
+    if (!pageToken) {
+      navigator.geolocation.clearWatch(this.watchID);
+      return;
+    } else {
+      let { restaurants } = this.state;
+      console.log("original => ", restaurants);
+      const nextBatch = await Restaurant.getNextRests({ pageToken });
+      console.log("next => ", nextBatch);
+      if (nextBatch) {
+        const { next_page_token: nextToken = null, results: next } = nextBatch;
+        restaurants = restaurants.concat(next);
+        this.setState({ restaurants });
+        this.concatNext(nextToken);
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.getLocation();
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   render() {
-    return (
-      <MapConsumer>
-        {({
-          loading,
-          setRestaurants,
-          radius,
-          setRadius,
-          currentLocation,
-          setView,
-          view
-        }) => {
-          const { currentRadius } = this.state;
-
-          return loading ? null : (
-            <div className="RadiusInputBar">
-              <label className="badge badge-secondary" htmlFor="radius">
-                {meterToKm(currentRadius)}
-              </label>
-              <Tooltip
-                title={`${meterToKm(currentRadius)}`}
-                followCursor={true}
-                arrow={true}
-                position="top"
-              >
-                <input
-                  type="range"
-                  className="custom-range"
-                  min={MIN_RADIUS}
-                  max={MAX_RADIUS}
-                  step={RADIUS_STEP}
-                  value={currentRadius}
-                  onChange={e => {
-                    const { currentTarget } = e;
-                    const currentRadius = +currentTarget.value;
-                    this.setState({ currentRadius });
-                    clearTimeout(this.timerId);
-                    this.timerId = setTimeout(() => {
-                      setRestaurants(currentRadius);
-                      setRadius(currentRadius);
-                      const zoom = calcZoom(currentRadius);
-                      setView(currentLocation, zoom);
-                    }, WAIT_INTERVAL);
-                  }}
-                />
-              </Tooltip>
-            </div>
-          );
-        }}
-      </MapConsumer>
-    );
+    const { children } = this.props;
+    return <Provider value={this.state}>{children}</Provider>;
   }
 }
 
-export default RadiusBar;
+export const MapConsumer = Consumer;

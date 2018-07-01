@@ -3,12 +3,12 @@ import { postData } from "../helper/fetchHelper";
 import { delay } from "../helper/asyncHelper";
 
 const url = `${BASE_URL}/restaurants`;
+let timerId;
 
 export default {
   async findNearby(filters) {
     try {
       return await postData(`${url}/all`, filters);
-      // return { results: [] };
     } catch (error) {
       throw new Error(error);
     }
@@ -17,7 +17,6 @@ export default {
     try {
       await delay(4000);
       return await postData(`${url}/next`, pageToken);
-      return {};
     } catch (error) {
       throw new Error(error);
     }
@@ -28,7 +27,6 @@ export default {
         placeId,
         filters
       });
-      // return {};
     } catch (error) {
       throw new Error(error);
     }
