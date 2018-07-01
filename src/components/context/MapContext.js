@@ -30,19 +30,24 @@ const getFilterdList = (arr, keyword) => {
 
 export class MapProvider extends Component {
   state = {
-    // user: this.props.user,
     loading: true,
     setLoading: this.setLoading,
     currentLocation: null,
     defaultCenter: null,
     radius: RADIUS,
     setRadius: radius => this.setState({ radius }),
+    center: null,
+    setCenter: center => this.setState({ center }),
     defaultZoom: ZOOM,
-    view: { center: {}, zoom: ZOOM },
-    setView: (center = this.state.currentLocation, zoom) => {
-      const view = { center, zoom };
-      this.setState({ view });
-    },
+    zoom: ZOOM,
+    setZoom: zoom => this.setState({ zoom }),
+
+    // view: { center: null, zoom: ZOOM },
+    // setView: (center = null, zoom = ZOOM) => {
+    //   // console.log("setView");
+    //   // const view = { center, zoom };
+    //   // this.setState({ view });
+    // },
     restaurants: [],
     setRestaurants: async radius => {
       try {
@@ -148,12 +153,13 @@ export class MapProvider extends Component {
   async componentDidMount() {
     this._isMounted = true;
     const { currentLocation = null } = this.getCurrentLocation();
+    const center = currentLocation;
 
     if (currentLocation) {
-      await this.setState({ currentLocation });
+      await this.setState({ currentLocation, center });
       await this.findNearby();
     } else {
-      this.getLocation();
+      await this.getLocation();
     }
   }
 

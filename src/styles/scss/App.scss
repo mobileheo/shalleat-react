@@ -4,3 +4,9 @@
     border-radius: 2px;
   }
 }
+
+header {
+  .navbar-brand:focus::before {
+    opacity: 1;
+  }
+}

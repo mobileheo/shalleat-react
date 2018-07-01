@@ -10,36 +10,18 @@ import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
 
 const WIDTH = "35px";
 const HEIGHT = WIDTH;
+const MARKER_STYLE = {
+  width: WIDTH,
+  height: HEIGHT,
+  transform: "translate(-50%, -50%)"
+};
+const BTN_CLASS =
+  "btn btn-secondary d-flex justify-content-center align-items-center";
 
 class RestaurantMarker extends React.PureComponent {
   state = {
     loading: true,
     schedule: {}
-  };
-  btnTrun = id => {
-    let isRotated = false;
-    console.log(isRotated);
-    if (isRotated) {
-      return () => {
-        isRotated = !isRotated;
-        anime({
-          targets: id,
-          scale: 1,
-          duration: 3000,
-          rotate: 45
-        });
-      };
-    } else {
-      return () => {
-        isRotated = !isRotated;
-        anime({
-          targets: id,
-          scale: 1,
-          duration: 3000,
-          rotate: 45
-        });
-      };
-    }
   };
 
   componentDidMount() {
@@ -67,14 +49,14 @@ class RestaurantMarker extends React.PureComponent {
     const { loading, schedule } = this.state;
     const {
       placeId,
-      // icon,
+      icon,
       name,
       lat,
       lng,
       popover,
       setPopover,
-      view,
-      setView,
+      setCenter,
+      setZoom,
       index
     } = this.props;
     const { chosenId, isOpen } = popover;
@@ -88,94 +70,81 @@ class RestaurantMarker extends React.PureComponent {
         isVisible={true}
       >
         <div
-          className="RestaurantMarker"
-          // style={
-          //   chosenId === placeId && isOpen ? { border: "solid 1px black" } : {}
-          // }
+          className="RestaurantMarker d-flex justify-content-center"
+          style={MARKER_STYLE}
         >
-          <div
-            className="d-flex justify-content-center"
+          <Tooltip
+            title={name}
+            arrow={true}
+            position="top"
             style={{
-              width: WIDTH,
-              height: HEIGHT,
-              transform: "translate(-50%, -50%)"
+              width: "inherit",
+              height: "inherit"
             }}
           >
-            <Tooltip
-              title={name}
-              arrow={true}
-              position="top"
-              // open={true}
+            <button
+              data-tippy
+              id={`Popover-${placeId}`}
+              className={
+                chosenId === placeId && isOpen
+                  ? BTN_CLASS.concat(" border border-white")
+                  : BTN_CLASS.concat(" border border-secondary")
+              }
               style={{
-                width: "inherit",
-                height: "inherit"
+                minWidth: "37px",
+                minHeight: "inherit"
               }}
-            >
-              <button
-                data-tippy
-                // data-original-title="I'm a tooltip!"
-                id={`Popover-${placeId}`}
-                className={
-                  "btn btn-secondary d-flex justify-content-center align-items-center rounded"
-                }
-                style={{
-                  minWidth: WIDTH,
-                  minHeight: HEIGHT
-                }}
-                onClick={() => {
-                  let { center, zoom } = view;
-                  center = { lat, lng };
-                  zoom = 14;
-                  setView(center, zoom);
+              onClick={() => {
+                setCenter({ lat, lng });
+                setZoom(14);
 
-                  if (isOpen) {
-                    if (chosenId === placeId) {
-                      setPopover(placeId, !isOpen);
-                    } else {
-                      setPopover(placeId, isOpen);
-                    }
-                  } else {
+                if (isOpen) {
+                  if (chosenId === placeId) {
                     setPopover(placeId, !isOpen);
+                  } else {
+                    setPopover(placeId, isOpen);
                   }
-                }}
-                // onMouseOver={e => {
-                //   const { currentTarget } = e;
-                //   console.log(currentTarget);
-                // }}
-                alt={"marker-icon"}
-              >
-                {/* <img
-              src={icon}
-              style={{
-                position: "absolute",
-                height: 40,
-                width: 40
+                } else {
+                  setPopover(placeId, !isOpen);
+                }
               }}
+              // onMouseOver={e => {
+              //   const { currentTarget } = e;
+              //   console.log(currentTarget);
+              // }}
               alt={"marker-icon"}
-            /> */}
-                <i
-                  className="material-icons"
-                  // style={{
-                  //   fontSize: "2.5vh"
-                  // }}
-                >
-                  {chosenId === placeId && isOpen
-                    ? "restaurant_menu"
-                    : "restaurant"}
-                </i>
-              </button>
-              {popover.chosenId === placeId && popover.isOpen ? (
-                <RestaurantInfoBox
-                  placeId={placeId}
-                  name={name}
-                  schedule={schedule}
-                  popover={popover}
-                />
-              ) : (
-                <div />
-              )}
-            </Tooltip>
-          </div>
+            >
+              {/* <img
+                src={icon}
+                style={{
+                  position: "absolute",
+                  height: 40,
+                  width: 40
+                }}
+                alt={"marker-icon"}
+              /> */}
+              <i
+                className="material-icons"
+                // style={{
+                //   fontSize: "2.5vh"
+                // }}
+              >
+                {chosenId === placeId && isOpen
+                  ? "restaurant_menu"
+                  : "restaurant"}
+              </i>
+            </button>
+            {popover.chosenId === placeId && popover.isOpen ? (
+              <RestaurantInfoBox
+                placeId={placeId}
+                name={name}
+                schedule={schedule}
+                popover={popover}
+              />
+            ) : (
+              <div />
+            )}
+          </Tooltip>
         </div>
       </Animated>
     );

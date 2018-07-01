@@ -11,10 +11,10 @@ const restaurantMarkers = (
   restaurants,
   popover,
   setPopover,
-  view,
-  setView,
-  btnRotate,
-  setBtnRotateDeg
+  center,
+  setCenter,
+  zoom,
+  setZoom
 ) =>
   restaurants.map((r, i) => {
     const { geometry, icon, name, place_id: placeId } = r;
@@ -24,17 +24,17 @@ const restaurantMarkers = (
         key={placeId}
         index={i}
         placeId={placeId}
+        center={center}
+        setCenter={setCenter}
+        zoom={zoom}
+        setZoom={setZoom}
         popover={popover}
         setPopover={setPopover}
-        view={view}
-        setView={setView}
         filters={["name", "opening_hours"]}
         lat={lat}
         lng={lng}
         icon={icon}
         name={name}
-        btnRotate={btnRotate}
-        setBtnRotateDeg={setBtnRotateDeg}
       />
     );
   });
@@ -58,15 +58,16 @@ class GoogleMap extends PureComponent {
         {({
           loading,
           currentLocation,
+          center,
+          setCenter,
+          zoom,
+          setZoom,
           restaurants,
           popover,
           setPopover,
-          view,
-          setView,
           btnRotate,
           setBtnRotateDeg
         }) => {
-          const { zoom } = view;
           return !user ? (
             <Redirect to="/signin" />
           ) : loading ? (
@@ -87,7 +88,7 @@ class GoogleMap extends PureComponent {
             >
               <GoogleMapReact
                 bootstrapURLKeys={{ key: googleMapAPI }}
-                center={currentLocation}
+                center={center}
                 zoom={zoom}
               >
                 <CurrentMarker
@@ -99,8 +100,10 @@ class GoogleMap extends PureComponent {
                   restaurants,
                   popover,
                   setPopover,
-                  view,
-                  setView,
+                  center,
+                  setCenter,
+                  zoom,
+                  setZoom,
                   btnRotate,
                   setBtnRotateDeg
                 )}

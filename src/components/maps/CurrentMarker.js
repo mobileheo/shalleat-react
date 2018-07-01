@@ -31,7 +31,7 @@ const convertFullScreenBtnToAnchor = fullScreenBtn => {
     `draggable="false" title="Toggle fullscreen view" aria-label="Toggle fullscreen view"`,
     `class="bg-light text-dark" id="current-position-btn"`
   );
-  // temp = temp.replace(`/button`, `/a`);
+
   fullScreenBtn.outerHTML = temp;
   const currentPositionBtn = document.querySelector("#current-position-btn");
   return currentPositionBtn;
@@ -45,38 +45,50 @@ const AddCurrentPositionBtn = () => {
     addSvgIcon(currentPositionBtn);
     addStyle(currentPositionBtn);
     currentPositionBtn.addEventListener("click", e => {
-      console.log(e);
+      // console.log(e);
+      // e.preventDefault();
+      // center = currentPosition;
+      // const view = { center, zoom };
+      // console.log(view);
     });
   }
 };
 
-const CurrentMarker = ({ currentPosition, text }) => {
-  AddCurrentPositionBtn();
+const CurrentMarker = ({ text }) => {
+  // setView: (center = this.state.currentLocation, zoom) => {
+  //   const view = { center, zoom };
+  //   this.setState({ view });
+  // },
+
   return (
     <MapConsumer>
-      {({ currentPosition }) => (
-        <div
-          className="d-flex justify-content-center"
-          style={{
-            width: WIDTH,
-            height: HEIGHT,
-            transform: "translate(-50%, -50%)"
-          }}
-        >
-          <div className="d-flex flex-column align-items-center">
-            <i
-              className="material-icons text-info"
-              style={{
-                fontSize: "36px",
-                lineHeight: 1
-              }}
-            >
-              person_pin
-            </i>
-            <span className="badge badge-info">{text}</span>
+      {() => {
+        // console.log("currentLocation = > ", currentLocation);
+        AddCurrentPositionBtn();
+        return (
+          <div
+            className="d-flex justify-content-center"
+            style={{
+              width: WIDTH,
+              height: HEIGHT,
+              transform: "translate(-50%, -50%)"
+            }}
+          >
+            <div className="d-flex flex-column align-items-center">
+              <i
+                className="material-icons text-info"
+                style={{
+                  fontSize: "36px",
+                  lineHeight: 1
+                }}
+              >
+                person_pin
+              </i>
+              <span className="badge badge-info">{text}</span>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      }}
     </MapConsumer>
   );
 };

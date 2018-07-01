@@ -36,8 +36,8 @@ class RadiusBar extends React.Component {
           radius,
           setRadius,
           currentLocation,
-          setView,
-          view
+          setCenter,
+          setZoom
         }) => {
           const { currentRadius } = this.state;
 
@@ -65,10 +65,10 @@ class RadiusBar extends React.Component {
                     this.setState({ currentRadius });
                     clearTimeout(this.timerId);
                     this.timerId = setTimeout(() => {
+                      const zoom = calcZoom(currentRadius);
                       setRestaurants(currentRadius);
                       setRadius(currentRadius);
-                      const zoom = calcZoom(currentRadius);
-                      setView(currentLocation, zoom);
+                      setZoom(zoom);
                     }, WAIT_INTERVAL);
                   }}
                 />
