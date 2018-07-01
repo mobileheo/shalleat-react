@@ -14,7 +14,10 @@ const RestList = () => (
           <span>😿</span> No restaurants within {radius}m
         </a>
       ) : (
-        <div className="RestList list-group">
+        <div
+          className="RestList list-group h-100"
+          style={{ overflow: "scroll" }}
+        >
           {listFilter().map(r => (
             <RestItem
               restaurant={r}
