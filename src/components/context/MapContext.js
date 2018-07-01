@@ -11,8 +11,6 @@ const calcZoom = radius => {
 const ZOOM = calcZoom(RADIUS);
 
 const isContainKeyword = (r, keyword) => {
-  // console.log(r);
-  // debugger;
   let { name, opening_hours = false, rating, types, vicinity } = r;
   const { open_now = false } = opening_hours;
   const k = keyword.toLowerCase();
@@ -38,7 +36,7 @@ export class MapProvider extends Component {
     radius: RADIUS,
     setRadius: radius => this.setState({ radius }),
     defaultZoom: ZOOM,
-    view: { center: {}, zoom: null },
+    view: { center: {}, zoom: ZOOM },
     setView: (center = this.state.currentLocation, zoom) => {
       const view = { center, zoom };
       this.setState({ view });
@@ -46,11 +44,13 @@ export class MapProvider extends Component {
     restaurants: [],
     setRestaurants: async radius => {
       try {
-        const filters = { ...this.state.currentLocation, radius };
-        await this.setState({ restaurants: [] });
-        const fullBatch = await Restaurant.findNearby(filters);
-        const { results: restaurants } = fullBatch;
-        this.setState({ restaurants });
+        // const filters = { ...this.state.currentLocation, radius };
+        this.setState({ restaurants: [], radius });
+        // await Restaurant.findNearby(filters);
+        await this.findNearby();
+        console.log("setRestaurants");
+        // const { results: restaurants } = fullBatch;
+        // await this.setState({ restaurants });
       } catch (error) {
         console.log(error);
       }
@@ -91,26 +91,21 @@ export class MapProvider extends Component {
   geoSuccess = position => {
     const { latitude: lat, longitude: lng } = position.coords;
     const currentLocation = { lat, lng };
-    const defaultCenter = currentLocation;
-    this.findNearby(currentLocation, defaultCenter);
+    this.setState({ currentLocation });
+    this.findNearby();
   };
 
-  async findNearby(currentLocation, defaultCenter) {
-    const { radius, defaultZoom } = this.state;
+  async findNearby() {
+    const { currentLocation, radius } = this.state;
     const filters = { ...currentLocation, radius };
-    let view = { center: defaultCenter, zoom: defaultZoom };
-
     const loading = false;
     try {
       const firstBatch = await Restaurant.findNearby(filters);
       if (firstBatch) {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
-        await this.setState({
+        this.setState({
           loading,
-          currentLocation,
-          defaultCenter,
-          restaurants,
-          view
+          restaurants
         });
         this.concatNext(pageToken);
         console.log("in findnearby => ", pageToken);
@@ -131,8 +126,8 @@ export class MapProvider extends Component {
       if (nextBatch) {
         const { next_page_token: nextToken = null, results: next } = nextBatch;
         restaurants = restaurants.concat(next);
-        this.setState({ restaurants });
-        this.concatNext(nextToken);
+        await this.setState({ restaurants });
+        await this.concatNext(nextToken);
       }
     }
   }

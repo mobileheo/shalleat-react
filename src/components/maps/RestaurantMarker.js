@@ -1,10 +1,12 @@
 import React from "react";
 import anime from "animejs";
+import "react-tippy/dist/tippy.css";
+import { Tooltip } from "react-tippy";
+import { Animated } from "react-animated-css";
+
 import Spinner from "react-spinkit";
 import RestaurantInfoBox from "./RestaurantInfoBox";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
-import "react-tippy/dist/tippy.css";
-import { Tooltip } from "react-tippy";
 
 const WIDTH = "35px";
 const HEIGHT = WIDTH;
@@ -72,70 +74,77 @@ class RestaurantMarker extends React.PureComponent {
       popover,
       setPopover,
       view,
-      setView
+      setView,
+      index
     } = this.props;
     const { chosenId, isOpen } = popover;
     return loading ? (
       <Spinner name="ball-scale-multiple" color="steelblue" />
     ) : (
-      <div
-        className="RestaurantMarker"
-        // style={
-        //   chosenId === placeId && isOpen ? { border: "solid 1px black" } : {}
-        // }
+      <Animated
+        animationIn="bounceIn"
+        animationOut="bounceOut"
+        animationInDelay={index * 150}
+        isVisible={true}
       >
         <div
-          className="d-flex justify-content-center"
-          style={{
-            width: WIDTH,
-            height: HEIGHT,
-            transform: "translate(-50%, -50%)"
-          }}
+          className="RestaurantMarker"
+          // style={
+          //   chosenId === placeId && isOpen ? { border: "solid 1px black" } : {}
+          // }
         >
-          <Tooltip
-            title={name}
-            arrow={true}
-            position="top"
-            // open={true}
+          <div
+            className="d-flex justify-content-center"
             style={{
-              width: "inherit",
-              height: "inherit"
+              width: WIDTH,
+              height: HEIGHT,
+              transform: "translate(-50%, -50%)"
             }}
           >
-            <button
-              data-tippy
-              // data-original-title="I'm a tooltip!"
-              id={`Popover-${placeId}`}
-              className={
-                "btn btn-secondary d-flex justify-content-center align-items-center rounded"
-              }
+            <Tooltip
+              title={name}
+              arrow={true}
+              position="top"
+              // open={true}
               style={{
-                minWidth: WIDTH,
-                minHeight: HEIGHT
+                width: "inherit",
+                height: "inherit"
               }}
-              onClick={() => {
-                let { center, zoom } = view;
-                center = { lat, lng };
-                zoom = 14;
-                setView(center, zoom);
-
-                if (isOpen) {
-                  if (chosenId === placeId) {
-                    setPopover(placeId, !isOpen);
-                  } else {
-                    setPopover(placeId, isOpen);
-                  }
-                } else {
-                  setPopover(placeId, !isOpen);
-                }
-              }}
-              // onMouseOver={e => {
-              //   const { currentTarget } = e;
-              //   console.log(currentTarget);
-              // }}
-              alt={"marker-icon"}
             >
-              {/* <img
+              <button
+                data-tippy
+                // data-original-title="I'm a tooltip!"
+                id={`Popover-${placeId}`}
+                className={
+                  "btn btn-secondary d-flex justify-content-center align-items-center rounded"
+                }
+                style={{
+                  minWidth: WIDTH,
+                  minHeight: HEIGHT
+                }}
+                onClick={() => {
+                  let { center, zoom } = view;
+                  center = { lat, lng };
+                  zoom = 14;
+                  setView(center, zoom);
+
+                  if (isOpen) {
+                    if (chosenId === placeId) {
+                      setPopover(placeId, !isOpen);
+                    } else {
+                      setPopover(placeId, isOpen);
+                    }
+                  } else {
+                    setPopover(placeId, !isOpen);
+                  }
+                }}
+                // onMouseOver={e => {
+                //   const { currentTarget } = e;
+                //   console.log(currentTarget);
+                // }}
+                alt={"marker-icon"}
+              >
+                {/* <img
               src={icon}
               style={{
                 position: "absolute",
@@ -144,30 +153,31 @@ class RestaurantMarker extends React.PureComponent {
               }}
               alt={"marker-icon"}
             /> */}
-              <i
-                className="material-icons"
-                // style={{
-                //   fontSize: "2.5vh"
-                // }}
-              >
-                {chosenId === placeId && isOpen
-                  ? "restaurant_menu"
-                  : "restaurant"}
-              </i>
-            </button>
-            {popover.chosenId === placeId && popover.isOpen ? (
-              <RestaurantInfoBox
-                placeId={placeId}
-                name={name}
-                schedule={schedule}
-                popover={popover}
-              />
-            ) : (
-              <div />
-            )}
-          </Tooltip>
+                <i
+                  className="material-icons"
+                  // style={{
+                  //   fontSize: "2.5vh"
+                  // }}
+                >
+                  {chosenId === placeId && isOpen
+                    ? "restaurant_menu"
+                    : "restaurant"}
+                </i>
+              </button>
+              {popover.chosenId === placeId && popover.isOpen ? (
+                <RestaurantInfoBox
+                  placeId={placeId}
+                  name={name}
+                  schedule={schedule}
+                  popover={popover}
+                />
+              ) : (
+                <div />
+              )}
+            </Tooltip>
+          </div>
         </div>
-      </div>
+      </Animated>
     );
   }
 }

@@ -17,7 +17,7 @@ const RestList = () => (
           className="RestList list-group h-100 px-2 pt-2"
           style={{ overflow: "scroll" }}
         >
-          {listFilter().map(r => (
+          {listFilter().map((r, i) => (
             <RestItem
               restaurant={r}
               popover={popover}
@@ -25,6 +25,7 @@ const RestList = () => (
               view={view}
               setView={setView}
               key={r.place_id}
+              index={i}
             />
           ))}
         </div>

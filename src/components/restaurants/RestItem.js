@@ -1,7 +1,14 @@
 import React from "react";
 import { MapConsumer } from "../context/MapContext";
 import { Animated } from "react-animated-css";
-const RestList = ({ popover, setPopover, view, setView, restaurant }) => {
+const RestList = ({
+  popover,
+  setPopover,
+  view,
+  setView,
+  restaurant,
+  index
+}) => {
   const {
     geometry,
     name,
@@ -16,9 +23,10 @@ const RestList = ({ popover, setPopover, view, setView, restaurant }) => {
 
   return (
     <Animated
-      animationIn="fadeInLeft"
+      animationIn="fadeInRight"
       animationOut="fadeOutRight"
       isVisible={true}
+      animationInDelay={index * 50}
     >
       <a
         className={

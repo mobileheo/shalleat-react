@@ -22,7 +22,7 @@ const restaurantMarkers = (
     return (
       <RestaurantMarker
         key={placeId}
-        id={i}
+        index={i}
         placeId={placeId}
         popover={popover}
         setPopover={setPopover}
@@ -57,8 +57,7 @@ class GoogleMap extends PureComponent {
       <MapConsumer>
         {({
           loading,
-          defaultCenter,
-          defaultZoom,
+          currentLocation,
           restaurants,
           popover,
           setPopover,
@@ -88,12 +87,12 @@ class GoogleMap extends PureComponent {
             >
               <GoogleMapReact
                 bootstrapURLKeys={{ key: googleMapAPI }}
-                center={center}
+                center={currentLocation}
                 zoom={zoom}
               >
                 <CurrentMarker
-                  lat={defaultCenter.lat}
-                  lng={defaultCenter.lng}
+                  lat={currentLocation.lat}
+                  lng={currentLocation.lng}
                   text={user.firstName}
                 />
                 {restaurantMarkers(

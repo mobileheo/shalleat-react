@@ -2,17 +2,54 @@ import React from "react";
 
 const WIDTH = "50px";
 const HEIGHT = WIDTH;
-const AddCurrentPositionButton = () => {
-  let p = document.querySelector(".gm-fullscreen-control");
-  if (p) {
-    const target = p.parentNode;
-    target.setAttribute("id", "current-position-button");
-    target.innerHTML = `<i class="material-icons">my_location</i>`;
+
+const addSvgIcon = currentPositionBtn => {
+  // currentPositionBtn.innerHTML = `
+  //   <svg version="1.1" id="Layer_1" x="0px" y="0px"
+  //      viewBox="0 0 250 250" style="enable-background:new 0 0 250 250;" xml:space="preserve">
+  //   <style type="text/css">
+  //     .st0{fill:#FFFFFF;stroke:#000000;stroke-width:20;stroke-miterlimit:10;}
+  //   </style>
+  //   <polygon class="st0" points="0.5,128.3 251,-1 125.8,249.5 115.7,136.3 "/>
+  //   </svg>
+  //   `;
+  currentPositionBtn.innerHTML = `
+  <i class="material-icons">
+  my_location
+  </i>
+    `;
+};
+
+const addStyle = currentPositionBtn => {
+  currentPositionBtn.style.background = "transparent";
+};
+
+const convertFullScreenBtnToAnchor = fullScreenBtn => {
+  let temp = fullScreenBtn.outerHTML.replace(
+    `draggable="false" title="Toggle fullscreen view" aria-label="Toggle fullscreen view"`,
+    `id="current-position-btn"`
+  );
+  // temp = temp.replace(`/button`, `/a`);
+  fullScreenBtn.outerHTML = temp;
+  const currentPositionBtn = document.querySelector("#current-position-btn");
+  return currentPositionBtn;
+};
+
+const AddCurrentPositionBtn = () => {
+  let child = document.querySelector(".gm-fullscreen-control");
+  if (child) {
+    const fullScreenBtn = child.parentNode;
+    const currentPositionBtn = convertFullScreenBtnToAnchor(fullScreenBtn);
+    addSvgIcon(currentPositionBtn);
+    addStyle(currentPositionBtn);
+    currentPositionBtn.addEventListener("click", e => {
+      console.log(e);
+    });
   }
 };
 
-const CurrentMarker = props => {
-  AddCurrentPositionButton();
+const CurrentMarker = ({ currentPosition, text }) => {
+  AddCurrentPositionBtn();
   return (
     <div
       className="d-flex justify-content-center"
@@ -32,7 +69,7 @@ const CurrentMarker = props => {
         >
           person_pin
         </i>
-        <span className="badge badge-info">{props.text}</span>
+        <span className="badge badge-info">{text}</span>
       </div>
     </div>
   );
