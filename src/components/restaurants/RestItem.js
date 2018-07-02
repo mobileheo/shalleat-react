@@ -44,7 +44,7 @@ const RestList = ({
         style={
           openNow
             ? { borderLeft: "solid #39e4a9 5px" }
-            : { borderLeft: "solid #e45439 5px" }
+            : { borderLeft: "solid #424242 5px" }
         }
         onClick={() => {
           setCenter({ lat, lng });
@@ -61,7 +61,7 @@ const RestList = ({
           }
         }}
       >
-        name: {name}
+        <i class="material-icons">restaurant</i> {name}
         address: {vicinity}
         rating: {rating}
         types:
