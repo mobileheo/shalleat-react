@@ -14,6 +14,7 @@ const RestList = ({
   const {
     geometry,
     name,
+    opening_hours: hours = {},
     vicinity,
     rating,
     place_id: placeId,
@@ -21,6 +22,10 @@ const RestList = ({
   } = restaurant;
 
   const { lat, lng } = geometry.location;
+  const { open_now: openNow } = hours;
+  // console.log(hours);
+
+  // console.log(openNow);
   const { chosenId, isOpen } = popover;
 
   return (
@@ -36,11 +41,10 @@ const RestList = ({
             ? "list-group-item list-group-item-action bg-secondary text-white mb-2"
             : "list-group-item list-group-item-action mb-2"
         }
-        // key={placeId}
         style={
-          chosenId === placeId && isOpen
-            ? { borderLeft: "solid #2196f3 5px" }
-            : { borderLeft: "solid #ff4081 5px" }
+          openNow
+            ? { borderLeft: "solid #4caf50 5px" }
+            : { borderLeft: "solid #f44336 5px" }
         }
         onClick={() => {
           setCenter({ lat, lng });
@@ -53,9 +57,7 @@ const RestList = ({
               setPopover(placeId, isOpen);
             }
           } else {
-            if (chosenId === placeId) {
-              setPopover(placeId, !isOpen);
-            }
+            setPopover(placeId, !isOpen);
           }
         }}
       >

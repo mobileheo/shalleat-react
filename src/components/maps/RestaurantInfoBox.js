@@ -102,7 +102,7 @@ const enhence = compose(
   })
 );
 const RestaurantInfoBox = enhence(
-  ({ placeId, name, schedule, remainingTime, popover }) => {
+  ({ placeId, name, schedule, remainingTime, popover, setPopover }) => {
     const { chosenId, isOpen } = popover;
     if (chosenId === placeId && isOpen) {
       return (
