@@ -59,12 +59,9 @@ export class MapProvider extends Component {
       this.setState({ popover });
     },
     keyword: "",
-    setKeyword: keyword => {
-      this.setState({ keyword });
-    },
-    listFilter: () => {
-      return getFilterdList(this.state.restaurants, this.state.keyword);
-    }
+    setKeyword: keyword => this.setState({ keyword }),
+    filteredRests: () =>
+      getFilterdList(this.state.restaurants, this.state.keyword)
   };
 
   setLoading() {

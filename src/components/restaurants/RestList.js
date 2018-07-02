@@ -10,12 +10,13 @@ const RestList = () => (
       zoom,
       setZoom,
       loading,
-      listFilter,
+      filteredRests,
       popover,
       setPopover,
       radius
-    }) =>
-      loading ? null : listFilter().length === 0 ? (
+    }) => {
+      const restaurants = filteredRests();
+      return loading ? null : restaurants.length === 0 ? (
         <a
           className={"list-group-item list-group-item-action mb-2"}
           style={{ borderLeft: "solid #2196f3 5px" }}
@@ -27,7 +28,7 @@ const RestList = () => (
           className="RestList list-group h-100 px-2 pt-2"
           style={{ overflow: "scroll" }}
         >
-          {listFilter().map((r, i) => (
+          {restaurants.map((r, i) => (
             <RestItem
               key={r.place_id}
               index={i}
@@ -41,8 +42,8 @@ const RestList = () => (
             />
           ))}
         </div>
-      )
-    }
+      );
+    }}
   </MapConsumer>
 );
 

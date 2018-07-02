@@ -6,10 +6,10 @@ import CurrentMarker from "./CurrentMarker";
 import RestaurantMarker from "./RestaurantMarker";
 import Spinner from "../common/Spinner";
 import { MapConsumer } from "../context/MapContext";
-import createMapOptions from "../../helper/customeGoogleMap";
+import createMapOptions from "../../helper/customGoogleMap";
 
 const restaurantMarkers = (
-  restaurants,
+  filteredRests,
   popover,
   setPopover,
   center,
@@ -17,7 +17,7 @@ const restaurantMarkers = (
   zoom,
   setZoom
 ) =>
-  restaurants.map((r, i) => {
+  filteredRests().map((r, i) => {
     const { geometry, icon, name, place_id: placeId } = r;
     const { lat, lng } = geometry.location;
     return (
@@ -54,6 +54,7 @@ class GoogleMap extends PureComponent {
           zoom,
           setZoom,
           restaurants,
+          filteredRests,
           popover,
           setPopover,
           btnRotate,
@@ -101,7 +102,7 @@ class GoogleMap extends PureComponent {
                   setPopover={setPopover}
                 />
                 {restaurantMarkers(
-                  restaurants,
+                  filteredRests,
                   popover,
                   setPopover,
                   center,
