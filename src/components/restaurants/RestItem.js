@@ -38,13 +38,13 @@ const RestList = ({
       <a
         className={
           chosenId === placeId && isOpen
-            ? "list-group-item list-group-item-action bg-secondary text-white mb-2"
+            ? "list-group-item list-group-item-action bg-info text-white mb-2"
             : "list-group-item list-group-item-action mb-2"
         }
         style={
           openNow
-            ? { borderLeft: "solid #4caf50 5px" }
-            : { borderLeft: "solid #f44336 5px" }
+            ? { borderLeft: "solid #39e4a9 5px" }
+            : { borderLeft: "solid #e45439 5px" }
         }
         onClick={() => {
           setCenter({ lat, lng });
