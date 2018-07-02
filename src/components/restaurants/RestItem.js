@@ -25,7 +25,7 @@ const RestList = ({
   const { open_now: openNow } = hours;
   // console.log(hours);
 
-  console.log(openNow);
+  // console.log(openNow);
   const { chosenId, isOpen } = popover;
 
   return (
@@ -50,10 +50,6 @@ const RestList = ({
           setCenter({ lat, lng });
           setZoom(14);
 
-          if (!chosenId) {
-            setPopover(placeId, !isOpen);
-          }
-
           if (isOpen) {
             if (chosenId === placeId) {
               setPopover(placeId, !isOpen);
@@ -61,9 +57,7 @@ const RestList = ({
               setPopover(placeId, isOpen);
             }
           } else {
-            if (chosenId === placeId) {
-              setPopover(placeId, !isOpen);
-            }
+            setPopover(placeId, !isOpen);
           }
         }}
       >
