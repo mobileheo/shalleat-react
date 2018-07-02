@@ -17,6 +17,10 @@ const MARKER_STYLE = {
 };
 const BTN_CLASS =
   "btn btn-secondary d-flex justify-content-center align-items-center";
+let BTN_STYLE = {
+  minWidth: "37px",
+  transition: "transform 0.25s ease-in-out"
+};
 
 class RestaurantMarker extends React.PureComponent {
   state = {
@@ -88,12 +92,19 @@ class RestaurantMarker extends React.PureComponent {
               className={
                 chosenId === placeId && isOpen
                   ? BTN_CLASS.concat(" border border-white")
-                  : BTN_CLASS.concat(" border border-secondary")
+                  : BTN_CLASS.concat(" border border-transparent")
               }
-              style={{
-                minWidth: "37px",
-                minHeight: "inherit"
-              }}
+              style={
+                chosenId === placeId && isOpen
+                  ? {
+                      ...BTN_STYLE,
+                      transform: "scale(1.2)"
+                    }
+                  : {
+                      ...BTN_STYLE,
+                      transform: "scale(1.0)"
+                    }
+              }
               onClick={() => {
                 setCenter({ lat, lng });
                 setZoom(14);
@@ -108,10 +119,6 @@ class RestaurantMarker extends React.PureComponent {
                   setPopover(placeId, !isOpen);
                 }
               }}
-              // onMouseOver={e => {
-              //   const { currentTarget } = e;
-              //   console.log(currentTarget);
-              // }}
               alt={"marker-icon"}
             >
               {/* <img
