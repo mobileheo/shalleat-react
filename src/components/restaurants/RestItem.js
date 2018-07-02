@@ -1,6 +1,7 @@
 import React from "react";
-import { MapConsumer } from "../context/MapContext";
 import { Animated } from "react-animated-css";
+
+const CLASS_NAME = "list-group-item list-group-item-action mb-2 ";
 const RestList = ({
   restaurant,
   index,
@@ -9,7 +10,8 @@ const RestList = ({
   center,
   setCenter,
   zoom,
-  setZoom
+  setZoom,
+  scrollTop
 }) => {
   const {
     geometry,
@@ -18,7 +20,8 @@ const RestList = ({
     vicinity,
     rating,
     place_id: placeId,
-    types
+    types,
+    target
   } = restaurant;
 
   const { lat, lng } = geometry.location;
@@ -38,15 +41,23 @@ const RestList = ({
       <a
         className={
           chosenId === placeId && isOpen
-            ? "list-group-item list-group-item-action bg-info text-white mb-2"
-            : "list-group-item list-group-item-action mb-2"
+            ? CLASS_NAME.concat("bg-info text-white")
+            : CLASS_NAME
         }
+        // id={chosenId === placeId && isOpen ? chosenId : null}
+        id={placeId}
         style={
           openNow
             ? { borderLeft: "solid #39e4a9 5px" }
             : { borderLeft: "solid #424242 5px" }
         }
-        onClick={() => {
+        onClick={e => {
+          // const target = document.querySelector(".RestList");
+          // console.log(target.offsetTop);
+          // console.log("offsetTop");
+          // console.log(e.currentTarget.offsetTop);
+
+          // target.scrollTo(0, e.currentTarget.offsetTop - target.offsetTop);
           setCenter({ lat, lng });
           setZoom(14);
 
@@ -61,11 +72,24 @@ const RestList = ({
           }
         }}
       >
-        <i class="material-icons">restaurant</i> {name}
-        address: {vicinity}
-        rating: {rating}
-        types:
-        {types.map(type => <span key={`${placeId}-${type}`}>{type} </span>)}
+        <div className="col">
+          <div className="row">
+            <span>
+              <i className="material-icons">restaurant</i>
+              {name}
+            </span>
+          </div>
+          {/* <div className="row">
+            <i class="material-icons">location_on</i>
+            <span>{rating}</span>
+          </div>
+          <div className="row bd-highlight">
+            <i class="material-icons">location_on</i>
+            <span>{vicinity}</span>
+          </div>
+          types:
+          {types.map(type => <span key={`${placeId}-${type}`}>{type} </span>)} */}
+        </div>
       </a>
     </Animated>
   );

@@ -61,7 +61,8 @@ export class MapProvider extends Component {
     keyword: "",
     setKeyword: keyword => this.setState({ keyword }),
     filteredRests: () =>
-      getFilterdList(this.state.restaurants, this.state.keyword)
+      getFilterdList(this.state.restaurants, this.state.keyword),
+    scrollTop: 0
   };
 
   setLoading() {

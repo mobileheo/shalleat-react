@@ -22,6 +22,25 @@ let BTN_STYLE = {
   transition: "transform 0.25s ease-in-out"
 };
 
+const scrollToTarget = chosenId => {
+  const targetContainer = document.querySelector(".RestList");
+  const targetChild = document.querySelector(`#${chosenId}`);
+  targetContainer.scrollTo({
+    top: targetChild.offsetTop - targetContainer.offsetTop,
+    behavior: "smooth"
+  });
+};
+
+const getSchedule = async (placeId, filters) => {
+  try {
+    const schedule = await Restaurant.getSchedule(placeId, filters);
+
+    return schedule;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 class RestaurantMarker extends React.PureComponent {
   state = {
     loading: true,
@@ -65,7 +84,7 @@ class RestaurantMarker extends React.PureComponent {
     } = this.props;
     const { chosenId, isOpen } = popover;
     return loading ? (
-      <Spinner name="ball-scale-multiple" color="steelblue" />
+      <Spinner name="ball-scale-multiple" color="#2196f3" />
     ) : (
       <Animated
         animationIn="bounceIn"
@@ -118,6 +137,8 @@ class RestaurantMarker extends React.PureComponent {
                 } else {
                   setPopover(placeId, !isOpen);
                 }
+
+                scrollToTarget(placeId);
               }}
               alt={"marker-icon"}
             >
@@ -157,15 +178,5 @@ class RestaurantMarker extends React.PureComponent {
     );
   }
 }
-
-const getSchedule = async (placeId, filters) => {
-  try {
-    const schedule = await Restaurant.getSchedule(placeId, filters);
-
-    return schedule;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 export default RestaurantMarker;

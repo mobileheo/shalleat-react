@@ -2,6 +2,7 @@ import React from "react";
 import { MapConsumer } from "../context/MapContext";
 import { Animated } from "react-animated-css";
 import RestItem from "./RestItem";
+
 const RestList = () => (
   <MapConsumer>
     {({
@@ -13,7 +14,8 @@ const RestList = () => (
       filteredRests,
       popover,
       setPopover,
-      radius
+      radius,
+      scrollTop
     }) => {
       const restaurants = filteredRests();
       return loading ? null : restaurants.length === 0 ? (
