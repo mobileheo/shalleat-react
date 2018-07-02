@@ -43,14 +43,21 @@ class RadiusBar extends React.Component {
 
           return loading ? null : (
             <div className="RadiusInputBar">
-              <label className="badge badge-secondary" htmlFor="radius">
+              <label
+                className="badge badge-dark font-weight-normal"
+                htmlFor="radius"
+                style={{
+                  transform: `translate(${currentRadius / 76}px, 0px)`,
+                  fontSize: "1.6vh"
+                }}
+              >
                 {this.meterToKm(currentRadius)}
               </label>
               <Tooltip
                 title={`${this.meterToKm(currentRadius)}`}
                 followCursor={true}
                 arrow={true}
-                position="top"
+                position="bottom"
               >
                 <input
                   type="range"
@@ -61,6 +68,7 @@ class RadiusBar extends React.Component {
                   value={currentRadius}
                   onChange={e => {
                     const { currentTarget } = e;
+                    // console.log(currentTarget.getBoundingClientRect());
                     const currentRadius = +currentTarget.value;
                     this.setState({ currentRadius });
                     clearTimeout(this.timerId);
@@ -70,6 +78,9 @@ class RadiusBar extends React.Component {
                       setRadius(currentRadius);
                       setZoom(zoom);
                     }, WAIT_INTERVAL);
+                  }}
+                  onScroll={e => {
+                    console.log(e.currentTarget.getBoundingClientRect());
                   }}
                 />
               </Tooltip>
