@@ -40,13 +40,19 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
             </Animated>
           </NavLink>
         </span>
-        {/* <MapProvider> */}
-        <SearchBox />
-        {/* </MapProvider> */}
+        <Animated
+          animationIn="fadeInDown"
+          animationOut="bounceOutUp"
+          animationInDelay={500}
+          isVisible={!!user}
+        >
+          <SearchBox />
+        </Animated>
         <Nav className="ml-auto" navbar>
           <Animated
             animationIn="fadeInLeft"
             animationOut="fadeOutRight"
+            animationInDelay={1000}
             isVisible={!!user}
           >
             <NavItem style={style(false)}>
@@ -123,7 +129,7 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
           <Animated
             animationIn="bounceIn"
             animationOut="bounceOut"
-            animationInDelay={500}
+            animationInDelay={1500}
             isVisible={!!user}
           >
             <button
