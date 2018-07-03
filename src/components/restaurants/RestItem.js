@@ -1,6 +1,9 @@
 import React from "react";
-import { MapConsumer } from "../context/MapContext";
 import { Animated } from "react-animated-css";
+import RestRating from "./RestRating";
+
+const CLASS_NAME = "list-group-item list-group-item-action mb-2 ";
+const LIST_STYLE = { transition: "background-color 0.25s ease-in-out" };
 const RestList = ({
   restaurant,
   index,
@@ -9,7 +12,8 @@ const RestList = ({
   center,
   setCenter,
   zoom,
-  setZoom
+  setZoom,
+  scrollTop
 }) => {
   const {
     geometry,
@@ -18,14 +22,12 @@ const RestList = ({
     vicinity,
     rating,
     place_id: placeId,
-    types
+    types,
+    target
   } = restaurant;
 
   const { lat, lng } = geometry.location;
   const { open_now: openNow } = hours;
-  // console.log(hours);
-
-  // console.log(openNow);
   const { chosenId, isOpen } = popover;
 
   return (
@@ -38,17 +40,26 @@ const RestList = ({
       <a
         className={
           chosenId === placeId && isOpen
-            ? "list-group-item list-group-item-action bg-secondary text-white mb-2"
-            : "list-group-item list-group-item-action mb-2"
+            ? CLASS_NAME.concat("bg-info text-white shadow")
+            : CLASS_NAME.concat("text-dark")
         }
+        id={placeId}
         style={
           openNow
-            ? { borderLeft: "solid #4caf50 5px" }
-            : { borderLeft: "solid #f44336 5px" }
+            ? {
+                ...LIST_STYLE,
+                borderLeft: "solid #39e4a9 5px"
+              }
+            : {
+                ...LIST_STYLE,
+                borderLeft: "solid #424242 5px"
+              }
         }
-        onClick={() => {
+        onClick={e => {
+          e.preventDefault();
+
           setCenter({ lat, lng });
-          setZoom(14);
+          setZoom(16);
 
           if (isOpen) {
             if (chosenId === placeId) {
@@ -61,11 +72,52 @@ const RestList = ({
           }
         }}
       >
-        name: {name}
-        address: {vicinity}
-        rating: {rating}
-        types:
-        {types.map(type => <span key={`${placeId}-${type}`}>{type} </span>)}
+        <div className="col">
+          <div className="row align-items-center">
+            <i
+              className="material-icons mr-1"
+              style={{ fontSize: "1.8vh", transform: "translateY(-1px)" }}
+            >
+              restaurant
+            </i>
+            <span
+              className="font-weight-bold mr-1"
+              style={{ fontSize: "1.5vh", transform: "translateY(-1px)" }}
+            >
+              {name}
+            </span>
+            <RestRating rating={rating} />
+            <span
+              className="ml-1 font-weight-bold"
+              style={{ transform: "translateY(-1px)" }}
+            >
+              {rating}
+            </span>
+          </div>
+          {/* <div className="row align-items-start"> */}
+          {/* <i class="material-icons" style={{ fontSize: "1.8vh" }}>
+              rate_review
+            </i> */}
+          {/* </div> */}
+          <div className="row align-items-center">
+            <i className="material-icons mr-1" style={{ fontSize: "1.8vh" }}>
+              location_on
+            </i>
+            <span className="font-weight-light" style={{ fontSize: "1.5vh" }}>
+              {vicinity}
+            </span>
+          </div>
+          {/* <div className="row">
+            <i class="material-icons">location_on</i>
+            <span>{rating}</span>
+          </div>
+          <div className="row bd-highlight">
+            <i class="material-icons">location_on</i>
+            <span>{vicinity}</span>
+          </div>
+          types:
+          {types.map(type => <span key={`${placeId}-${type}`}>{type} </span>)} */}
+        </div>
       </a>
     </Animated>
   );

@@ -17,6 +17,29 @@ const MARKER_STYLE = {
 };
 const BTN_CLASS =
   "btn btn-secondary d-flex justify-content-center align-items-center";
+let BTN_STYLE = {
+  minWidth: "37px",
+  transition: "transform 0.25s ease-in-out"
+};
+
+const scrollToTarget = chosenId => {
+  const targetContainer = document.querySelector(".RestList");
+  const targetChild = document.querySelector(`#${chosenId}`);
+  targetContainer.scrollTo({
+    top: targetChild.offsetTop - targetContainer.offsetTop,
+    behavior: "smooth"
+  });
+};
+
+const getSchedule = async (placeId, filters) => {
+  try {
+    const schedule = await Restaurant.getSchedule(placeId, filters);
+
+    return schedule;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 class RestaurantMarker extends React.PureComponent {
   state = {
@@ -61,26 +84,28 @@ class RestaurantMarker extends React.PureComponent {
     } = this.props;
     const { chosenId, isOpen } = popover;
     return loading ? (
-      <Spinner name="ball-scale-multiple" color="steelblue" />
+      <Spinner name="ball-scale-multiple" color="#2196f3" />
     ) : (
-      <Animated
-        animationIn="bounceIn"
-        animationOut="bounceOut"
-        animationInDelay={index * 150}
-        isVisible={true}
+      <div
+        className="RestaurantMarker d-flex justify-content-center"
+        style={MARKER_STYLE}
       >
-        <div
-          className="RestaurantMarker d-flex justify-content-center"
-          style={MARKER_STYLE}
+        <Tooltip
+          title={name}
+          arrow={true}
+          sticky={true}
+          stickyDuration={100000}
+          position="auto"
+          style={{
+            width: "inherit",
+            height: "inherit"
+          }}
         >
-          <Tooltip
-            title={name}
-            arrow={true}
-            position="top"
-            style={{
-              width: "inherit",
-              height: "inherit"
-            }}
+          <Animated
+            animationIn="bounceIn"
+            animationOut="bounceOut"
+            animationInDelay={index * 150}
+            isVisible={true}
           >
             <button
               data-tippy
@@ -88,12 +113,19 @@ class RestaurantMarker extends React.PureComponent {
               className={
                 chosenId === placeId && isOpen
                   ? BTN_CLASS.concat(" border border-white")
-                  : BTN_CLASS.concat(" border border-secondary")
+                  : BTN_CLASS.concat(" border border-transparent")
               }
-              style={{
-                minWidth: "37px",
-                minHeight: "inherit"
-              }}
+              style={
+                chosenId === placeId && isOpen
+                  ? {
+                      ...BTN_STYLE,
+                      transform: "scale(1.2)"
+                    }
+                  : {
+                      ...BTN_STYLE,
+                      transform: "scale(1.0)"
+                    }
+              }
               onClick={() => {
                 setCenter({ lat, lng });
                 setZoom(14);
@@ -107,11 +139,9 @@ class RestaurantMarker extends React.PureComponent {
                 } else {
                   setPopover(placeId, !isOpen);
                 }
+
+                scrollToTarget(placeId);
               }}
-              // onMouseOver={e => {
-              //   const { currentTarget } = e;
-              //   console.log(currentTarget);
-              // }}
               alt={"marker-icon"}
             >
               {/* <img
@@ -134,31 +164,21 @@ class RestaurantMarker extends React.PureComponent {
                   : "restaurant"}
               </i>
             </button>
-            {popover.chosenId === placeId && popover.isOpen ? (
-              <RestaurantInfoBox
-                placeId={placeId}
-                name={name}
-                schedule={schedule}
-                popover={popover}
-              />
-            ) : (
-              <div />
-            )}
-          </Tooltip>
-        </div>
-      </Animated>
+          </Animated>
+          {popover.chosenId === placeId && popover.isOpen ? (
+            <RestaurantInfoBox
+              placeId={placeId}
+              name={name}
+              schedule={schedule}
+              popover={popover}
+            />
+          ) : (
+            <div />
+          )}
+        </Tooltip>
+      </div>
     );
   }
 }
-
-const getSchedule = async (placeId, filters) => {
-  try {
-    const schedule = await Restaurant.getSchedule(placeId, filters);
-
-    return schedule;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 export default RestaurantMarker;

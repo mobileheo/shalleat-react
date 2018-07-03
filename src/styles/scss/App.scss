@@ -7,6 +7,6 @@
 
 header {
   .navbar-brand:focus::before {
-    opacity: 1;
+    opacity: 1 !important;
   }
 }

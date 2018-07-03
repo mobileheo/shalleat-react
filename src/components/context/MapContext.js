@@ -47,7 +47,19 @@ export class MapProvider extends Component {
     restaurants: [],
     setRestaurants: async radius => {
       try {
-        this.setState({ restaurants: [], radius });
+        await this.setState({ restaurants: [], radius });
+        await this.findNearby();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    typeKeyword: "",
+    setTypeKeyword: async typeKeyword => {
+      try {
+        // await this.setState({ restaurants: [] });
+        // const radius = 200000;
+        await this.setState({ restaurants: [], typeKeyword });
+        // console.log(this.state.restaurants);
         await this.findNearby();
       } catch (error) {
         console.log(error);
@@ -94,8 +106,9 @@ export class MapProvider extends Component {
   };
 
   async findNearby() {
-    const { currentLocation, radius } = this.state;
-    const filters = { ...currentLocation, radius };
+    const { currentLocation, radius, typeKeyword } = this.state;
+    console.log("typeKeyword => ", typeKeyword);
+    const filters = { ...currentLocation, radius, typeKeyword };
     const loading = false;
     try {
       const firstBatch = await Restaurant.findNearby(filters);
