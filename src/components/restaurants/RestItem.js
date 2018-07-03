@@ -1,9 +1,14 @@
 import React from "react";
 import { Animated } from "react-animated-css";
 import RestRating from "./RestRating";
+import ReveiwList from "./ReviewList";
 
-const CLASS_NAME = "list-group-item list-group-item-action mb-2 ";
-const LIST_STYLE = { transition: "background-color 0.25s ease-in-out" };
+const CLASS_NAME =
+  "d-flex justify-content-between list-group-item list-group-item-action mb-2 p-2";
+const LIST_STYLE = {
+  transition: "background-color 0.25s ease-in-out",
+  padding: "1rem"
+};
 const RestList = ({
   restaurant,
   index,
@@ -38,10 +43,14 @@ const RestList = ({
       animationInDelay={index * 150}
     >
       <a
+        aria-expanded="false"
+        data-toggle="collapse"
         className={
           chosenId === placeId && isOpen
-            ? CLASS_NAME.concat("bg-info text-white shadow")
-            : CLASS_NAME.concat("text-dark")
+            ? CLASS_NAME.concat(
+                "list-item-container bg-info text-white shadow "
+              )
+            : CLASS_NAME.concat("text-dark collapsed")
         }
         id={placeId}
         style={
@@ -72,8 +81,8 @@ const RestList = ({
           }
         }}
       >
-        <div className="col">
-          <div className="row align-items-center">
+        <div className="meta-data-container">
+          <div className="d-flex align-items-center">
             <i
               className="material-icons mr-1"
               style={{ fontSize: "1.8vh", transform: "translateY(-1px)" }}
@@ -82,24 +91,26 @@ const RestList = ({
             </i>
             <span
               className="font-weight-bold mr-1"
-              style={{ fontSize: "1.5vh", transform: "translateY(-1px)" }}
+              style={{
+                fontSize: "1.5vh",
+                transform: "translateY(-1px)",
+                width: "6vw",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap"
+              }}
             >
               {name}
             </span>
             <RestRating rating={rating} />
             <span
               className="ml-1 font-weight-bold"
-              style={{ transform: "translateY(-1px)" }}
+              style={{ transform: "translateY(-1px)", fontSize: "1.5vh" }}
             >
               {rating}
             </span>
           </div>
-          {/* <div className="row align-items-start"> */}
-          {/* <i class="material-icons" style={{ fontSize: "1.8vh" }}>
-              rate_review
-            </i> */}
-          {/* </div> */}
-          <div className="row align-items-center">
+          <div className="d-flex align-items-center">
             <i className="material-icons mr-1" style={{ fontSize: "1.8vh" }}>
               location_on
             </i>
@@ -107,18 +118,15 @@ const RestList = ({
               {vicinity}
             </span>
           </div>
-          {/* <div className="row">
-            <i class="material-icons">location_on</i>
-            <span>{rating}</span>
+        </div>
+        <div className="arrow-container d-flex justify-content-end">
+          <div class="expansion-panel-icon ml-0 text-black-secondary">
+            <i class="collapsed-show material-icons">keyboard_arrow_down</i>
+            <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
           </div>
-          <div className="row bd-highlight">
-            <i class="material-icons">location_on</i>
-            <span>{vicinity}</span>
-          </div>
-          types:
-          {types.map(type => <span key={`${placeId}-${type}`}>{type} </span>)} */}
         </div>
       </a>
+      <ReveiwList chosenId={chosenId} placeId={placeId} isOpen={isOpen} />
     </Animated>
   );
 };

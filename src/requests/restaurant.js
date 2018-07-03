@@ -29,5 +29,15 @@ export default {
     } catch (error) {
       throw new Error(error);
     }
+  },
+  async getDetail(placeId, filters) {
+    try {
+      return await postData(`${url}/detail`, {
+        placeId,
+        filters
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 };

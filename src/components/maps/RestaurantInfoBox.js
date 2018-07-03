@@ -106,23 +106,23 @@ const RestaurantInfoBox = enhence(
     const { chosenId, isOpen } = popover;
     if (chosenId === placeId && isOpen) {
       return (
-        <div className="RestaurantInfoBox">
+        <div className="RestaurantInfoBox ">
           {
             <Popover
               placement="auto"
               isOpen={isOpen}
               target={`Popover-${placeId}`}
             >
-              <PopoverHeader>{name}</PopoverHeader>
-              <PopoverBody>{schedule.name}</PopoverBody>
-              <span>{remainingTime}</span>
+              <div class="arrow">
+                <PopoverHeader>{name}</PopoverHeader>
+                <PopoverBody>{schedule.name}</PopoverBody>
+                <span>{remainingTime}</span>
+              </div>
             </Popover>
           }
         </div>
       );
     } else {
-      // btnTrun(`#Popover-${chosenId}`);
-      // console.log("btnTurn");
       return <div className="RestaurantInfoBox" />;
     }
   }
