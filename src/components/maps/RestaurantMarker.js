@@ -86,24 +86,26 @@ class RestaurantMarker extends React.PureComponent {
     return loading ? (
       <Spinner name="ball-scale-multiple" color="#2196f3" />
     ) : (
-      <Animated
-        animationIn="bounceIn"
-        animationOut="bounceOut"
-        animationInDelay={index * 150}
-        isVisible={true}
+      <div
+        className="RestaurantMarker d-flex justify-content-center"
+        style={MARKER_STYLE}
       >
-        <div
-          className="RestaurantMarker d-flex justify-content-center"
-          style={MARKER_STYLE}
+        <Tooltip
+          title={name}
+          arrow={true}
+          sticky={true}
+          stickyDuration={100000}
+          position="auto"
+          style={{
+            width: "inherit",
+            height: "inherit"
+          }}
         >
-          <Tooltip
-            title={name}
-            arrow={true}
-            position="top"
-            style={{
-              width: "inherit",
-              height: "inherit"
-            }}
+          <Animated
+            animationIn="bounceIn"
+            animationOut="bounceOut"
+            animationInDelay={index * 150}
+            isVisible={true}
           >
             <button
               data-tippy
@@ -162,19 +164,19 @@ class RestaurantMarker extends React.PureComponent {
                   : "restaurant"}
               </i>
             </button>
-            {popover.chosenId === placeId && popover.isOpen ? (
-              <RestaurantInfoBox
-                placeId={placeId}
-                name={name}
-                schedule={schedule}
-                popover={popover}
-              />
-            ) : (
-              <div />
-            )}
-          </Tooltip>
-        </div>
-      </Animated>
+          </Animated>
+          {popover.chosenId === placeId && popover.isOpen ? (
+            <RestaurantInfoBox
+              placeId={placeId}
+              name={name}
+              schedule={schedule}
+              popover={popover}
+            />
+          ) : (
+            <div />
+          )}
+        </Tooltip>
+      </div>
     );
   }
 }
