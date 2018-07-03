@@ -1,3 +1,13 @@
+# Sass local cache files 
+.sass-cache
+
+# Ignore all css files
+src/styles/css/*
+configuration.js
+
+#vscode configuration
+.vscode
+
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
