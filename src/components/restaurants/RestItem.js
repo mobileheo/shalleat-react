@@ -118,16 +118,6 @@ const RestList = ({
               {vicinity}
             </span>
           </div>
-          {/* <div className="row">
-            <i class="material-icons">location_on</i>
-            <span>{rating}</span>
-          </div>
-          <div className="row bd-highlight">
-            <i class="material-icons">location_on</i>
-            <span>{vicinity}</span>
-          </div>
-          types:
-          {types.map(type => <span key={`${placeId}-${type}`}>{type} </span>)} */}
         </div>
         <div className="arrow-container d-flex justify-content-end">
           <div class="expansion-panel-icon ml-0 text-black-secondary">
