@@ -6,6 +6,8 @@ import { NavLink } from "react-router-dom";
 import { Nav, NavItem } from "reactstrap";
 import Logo from "./Logo";
 import NavDrawer from "./NavDrawer";
+import { MapProvider } from "../context/MapContext";
+import SearchBox from "./SearchBox";
 import User from "../../requests/user";
 
 const enhance = withState("hovered", "toggleHover", false);
@@ -38,11 +40,9 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
             </Animated>
           </NavLink>
         </span>
-        {/* className={
-                  chosenId === placeId && isOpen
-                    ? "list-group-item list-group-item-action bg-secondary text-white mb-2"
-                    : "list-group-item list-group-item-action mb-2"
-                } */}
+        {/* <MapProvider> */}
+        <SearchBox />
+        {/* </MapProvider> */}
         <Nav className="ml-auto" navbar>
           <Animated
             animationIn="fadeInLeft"
@@ -74,29 +74,10 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
                 className="nav-link px-2 d-flex align-items-center bg-transparent border border-white "
                 onMouseOver={e => {
                   const { currentTarget } = e;
-
                   toggleHover({ hovered: true });
-                  // currentTarget.classList.add("border", "border-white");
-                  // const slowAnimation = anime({
-                  //   targets: currentTarget,
-                  //   scale: 1.3,
-                  //   // border: "solid",
-                  //   backgroundColor: "#fab10e !important",
-                  //   duration: 1000,
-                  //   easing: "linear"
-                  // });
                 }}
                 onMouseLeave={e => {
                   toggleHover({ hovered: false });
-                  //   const { currentTarget } = e;
-                  //   currentTarget.classList.remove("border", "border-white");
-                  //   const slowAnimation = anime({
-                  //     targets: currentTarget,
-                  //     scale: 1,
-                  //     borderRadius: 50,
-                  //     duration: 4000,
-                  //     elasticity: 500
-                  //   });
                 }}
               >
                 Sign in

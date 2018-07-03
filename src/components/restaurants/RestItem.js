@@ -1,7 +1,9 @@
 import React from "react";
 import { Animated } from "react-animated-css";
+import RestRating from "./RestRating";
 
 const CLASS_NAME = "list-group-item list-group-item-action mb-2 ";
+const LIST_STYLE = { transition: "background-color 0.25s ease-in-out" };
 const RestList = ({
   restaurant,
   index,
@@ -26,9 +28,6 @@ const RestList = ({
 
   const { lat, lng } = geometry.location;
   const { open_now: openNow } = hours;
-  // console.log(hours);
-
-  // console.log(openNow);
   const { chosenId, isOpen } = popover;
 
   return (
@@ -41,23 +40,24 @@ const RestList = ({
       <a
         className={
           chosenId === placeId && isOpen
-            ? CLASS_NAME.concat("bg-info text-white")
-            : CLASS_NAME
+            ? CLASS_NAME.concat("bg-info text-white shadow")
+            : CLASS_NAME.concat("text-dark")
         }
-        // id={chosenId === placeId && isOpen ? chosenId : null}
         id={placeId}
         style={
           openNow
-            ? { borderLeft: "solid #39e4a9 5px" }
-            : { borderLeft: "solid #424242 5px" }
+            ? {
+                ...LIST_STYLE,
+                borderLeft: "solid #39e4a9 5px"
+              }
+            : {
+                ...LIST_STYLE,
+                borderLeft: "solid #424242 5px"
+              }
         }
         onClick={e => {
-          // const target = document.querySelector(".RestList");
-          // console.log(target.offsetTop);
-          // console.log("offsetTop");
-          // console.log(e.currentTarget.offsetTop);
+          e.preventDefault();
 
-          // target.scrollTo(0, e.currentTarget.offsetTop - target.offsetTop);
           setCenter({ lat, lng });
           setZoom(14);
 
@@ -73,10 +73,38 @@ const RestList = ({
         }}
       >
         <div className="col">
-          <div className="row">
-            <span>
-              <i className="material-icons">restaurant</i>
+          <div className="row align-items-center">
+            <i
+              className="material-icons mr-1"
+              style={{ fontSize: "1.8vh", transform: "translateY(-1px)" }}
+            >
+              restaurant
+            </i>
+            <span
+              className="font-weight-bold mr-1"
+              style={{ fontSize: "1.5vh", transform: "translateY(-1px)" }}
+            >
               {name}
+            </span>
+            <RestRating rating={rating} />
+            <span
+              className="ml-1 font-weight-bold"
+              style={{ transform: "translateY(-1px)" }}
+            >
+              {rating}
+            </span>
+          </div>
+          {/* <div className="row align-items-start"> */}
+          {/* <i class="material-icons" style={{ fontSize: "1.8vh" }}>
+              rate_review
+            </i> */}
+          {/* </div> */}
+          <div className="row align-items-center">
+            <i className="material-icons mr-1" style={{ fontSize: "1.8vh" }}>
+              location_on
+            </i>
+            <span className="font-weight-light" style={{ fontSize: "1.5vh" }}>
+              {vicinity}
             </span>
           </div>
           {/* <div className="row">
