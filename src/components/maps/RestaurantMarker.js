@@ -93,8 +93,6 @@ class RestaurantMarker extends React.PureComponent {
         <Tooltip
           title={name}
           arrow={true}
-          sticky={true}
-          stickyDuration={100000}
           position="auto"
           style={{
             width: "inherit",

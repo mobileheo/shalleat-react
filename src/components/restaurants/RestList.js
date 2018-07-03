@@ -2,7 +2,7 @@ import React from "react";
 import { MapConsumer } from "../context/MapContext";
 import { Animated } from "react-animated-css";
 import RestItem from "./RestItem";
-
+import Restaurant from "../../requests/restaurant";
 const RestList = () => (
   <MapConsumer>
     {({
