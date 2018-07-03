@@ -41,7 +41,7 @@ class RadiusBar extends React.Component {
                     fontSize: "1.4vh"
                   }}
                 >
-                  {this.meterToKm(currentRadius)}
+                  {this.meterToKm(radius)}
                 </label>
               </div>
               <input
