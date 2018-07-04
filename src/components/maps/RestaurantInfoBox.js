@@ -34,16 +34,23 @@ const getTodayHours = ({
     if (isOpenNow) {
       const closeHours = timeFormatter(close.time);
       const diff = Math.abs(close.day - open.day);
+      const yearDateHours = addYearDateToHours(closeHours);
       diff
-        ? (closeTime = moment(addYearDateToHours(closeHours)).add(diff, "d"))
-        : (closeTime = addYearDateToHours(closeHours));
+        ? (closeTime = moment(yearDateHours).add(diff, "d"))
+        : (closeTime = yearDateHours);
     } else {
       if (open.time >= currentTime) {
+        // Will open later today
         const openhours = timeFormatter(open.time);
         openTime = addYearDateToHours(openhours);
       } else {
-        const closedHours = timeFormatter(open.time);
-        closeTime = moment().format(`YYYY-MM-DD ${closedHours}:00`);
+        // Already closed today
+        const nextOpenHours = timeFormatter(nextOpen.time);
+        const diff = Math.abs(nextOpen.day - close.day);
+        const yearDateHours = addYearDateToHours(nextOpenHours);
+        diff
+          ? (closeTime = moment(yearDateHours).add(diff, "d"))
+          : (closeTime = yearDateHours);
       }
     }
   } else {

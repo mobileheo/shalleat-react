@@ -6,6 +6,7 @@ import { Nav, NavItem } from "reactstrap";
 import Logo from "./Logo";
 import NavDrawer from "./NavDrawer";
 import SearchBox from "./SearchBox";
+import PickBtn from "./PickBtn";
 import User from "../../requests/user";
 
 const enhance = withState("hovered", "toggleHover", false);
@@ -54,11 +55,27 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
             isVisible={!!user}
           >
             <NavItem style={style(false)}>
+              <PickBtn />
+            </NavItem>
+          </Animated>
+          <Animated
+            animationIn="fadeInLeft"
+            animationOut="fadeOutRight"
+            animationInDelay={1000}
+            isVisible={!!user}
+          >
+            <NavItem style={style(false)}>
               <NavLink
                 exact
                 to="/signin"
                 className="nav-link d-flex align-items-center bg-transparent border border-white mx-3 px-2"
                 onClick={signOut}
+                onMouseEnter={e => {
+                  e.currentTarget.classList.add("border-secondary");
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.classList.remove("border-secondary");
+                }}
               >
                 Sign out
               </NavLink>
@@ -76,6 +93,12 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
                 exact
                 to="/signin"
                 className="nav-link px-2 d-flex align-items-center bg-transparent border border-white "
+                onMouseEnter={e => {
+                  e.currentTarget.classList.add("border-secondary");
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.classList.remove("border-secondary");
+                }}
               >
                 Sign in
               </NavLink>
@@ -94,6 +117,12 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
                 exact
                 to="/"
                 className="nav-link d-flex align-items-center disabled px-2"
+                onMouseEnter={e => {
+                  e.currentTarget.classList.add("border-secondary");
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.classList.remove("border-secondary");
+                }}
               >
                 or
               </NavLink>
@@ -112,6 +141,12 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
                 exact
                 to="/signup"
                 className="nav-link px-2 d-flex align-items-center bg-transparent border border-white"
+                onMouseEnter={e => {
+                  e.currentTarget.classList.add("border-secondary");
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.classList.remove("border-secondary");
+                }}
               >
                 Sign up
               </NavLink>

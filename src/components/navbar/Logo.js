@@ -17,7 +17,7 @@ let morphingLogo = () =>
     ],
     rotate: 360,
     easing: "easeInOutExpo",
-    duration: 5000,
+    duration: 8000,
     loop: true
   });
 
