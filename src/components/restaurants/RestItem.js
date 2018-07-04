@@ -24,11 +24,8 @@ const RestList = ({
     geometry,
     name,
     opening_hours: hours = {},
-    vicinity,
     rating,
-    place_id: placeId,
-    types,
-    target
+    place_id: placeId
   } = restaurant;
 
   const { lat, lng } = geometry.location;
@@ -82,19 +79,15 @@ const RestList = ({
         }}
       >
         <div className="meta-data-container">
-          <div className="d-flex align-items-center">
-            <i
-              className="material-icons mr-1"
-              style={{ fontSize: "1.8vh", transform: "translateY(-1px)" }}
-            >
+          <div className="d-flex align-items-center mb-2">
+            <i className="material-icons mr-1" style={{ fontSize: "2.7vh" }}>
               restaurant
             </i>
             <span
               className="font-weight-bold mr-1"
               style={{
-                fontSize: "1.5vh",
-                transform: "translateY(-1px)",
-                width: "6vw",
+                fontSize: "2.3vh",
+                width: "15vw",
                 textOverflow: "ellipsis",
                 overflow: "hidden",
                 whiteSpace: "nowrap"
@@ -102,27 +95,21 @@ const RestList = ({
             >
               {name}
             </span>
+          </div>
+          <div className="d-flex align-items-center">
             <RestRating rating={rating} />
             <span
-              className="ml-1 font-weight-bold"
-              style={{ transform: "translateY(-1px)", fontSize: "1.5vh" }}
+              className="ml-2 font-weight-bold"
+              style={{ transform: "translateY(-1.5px)", fontSize: "2.1vh" }}
             >
               {rating}
             </span>
           </div>
-          <div className="d-flex align-items-center">
-            <i className="material-icons mr-1" style={{ fontSize: "1.8vh" }}>
-              location_on
-            </i>
-            <span className="font-weight-light" style={{ fontSize: "1.5vh" }}>
-              {vicinity}
-            </span>
-          </div>
         </div>
         <div className="arrow-container d-flex justify-content-end">
-          <div class="expansion-panel-icon ml-0 text-black-secondary">
-            <i class="collapsed-show material-icons">keyboard_arrow_down</i>
-            <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
+          <div className="expansion-panel-icon ml-0 text-black-secondary">
+            <i className="collapsed-show material-icons">keyboard_arrow_down</i>
+            <i className="collapsed-hide material-icons">keyboard_arrow_up</i>
           </div>
         </div>
       </a>
