@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { MapConsumer } from "../context/MapContext";
-import { withState } from "recompose";
 
-// const enhance = withState("selected", "setSeleted", false);
 const WAIT_INTERVAL = 1500;
 const UNIT_REGEX = /(\d+\.?\d{0,9}|\.\d{0,2})(miles|mile|m|cm|km|inch|yard|foot)/;
 
@@ -17,7 +15,7 @@ const getTypeOnly = input => {
 };
 const extractRadius = input => {
   let [rangeStr, radius, unit] = input.match(UNIT_REGEX) || ["noMatch"];
-
+  console.log(rangeStr);
   if (radius) {
     switch (unit) {
       case "mile" || "miles":
@@ -38,6 +36,8 @@ const extractRadius = input => {
       case "foot":
         radius = radius * 0.3048;
         break;
+      default:
+        break;
     }
     return ~~radius;
   }
@@ -52,18 +52,26 @@ class SearchBox extends Component {
   render() {
     return (
       <MapConsumer>
-        {({ setTypeKeyword, setZoom, radius, setRadius }) => {
+        {({
+          setKeyword,
+          setTypeKeyword,
+          setZoom,
+          radius,
+          setRadius,
+          currentLocation,
+          setCenter
+        }) => {
           const handleInput = e => {
             e.preventDefault();
 
             const { value: input } = e.currentTarget;
             const type = getTypeOnly(input);
             const newRadius = extractRadius(input) || radius;
-            console.log("type => ", type);
-            console.log("newRadius => ", newRadius);
             clearTimeout(this.timerId);
 
             this.timerId = setTimeout(() => {
+              setKeyword("");
+              setCenter(currentLocation);
               setZoom(calcZoom(newRadius));
               setRadius(newRadius);
               setTypeKeyword(type);
@@ -71,7 +79,7 @@ class SearchBox extends Component {
           };
           return (
             <div className="form-group my-0 mr-6">
-              <div class="input-group">
+              <div className="input-group">
                 <input
                   className="form-control "
                   type="search"

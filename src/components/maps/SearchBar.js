@@ -2,8 +2,6 @@ import React from "react";
 import { compose, withState, lifecycle } from "recompose";
 import { MapConsumer } from "../context/MapContext";
 
-const WAIT_INTERVAL = 1500;
-
 const enhance = compose(
   withState("input", "setInput", ""),
   withState("timerId", "setTimerId", null),
@@ -29,7 +27,7 @@ const SearchBar = enhance(({ style, input, setInput, timerId, setTimerId }) => {
                 id="exampleIconInput8"
                 placeholder="No raspberry pi please 🙏"
                 onChange={e => {
-                  const { value: keyword } = e.currentTarget;
+                  let { value: keyword } = e.currentTarget;
                   setKeyword(keyword);
                 }}
               />

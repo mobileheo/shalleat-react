@@ -1,5 +1,4 @@
 import React from "react";
-import anime from "animejs";
 import "react-tippy/dist/tippy.css";
 import { Tooltip } from "react-tippy";
 import { Animated } from "react-animated-css";
@@ -34,8 +33,30 @@ const scrollToTarget = chosenId => {
 const getSchedule = async (placeId, filters) => {
   try {
     const schedule = await Restaurant.getSchedule(placeId, filters);
-
     return schedule;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getDetail = async placeId => {
+  try {
+    const detail = await Restaurant.getDetail(placeId, [
+      "formatted_phone_number",
+      "international_phone_number",
+      "price_level",
+      "website",
+      "photos"
+    ]);
+    return detail;
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getPhoto = async (photoId, maxWidth) => {
+  try {
+    const { photoUrl } = await Restaurant.getPhoto(photoId, maxWidth);
+    return photoUrl;
   } catch (error) {
     console.log(error);
   }
@@ -44,25 +65,53 @@ const getSchedule = async (placeId, filters) => {
 class RestaurantMarker extends React.PureComponent {
   state = {
     loading: true,
-    schedule: {}
+    schedule: {},
+    detail: {},
+    photoUrls: []
   };
-
-  componentDidMount() {
-    this._isMounted = true;
-    getSchedule(this.props.placeId, this.props.filters)
-      .then(schedule => {
-        this.setSchedule({ schedule, loading: false });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
 
   setSchedule = options => {
     if (this._isMounted) {
       this.setState(options);
     }
   };
+  setDetail = detail => {
+    if (this._isMounted) {
+      this.setState(detail);
+    }
+  };
+  setPhotoUrls = photoUrls => {
+    if (this._isMounted) {
+      this.setState(photoUrls);
+    }
+  };
+
+  async componentDidMount() {
+    this._isMounted = true;
+    const { placeId, filters } = this.props;
+    try {
+      const schedule = await getSchedule(placeId, filters);
+      const detail = await getDetail(placeId);
+      await this.setDetail({ detail });
+      await this.setSchedule({ schedule, loading: false });
+      const { photos } = detail;
+
+      if (photos) {
+        const photoUrls = photos.map(async ({ photo_reference: id }) => {
+          try {
+            return await getPhoto(id, 250);
+          } catch (error) {
+            console.log(error);
+          }
+        });
+        Promise.all(photoUrls).then(urls =>
+          this.setPhotoUrls({ photoUrls: urls })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   componentWillUnmount() {
     this._isMounted = false;
@@ -76,6 +125,7 @@ class RestaurantMarker extends React.PureComponent {
       name,
       lat,
       lng,
+      vicinity,
       popover,
       setPopover,
       setCenter,
@@ -83,6 +133,7 @@ class RestaurantMarker extends React.PureComponent {
       index
     } = this.props;
     const { chosenId, isOpen } = popover;
+
     return loading ? (
       <Spinner name="ball-scale-multiple" color="#2196f3" />
     ) : (
@@ -142,21 +193,7 @@ class RestaurantMarker extends React.PureComponent {
               }}
               alt={"marker-icon"}
             >
-              {/* <img
-                src={icon}
-                style={{
-                  position: "absolute",
-                  height: 40,
-                  width: 40
-                }}
-                alt={"marker-icon"}
-              /> */}
-              <i
-                className="material-icons"
-                // style={{
-                //   fontSize: "2.5vh"
-                // }}
-              >
+              <i className="material-icons">
                 {chosenId === placeId && isOpen
                   ? "restaurant_menu"
                   : "restaurant"}
@@ -167,8 +204,14 @@ class RestaurantMarker extends React.PureComponent {
             <RestaurantInfoBox
               placeId={placeId}
               name={name}
+              icon={icon}
+              vicinity={vicinity}
               schedule={schedule}
               popover={popover}
+              photoUrls={this.state.photoUrls}
+              detail={this.state.detail}
+              lat={lat}
+              lng={lng}
             />
           ) : (
             <div />
