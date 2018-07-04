@@ -47,6 +47,7 @@ const anchorTagStyle = {
 };
 const wrapperClass = "d-flex justify-content-start align-items-center mb-3 ";
 const currentTime = moment().format("HHmm");
+const timeFormatter = time => time.slice(0, 2) + ":" + time.slice(2);
 const timeHelper = ({
   notAvailable,
   immortal,
@@ -56,6 +57,7 @@ const timeHelper = ({
 }) => {
   if (notAvailable) return notAvailable;
   if (immortal) return "Open 24 hours";
+  const { open, close } = todayHours;
   let closeTime, openTime;
   console.log("currentTime => ", currentTime);
   console.log("isOpenToday in timeHelpr => ", isOpenToday);
@@ -63,17 +65,25 @@ const timeHelper = ({
   console.log("todayHours in timeHelpr => ", todayHours);
   if (isOpenToday) {
     if (isOpenNow) {
-      const { time } = todayHours.close;
-      const closeHours = time.slice(0, 2) + ":" + time.slice(2);
-      closeTime = moment().format(`YYYY-MM-DD ${closeHours}:00`);
-      // return { closeTime };
+      const closeHours = timeFormatter(close.time);
+      const diff = Math.abs(close.day - open.day);
+      if (diff) {
+        closeTime = moment(moment().format(`YYYY-MM-DD ${closeHours}:00`)).add(
+          diff,
+          "d"
+        );
+      } else {
+        closeTime = moment().format(`YYYY-MM-DD ${closeHours}:00`);
+      }
     } else {
-      // close.time <= currentTime
-      const { time } = todayHours.open;
-      const openhours = time.slice(0, 2) + ":" + time.slice(2);
-      openTime = moment().format(`YYYY-MM-DD ${openhours}:00`);
-      console.log("openTime in timeHelpr => ", openTime);
-      // return { openTime };
+      if (open.time >= currentTime) {
+        const openhours = timeFormatter(open.time);
+        openTime = moment().format(`YYYY-MM-DD ${openhours}:00`);
+        console.log("openTime in timeHelpr => ", openTime);
+      } else {
+        const closedHours = timeFormatter(open.time);
+        closeTime = moment().format(`YYYY-MM-DD ${closedHours}:00`);
+      }
     }
   }
   return { openTime, closeTime };
@@ -82,11 +92,12 @@ const timeHelper = ({
 const currentYearDateTime = () => moment().format("YYYY-MM-DD HH:mm:ss");
 
 const calcRemainTime = ({ openTime = false, closeTime }) => {
-  // console.log("openTim => ", openTime);
+  console.log("openTim => ", openTime);
   console.log("closeTime => ", closeTime);
+
   return openTime
     ? moment(currentYearDateTime()).preciseDiff(openTime)
-    : moment(closeTime).preciseDiff(currentYearDateTime());
+    : moment(currentYearDateTime()).preciseDiff(closeTime);
 };
 
 let timerID;
@@ -183,18 +194,10 @@ const RestaurantInfoBox = enhence(
                     </div>
                   ) : (
                     <div className={wrapperClass}>
-                      <i
-                        className="material-icons mr-2"
-                        style={{ color: "#424242" }}
-                      >
-                        battery_full
-                      </i>
-                      <span style={{ borderBottom: "solid #424242 2px" }}>
-                        {remainingTime}
-                      </span>
+                      <i class="material-icons mr-2">battery_charging_full</i>
+                      <span>{remainingTime}</span>
                     </div>
                   )}
-
                   <div className={wrapperClass}>
                     <i className="material-icons mr-2">phone</i>
                     {phone === "Not available" ? (
