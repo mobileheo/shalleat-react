@@ -6,8 +6,8 @@ const RestRating = ({ rating }) => {
     <StarRatings
       rating={rating}
       starRatedColor="#ff9800"
-      starDimension="1.7vh"
-      starSpacing="2px"
+      starDimension="3vh"
+      starSpacing="5px"
     />
   );
 };

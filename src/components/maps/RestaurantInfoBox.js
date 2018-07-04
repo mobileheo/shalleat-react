@@ -123,8 +123,24 @@ const RestaurantInfoBox = enhence(
               <div class="arrow">
                 <PopoverHeader>{name}</PopoverHeader>
                 <PopoverBody>
-                  <i class="material-icons">timelapse</i>
                   <span>Will be closed in {remainingTime}</span>
+                  <i class="material-icons">timelapse</i>
+
+                  <div className="d-flex align-items-center">
+                    <i
+                      className="material-icons mr-1"
+                      style={{ fontSize: "1.8vh" }}
+                    >
+                      location_on
+                    </i>
+                    <span
+                      className="font-weight-light"
+                      style={{ fontSize: "1.5vh" }}
+                    >
+                      {/* {vicinity} */}
+                    </span>
+                  </div>
+
                   <Photos photoUrls={photoUrls} placeId={placeId} />
                 </PopoverBody>
               </div>
