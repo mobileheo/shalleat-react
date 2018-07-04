@@ -150,8 +150,8 @@ const RestaurantInfoBox = enhence(
                         .fill()
                         .map((p, i) => (
                           <span
-                            role="image"
-                            alt="money"
+                            role="img"
+                            aria-label="money"
                             key={`price-level-${i}`}
                             style={{ fontSize: "3vh" }}
                           >

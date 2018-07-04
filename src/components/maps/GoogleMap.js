@@ -44,7 +44,6 @@ const restaurantMarkers = (
 
 class GoogleMap extends PureComponent {
   render() {
-    console.log("GoogleMap");
     const { user } = this.props;
     return (
       <MapConsumer>
@@ -90,7 +89,7 @@ class GoogleMap extends PureComponent {
                   // {x: 404, y: 600.671875, lat: 49.21146879917674, lng: -123.03999263803712, event: Proxy}
                 }}
                 onChange={props => {
-                  console.log(props);
+                  // console.log(props);
                   setCenter(props.center);
                 }}
               >

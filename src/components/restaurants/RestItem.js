@@ -24,11 +24,8 @@ const RestList = ({
     geometry,
     name,
     opening_hours: hours = {},
-    vicinity,
     rating,
-    place_id: placeId,
-    types,
-    target
+    place_id: placeId
   } = restaurant;
 
   const { lat, lng } = geometry.location;

@@ -18,7 +18,6 @@ const enhance = compose(
         if (!user) {
           const currentUser = await User.current();
           updateUser(currentUser);
-          console.log(currentUser);
         }
       } catch (error) {
         console.log(error);

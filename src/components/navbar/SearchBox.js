@@ -15,7 +15,7 @@ const getTypeOnly = input => {
 };
 const extractRadius = input => {
   let [rangeStr, radius, unit] = input.match(UNIT_REGEX) || ["noMatch"];
-
+  console.log(rangeStr);
   if (radius) {
     switch (unit) {
       case "mile" || "miles":
