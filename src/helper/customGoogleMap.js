@@ -3,8 +3,16 @@ const createMapOptions = maps => {
   return {
     panControl: false,
     mapTypeControl: false,
-    // scrollwheel: true,
+    markerOptions: {
+      visible: true,
+      clickable: false
+    },
     styles: [
+      {
+        featureType: "poi.business",
+        elementType: "labels",
+        stylers: [{ visibility: "off" }]
+      },
       {
         featureType: "landscape.man_made",
         elementType: "all",
