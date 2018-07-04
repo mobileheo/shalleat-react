@@ -1,12 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { withState } from "recompose";
-import anime from "animejs";
 import { Animated } from "react-animated-css";
 import { NavLink } from "react-router-dom";
 import { Nav, NavItem } from "reactstrap";
 import Logo from "./Logo";
 import NavDrawer from "./NavDrawer";
-import { MapProvider } from "../context/MapContext";
 import SearchBox from "./SearchBox";
 import User from "../../requests/user";
 
@@ -78,13 +76,6 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
                 exact
                 to="/signin"
                 className="nav-link px-2 d-flex align-items-center bg-transparent border border-white "
-                onMouseOver={e => {
-                  const { currentTarget } = e;
-                  toggleHover({ hovered: true });
-                }}
-                onMouseLeave={e => {
-                  toggleHover({ hovered: false });
-                }}
               >
                 Sign in
               </NavLink>

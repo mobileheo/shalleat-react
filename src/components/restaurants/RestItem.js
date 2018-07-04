@@ -110,9 +110,9 @@ const RestList = ({
           </div>
         </div>
         <div className="arrow-container d-flex justify-content-end">
-          <div class="expansion-panel-icon ml-0 text-black-secondary">
-            <i class="collapsed-show material-icons">keyboard_arrow_down</i>
-            <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
+          <div className="expansion-panel-icon ml-0 text-black-secondary">
+            <i className="collapsed-show material-icons">keyboard_arrow_down</i>
+            <i className="collapsed-hide material-icons">keyboard_arrow_up</i>
           </div>
         </div>
       </a>

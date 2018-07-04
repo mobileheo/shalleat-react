@@ -2,8 +2,6 @@ import React from "react";
 import { compose, withState, lifecycle } from "recompose";
 import { MapConsumer } from "../context/MapContext";
 
-const WAIT_INTERVAL = 1500;
-
 const enhance = compose(
   withState("input", "setInput", ""),
   withState("timerId", "setTimerId", null),

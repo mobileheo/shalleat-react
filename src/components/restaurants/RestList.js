@@ -1,8 +1,7 @@
 import React from "react";
 import { MapConsumer } from "../context/MapContext";
-import { Animated } from "react-animated-css";
 import RestItem from "./RestItem";
-import Restaurant from "../../requests/restaurant";
+
 const RestList = () => (
   <MapConsumer>
     {({
@@ -23,7 +22,10 @@ const RestList = () => (
           className={"list-group-item list-group-item-action mb-2"}
           style={{ borderLeft: "solid #2196f3 5px" }}
         >
-          <span>😿</span> No restaurants within {radius}m
+          <span role="img" aria-label="sad-cat">
+            😿
+          </span>
+          No restaurants within {radius}m
         </a>
       ) : (
         <div

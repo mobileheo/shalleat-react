@@ -29,8 +29,6 @@ class RadiusBar extends React.Component {
     return (
       <MapConsumer>
         {({ loading, setRestaurants, radius, setRadius, setZoom }) => {
-          const { currentRadius } = this.state;
-
           return loading ? null : (
             <div className="RadiusInputBar">
               <div className="d-flex justify-content-center">

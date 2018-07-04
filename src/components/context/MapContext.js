@@ -8,11 +8,11 @@ const calcZoom = radius => {
   return +(16 - Math.log(scale) / Math.log(2));
 };
 
-const RADIUS = 1500;
+const RADIUS = 1000;
 const ZOOM = calcZoom(RADIUS);
 
 const isContainKeyword = (r, keyword) => {
-  let { name, opening_hours = false, rating, types, vicinity } = r;
+  let { name, opening_hours = false, types, vicinity } = r;
   const { open_now = false } = opening_hours;
   const k = keyword.toLowerCase();
   name = name.toLowerCase();

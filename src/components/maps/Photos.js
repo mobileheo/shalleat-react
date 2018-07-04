@@ -5,7 +5,6 @@ import {
   CarouselControl,
   CarouselIndicators
 } from "reactstrap";
-import { POINT_CONVERSION_COMPRESSED } from "constants";
 
 class Photos extends Component {
   constructor(props) {
@@ -53,7 +52,6 @@ class Photos extends Component {
     const { activeIndex } = this.state;
     const { photoUrls } = this.props;
     let items = [];
-    console.log(photoUrls);
     const slides = photoUrls.map((url, i) => {
       items.push({ src: url });
       return (
@@ -65,7 +63,7 @@ class Photos extends Component {
           <img
             src={url}
             className="rounded"
-            alt={`${i}th photo`}
+            alt={url}
             style={{
               height: "250px",
               width: "100%"

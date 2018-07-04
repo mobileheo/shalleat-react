@@ -10,20 +10,25 @@ const ReviewItem = ({ author, rating, time, text, index }) => {
       isVisible={true}
     >
       {author ? (
-        <div class="expansion-panel-body bg-dark text-white mb-2 rounded">
-          <div class="d-flex w-100 justify-content-between align-items-center">
-            <h5 class="mb-1">{author}</h5>
+        <div className="expansion-panel-body bg-dark text-white mb-2 rounded">
+          <div className="d-flex w-100 justify-content-between align-items-center">
+            <h5 className="mb-1">{author}</h5>
             <small>{time}</small>
           </div>
           <RestRating rating={rating} />
-          <p class="mb-1">{text}</p>
+          <p className="mb-1">{text}</p>
         </div>
       ) : (
-        <div class="expansion-panel-body bg-dark text-white mb-2 rounded">
-          <div class="expansion-panel-body rounded">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">
-                There is no review for this restaurant<span>😭</span>
+        <div className="expansion-panel-body bg-dark text-white mb-2 rounded">
+          <div className="expansion-panel-body rounded">
+            <div className="d-flex w-100 justify-content-between">
+              <h5 className="mb-1">
+                There is no review for this restaurant<span
+                  role="img"
+                  aria-label="sad-face"
+                >
+                  😭
+                </span>
               </h5>
             </div>
           </div>

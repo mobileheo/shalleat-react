@@ -1,5 +1,4 @@
 import React from "react";
-import anime from "animejs";
 import "react-tippy/dist/tippy.css";
 import { Tooltip } from "react-tippy";
 import { Animated } from "react-animated-css";
@@ -44,6 +43,7 @@ const getDetail = async placeId => {
   try {
     const detail = await Restaurant.getDetail(placeId, [
       "formatted_phone_number",
+      "international_phone_number",
       "price_level",
       "website",
       "photos"
@@ -104,7 +104,6 @@ class RestaurantMarker extends React.PureComponent {
             console.log(error);
           }
         });
-        // await this.setPhotoUrls({ photoUrls });
         Promise.all(photoUrls).then(urls =>
           this.setPhotoUrls({ photoUrls: urls })
         );
@@ -126,6 +125,7 @@ class RestaurantMarker extends React.PureComponent {
       name,
       lat,
       lng,
+      vicinity,
       popover,
       setPopover,
       setCenter,
@@ -204,9 +204,14 @@ class RestaurantMarker extends React.PureComponent {
             <RestaurantInfoBox
               placeId={placeId}
               name={name}
+              icon={icon}
+              vicinity={vicinity}
               schedule={schedule}
               popover={popover}
               photoUrls={this.state.photoUrls}
+              detail={this.state.detail}
+              lat={lat}
+              lng={lng}
             />
           ) : (
             <div />

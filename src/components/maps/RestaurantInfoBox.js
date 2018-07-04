@@ -39,6 +39,13 @@ import "moment-precise-range-plugin";
 //     "Sunday: 11:00 AM – 11:00 PM"
 //   ]
 // };
+
+const anchorTagStyle = {
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  whiteSpace: "nowrap"
+};
+const wrapperClass = "d-flex justify-content-start align-items-center mb-3 ";
 const currentTime = moment().format("HHmm");
 const timeHelper = ({
   notAvailable,
@@ -85,7 +92,6 @@ const calcRemainTime = ({ openTime = false, closeTime }) => {
 let timerID;
 const enhence = compose(
   withState("remainingTime", "setRemainingTime", ""),
-  withState("rotateDeg", "setRotateDeg", 45),
   lifecycle({
     componentDidMount() {
       const { schedule, setRemainingTime } = this.props;
@@ -93,7 +99,7 @@ const enhence = compose(
       if (typeof businessHours === "string")
         return setRemainingTime(businessHours);
       else {
-        // console.log("schedule => ", schedule);
+        console.log("schedule => ", schedule);
         calcRemainTime(timeHelper(schedule));
         const time = timeHelper(schedule);
         setRemainingTime(calcRemainTime(time));
@@ -109,38 +115,119 @@ const enhence = compose(
   })
 );
 const RestaurantInfoBox = enhence(
-  ({ placeId, name, photos, schedule, remainingTime, popover, photoUrls }) => {
+  ({
+    placeId,
+    lat,
+    lng,
+    name,
+    schedule,
+    remainingTime,
+    popover,
+    photoUrls,
+    detail,
+    vicinity = "Not available"
+  }) => {
     const { chosenId, isOpen } = popover;
+    const { isOpenNow } = schedule;
+    const {
+      formatted_phone_number: phone = "Not available",
+      international_phone_number: intPhone = "Not available ",
+      price_level: price = "Not available",
+      website = "Not available"
+    } = detail;
+    console.log(schedule);
     if (chosenId === placeId && isOpen) {
       return (
-        <div className="RestaurantInfoBox ">
+        <div className="RestaurantInfoBox border border-info ">
           {
             <Popover
               placement="auto"
               isOpen={isOpen}
               target={`Popover-${placeId}`}
             >
-              <div class="arrow">
+              <div className="arrow">
                 <PopoverHeader>{name}</PopoverHeader>
-                <PopoverBody>
-                  <span>Will be closed in {remainingTime}</span>
-                  <i class="material-icons">timelapse</i>
 
-                  <div className="d-flex align-items-center">
-                    <i
-                      className="material-icons mr-1"
-                      style={{ fontSize: "1.8vh" }}
-                    >
-                      location_on
-                    </i>
-                    <span
-                      className="font-weight-light"
-                      style={{ fontSize: "1.5vh" }}
-                    >
-                      {/* {vicinity} */}
-                    </span>
+                <PopoverBody>
+                  <div className={wrapperClass}>
+                    <i className="material-icons mr-2">attach_money</i>
+                    {price === "Not available" ? (
+                      <span>{price}</span>
+                    ) : (
+                      Array(price)
+                        .fill()
+                        .map((p, i) => (
+                          <span
+                            role="image"
+                            alt="money"
+                            key={`price-level-${i}`}
+                            style={{ fontSize: "3vh" }}
+                          >
+                            💰
+                          </span>
+                        ))
+                    )}
                   </div>
 
+                  {isOpenNow ? (
+                    <div className={wrapperClass}>
+                      <i
+                        className="material-icons mr-2"
+                        style={{ color: "#39e4a9" }}
+                      >
+                        battery_full
+                      </i>
+                      <span style={{ borderBottom: "solid #39e4a9 2px" }}>
+                        {remainingTime}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className={wrapperClass}>
+                      <i
+                        className="material-icons mr-2"
+                        style={{ color: "#424242" }}
+                      >
+                        battery_full
+                      </i>
+                      <span style={{ borderBottom: "solid #424242 2px" }}>
+                        {remainingTime}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className={wrapperClass}>
+                    <i className="material-icons mr-2">phone</i>
+                    {phone === "Not available" ? (
+                      <span>{phone}</span>
+                    ) : (
+                      <a href={intPhone}>
+                        <span>{phone}</span>
+                      </a>
+                    )}
+                  </div>
+                  <div className={wrapperClass}>
+                    <i className="material-icons mr-2">location_on</i>
+                    {vicinity === "Not available" ? (
+                      <span>{vicinity}</span>
+                    ) : (
+                      <a
+                        href={`https://maps.google.com/maps/place/${lat},${lng}`}
+                        style={anchorTagStyle}
+                      >
+                        <span>{vicinity}</span>
+                      </a>
+                    )}
+                  </div>
+                  <div className={wrapperClass}>
+                    <i className="material-icons mr-2">web</i>
+                    {website === "Not available" ? (
+                      <span>{website}</span>
+                    ) : (
+                      <a href={website} style={anchorTagStyle}>
+                        <span>{website}</span>
+                      </a>
+                    )}
+                  </div>
                   <Photos photoUrls={photoUrls} placeId={placeId} />
                 </PopoverBody>
               </div>
