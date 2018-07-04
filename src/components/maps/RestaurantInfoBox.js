@@ -125,7 +125,7 @@ const RestaurantInfoBox = enhence(
                 <PopoverBody>
                   <i class="material-icons">timelapse</i>
                   <span>Will be closed in {remainingTime}</span>
-                  <Photos photoUrls={photoUrls} />
+                  <Photos photoUrls={photoUrls} placeId={placeId} />
                 </PopoverBody>
               </div>
             </Popover>

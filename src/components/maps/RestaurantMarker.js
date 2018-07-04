@@ -193,21 +193,7 @@ class RestaurantMarker extends React.PureComponent {
               }}
               alt={"marker-icon"}
             >
-              {/* <img
-                src={icon}
-                style={{
-                  position: "absolute",
-                  height: 40,
-                  width: 40
-                }}
-                alt={"marker-icon"}
-              /> */}
-              <i
-                className="material-icons"
-                // style={{
-                //   fontSize: "2.5vh"
-                // }}
-              >
+              <i className="material-icons">
                 {chosenId === placeId && isOpen
                   ? "restaurant_menu"
                   : "restaurant"}

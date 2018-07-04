@@ -17,6 +17,7 @@
     "react-pure-lifecycle": "^2.2.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
+    "react-slick": "^0.23.1",
     "react-spinkit": "^3.0.0",
     "react-star-ratings": "^2.3.0",
     "react-tippy": "^1.2.2",
