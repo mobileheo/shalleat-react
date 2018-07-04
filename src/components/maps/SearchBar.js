@@ -29,7 +29,7 @@ const SearchBar = enhance(({ style, input, setInput, timerId, setTimerId }) => {
                 id="exampleIconInput8"
                 placeholder="No raspberry pi please 🙏"
                 onChange={e => {
-                  const { value: keyword } = e.currentTarget;
+                  let { value: keyword } = e.currentTarget;
                   setKeyword(keyword);
                 }}
               />

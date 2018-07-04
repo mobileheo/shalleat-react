@@ -18,7 +18,7 @@ const restaurantMarkers = (
   setZoom
 ) =>
   filteredRests().map((r, i) => {
-    const { geometry, icon, name, place_id: placeId } = r;
+    const { geometry, icon, name, place_id: placeId, photos } = r;
     const { lat, lng } = geometry.location;
     return (
       <RestaurantMarker
@@ -36,6 +36,7 @@ const restaurantMarkers = (
         lng={lng}
         icon={icon}
         name={name}
+        photos={photos}
       />
     );
   });

@@ -52,18 +52,26 @@ class SearchBox extends Component {
   render() {
     return (
       <MapConsumer>
-        {({ setTypeKeyword, setZoom, radius, setRadius }) => {
+        {({
+          setKeyword,
+          setTypeKeyword,
+          setZoom,
+          radius,
+          setRadius,
+          currentLocation,
+          setCenter
+        }) => {
           const handleInput = e => {
             e.preventDefault();
 
             const { value: input } = e.currentTarget;
             const type = getTypeOnly(input);
             const newRadius = extractRadius(input) || radius;
-            console.log("type => ", type);
-            console.log("newRadius => ", newRadius);
             clearTimeout(this.timerId);
 
             this.timerId = setTimeout(() => {
+              setKeyword("");
+              setCenter(currentLocation);
               setZoom(calcZoom(newRadius));
               setRadius(newRadius);
               setTypeKeyword(type);

@@ -11,7 +11,7 @@ const ReviewItem = ({ author, rating, time, text, index }) => {
     >
       {author ? (
         <div class="expansion-panel-body bg-dark text-white mb-2 rounded">
-          <div class="d-flex w-100 justify-content-between">
+          <div class="d-flex w-100 justify-content-between align-items-center">
             <h5 class="mb-1">{author}</h5>
             <small>{time}</small>
           </div>

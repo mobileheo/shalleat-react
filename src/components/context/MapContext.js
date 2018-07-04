@@ -31,14 +31,12 @@ const getFilterdList = (arr, keyword) => {
 export class MapProvider extends Component {
   state = {
     loading: true,
-    setLoading: this.setLoading,
     currentLocation: null,
     defaultCenter: null,
     radius: RADIUS,
     setRadius: radius => this.setState({ radius }),
     center: null,
     setCenter: center => {
-      console.log("setCenter => ", center);
       this.setState({ center });
     },
     defaultZoom: ZOOM,
@@ -56,10 +54,7 @@ export class MapProvider extends Component {
     typeKeyword: "",
     setTypeKeyword: async typeKeyword => {
       try {
-        // await this.setState({ restaurants: [] });
-        // const radius = 200000;
         await this.setState({ restaurants: [], typeKeyword });
-        // console.log(this.state.restaurants);
         await this.findNearby();
       } catch (error) {
         console.log(error);
@@ -75,10 +70,6 @@ export class MapProvider extends Component {
     filteredRests: () =>
       getFilterdList(this.state.restaurants, this.state.keyword)
   };
-
-  setLoading() {
-    this.setState({ loading: !this.state.loading });
-  }
 
   getLocation() {
     if (navigator.geolocation) {
@@ -107,19 +98,17 @@ export class MapProvider extends Component {
 
   async findNearby() {
     const { currentLocation, radius, typeKeyword } = this.state;
-    console.log("typeKeyword => ", typeKeyword);
     const filters = { ...currentLocation, radius, typeKeyword };
-    const loading = false;
+
     try {
       const firstBatch = await Restaurant.findNearby(filters);
       if (firstBatch) {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
         await this.setState({
-          loading,
+          loading: false,
           restaurants
         });
         await this.concatNext(pageToken);
-        console.log("in findnearby => ", pageToken);
       }
     } catch (error) {
       console.log(error);
@@ -130,10 +119,9 @@ export class MapProvider extends Component {
       navigator.geolocation.clearWatch(this.watchID);
       return;
     } else {
-      let { restaurants } = this.state;
-      console.log("original => ", restaurants);
       const nextBatch = await Restaurant.getNextRests({ pageToken });
-      console.log("next => ", nextBatch);
+      let { restaurants } = this.state;
+
       if (nextBatch) {
         const { next_page_token: nextToken = null, results: next } = nextBatch;
         restaurants = restaurants.concat(next);

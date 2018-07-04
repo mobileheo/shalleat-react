@@ -1,6 +1,7 @@
 import React from "react";
 import { compose, withState, lifecycle } from "recompose";
 import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
+import Photos from "./Photos";
 import moment from "moment";
 import "moment-precise-range-plugin";
 
@@ -38,7 +39,7 @@ import "moment-precise-range-plugin";
 //     "Sunday: 11:00 AM – 11:00 PM"
 //   ]
 // };
-
+const currentTime = moment().format("HHmm");
 const timeHelper = ({
   notAvailable,
   immortal,
@@ -49,6 +50,10 @@ const timeHelper = ({
   if (notAvailable) return notAvailable;
   if (immortal) return "Open 24 hours";
   let closeTime, openTime;
+  console.log("currentTime => ", currentTime);
+  console.log("isOpenToday in timeHelpr => ", isOpenToday);
+  console.log("isOpenNow in timeHelpr => ", isOpenNow);
+  console.log("todayHours in timeHelpr => ", todayHours);
   if (isOpenToday) {
     if (isOpenNow) {
       const { time } = todayHours.close;
@@ -56,23 +61,25 @@ const timeHelper = ({
       closeTime = moment().format(`YYYY-MM-DD ${closeHours}:00`);
       // return { closeTime };
     } else {
-      // if
+      // close.time <= currentTime
       const { time } = todayHours.open;
       const openhours = time.slice(0, 2) + ":" + time.slice(2);
       openTime = moment().format(`YYYY-MM-DD ${openhours}:00`);
+      console.log("openTime in timeHelpr => ", openTime);
       // return { openTime };
     }
   }
   return { openTime, closeTime };
 };
 
-const currentTime = () => moment().format("YYYY-MM-DD HH:mm:ss");
+const currentYearDateTime = () => moment().format("YYYY-MM-DD HH:mm:ss");
 
 const calcRemainTime = ({ openTime = false, closeTime }) => {
-  // console.log(openTime);
+  // console.log("openTim => ", openTime);
+  console.log("closeTime => ", closeTime);
   return openTime
-    ? moment(currentTime()).preciseDiff(openTime)
-    : moment(currentTime()).preciseDiff(closeTime);
+    ? moment(currentYearDateTime()).preciseDiff(openTime)
+    : moment(closeTime).preciseDiff(currentYearDateTime());
 };
 
 let timerID;
@@ -86,7 +93,7 @@ const enhence = compose(
       if (typeof businessHours === "string")
         return setRemainingTime(businessHours);
       else {
-        console.log("schedule => ", schedule);
+        // console.log("schedule => ", schedule);
         calcRemainTime(timeHelper(schedule));
         const time = timeHelper(schedule);
         setRemainingTime(calcRemainTime(time));
@@ -102,7 +109,7 @@ const enhence = compose(
   })
 );
 const RestaurantInfoBox = enhence(
-  ({ placeId, name, schedule, remainingTime, popover }) => {
+  ({ placeId, name, photos, schedule, remainingTime, popover, photoUrls }) => {
     const { chosenId, isOpen } = popover;
     if (chosenId === placeId && isOpen) {
       return (
@@ -115,8 +122,11 @@ const RestaurantInfoBox = enhence(
             >
               <div class="arrow">
                 <PopoverHeader>{name}</PopoverHeader>
-                <PopoverBody>{schedule.name}</PopoverBody>
-                <span>{remainingTime}</span>
+                <PopoverBody>
+                  <i class="material-icons">timelapse</i>
+                  <span>Will be closed in {remainingTime}</span>
+                  <Photos photoUrls={photoUrls} />
+                </PopoverBody>
               </div>
             </Popover>
           }
