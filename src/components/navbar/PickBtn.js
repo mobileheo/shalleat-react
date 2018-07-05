@@ -60,7 +60,7 @@ class PickBtn extends Component {
                   console.log(error);
                 }
               });
-              await delay(Math.log(3000) * places.length * 4);
+              this.timerId = await delay(Math.log(3000) * places.length * 4);
               const { placeId: chosenId, geometry } = places.pop();
               const { location } = geometry;
               setCenter(location);

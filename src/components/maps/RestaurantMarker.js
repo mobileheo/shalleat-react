@@ -16,17 +16,19 @@ const MARKER_STYLE = {
 };
 const BTN_CLASS =
   "btn d-flex justify-content-center align-items-center text-white";
-const BTN_STYLE = openNow => {
+const defaultStyle = {
+  minWidth: "37px",
+  transition: "transform 0.5s ease-in-out"
+};
+const btnStyle = openNow => {
   return openNow
     ? {
-        minWidth: "37px",
-        backgroundColor: "#39e4a9",
-        transition: "transform 0.25s ease-in-out"
+        ...defaultStyle,
+        backgroundColor: "#39e4a9"
       }
     : {
-        minWidth: "37px",
-        backgroundColor: "#424242",
-        transition: "transform 0.25s ease-in-out"
+        ...defaultStyle,
+        backgroundColor: "#424242"
       };
 };
 
@@ -177,11 +179,12 @@ class RestaurantMarker extends React.PureComponent {
               style={
                 chosenId === placeId && isOpen
                   ? {
-                      ...BTN_STYLE(openNow),
+                      ...defaultStyle,
+                      backgroundColor: "#ff4081",
                       transform: "scale(1.3)"
                     }
                   : {
-                      ...BTN_STYLE(openNow),
+                      ...btnStyle(openNow),
                       transform: "scale(1.0)"
                     }
               }
