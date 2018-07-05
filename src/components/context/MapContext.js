@@ -96,7 +96,7 @@ export class MapProvider extends Component {
       console.log("geoSuccess 2");
       this.storeCurrentLocation(currentLocation);
       await this.setState({ currentLocation });
-      // await this.findNearby();
+      await this.findNearby();
     }
   };
 

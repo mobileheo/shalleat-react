@@ -29,6 +29,7 @@ class PickBtn extends Component {
           fetched,
           restaurants,
           setCenter,
+          zoom,
           setZoom,
           popover,
           setPopover
@@ -36,30 +37,35 @@ class PickBtn extends Component {
           const handleClick = async e => {
             e.preventDefault();
             try {
-              const { chosenId, isOpen } = popover;
+              const { isOpen } = popover;
               const places = shuffle(
                 restaurants.map(({ place_id: placeId, geometry }) => ({
                   placeId,
                   geometry
                 }))
               );
+
               setPopover(null, !isOpen);
+              setZoom(14);
+              await delay(1000);
+              const offset = 3000 / places.length;
               places.forEach(async ({ placeId }, i) => {
                 try {
                   const id = `#Popover-${placeId}`;
-                  await delay((10 * i) ^ 1.3);
-                  document.querySelector(id).classList.add("bg-primary");
-                  document.querySelector(id).classList.add("text-dark");
-                  await delay((10.1 * i) ^ 1.3);
-                  document.querySelector(id).classList.remove("bg-primary");
-                  document.querySelector(id).classList.remove("text-dark");
+                  await delay(Math.log(offset * i) * i * 4);
+                  document.querySelector(id).classList.add("bg-secondary");
+                  await delay(Math.log(offset * i) * i * 4);
+                  document.querySelector(id).classList.remove("bg-secondary");
                 } catch (error) {
                   console.log(error);
                 }
               });
-              await delay((10.1 * places.length) ^ 1.3);
-              const { placeId: selectedId, geometry } = places.pop();
-              setPopover(selectedId, true);
+              await delay(Math.log(3000) * places.length * 4);
+              const { placeId: chosenId, geometry } = places.pop();
+              const { location } = geometry;
+              setCenter(location);
+              setZoom(17);
+              setPopover(chosenId, true);
             } catch (error) {
               console.log(error);
             }
