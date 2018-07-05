@@ -11,7 +11,6 @@ const anchorTagStyle = {
   whiteSpace: "nowrap"
 };
 const wrapperClass = "d-flex justify-content-start align-items-center mb-3 ";
-const currentTime = moment().format("HHmm");
 const timeFormatter = time => time.slice(0, 2) + ":" + time.slice(2);
 const addYearDateToHours = hours =>
   moment(moment().format(`YYYY-MM-DD ${hours}:00`));
@@ -26,6 +25,7 @@ const getTodayHours = ({
 }) => {
   if (notAvailable) return "Not available";
   if (immortal) return "Open 24 hours";
+  const currentTime = moment().format("HHmm");
   const { open, close } = todayHours;
   const { open: nextOpen } = nextDayHours;
   let closeTime, openTime;

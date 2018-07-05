@@ -7,6 +7,7 @@ const url = `${BASE_URL}/restaurants`;
 export default {
   async findNearby(filters) {
     try {
+      console.log("findNearby");
       return await postData(`${url}/all`, filters);
     } catch (error) {
       throw new Error(error);

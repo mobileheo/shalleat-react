@@ -8,7 +8,7 @@ const calcZoom = radius => {
   return +(16 - Math.log(scale) / Math.log(2));
 };
 
-const RADIUS = 1000;
+const RADIUS = 800;
 const ZOOM = calcZoom(RADIUS);
 
 const isContainKeyword = (r, keyword) => {
@@ -31,6 +31,7 @@ const getFilterdList = (arr, keyword) => {
 export class MapProvider extends Component {
   state = {
     loading: true,
+    fetched: false,
     currentLocation: null,
     defaultCenter: null,
     radius: RADIUS,
@@ -62,6 +63,7 @@ export class MapProvider extends Component {
     },
     popover: { chosenId: null, isOpen: false },
     setPopover: (chosenId, isOpen) => {
+      console.log("setPopover");
       const popover = { chosenId, isOpen };
       this.setState({ popover });
     },
@@ -87,9 +89,11 @@ export class MapProvider extends Component {
   }
 
   geoSuccess = async position => {
+    console.log("geoSuccess");
     const { latitude: lat, longitude: lng } = position.coords;
     const currentLocation = { lat, lng };
     if (this._isMounted) {
+      console.log("geoSuccess 2");
       this.storeCurrentLocation(currentLocation);
       await this.setState({ currentLocation });
       await this.findNearby();
@@ -102,6 +106,7 @@ export class MapProvider extends Component {
 
     try {
       const firstBatch = await Restaurant.findNearby(filters);
+      console.log("firstBatch => ", firstBatch);
       if (firstBatch) {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
         await this.setState({
@@ -117,6 +122,7 @@ export class MapProvider extends Component {
   async concatNext(pageToken) {
     if (!pageToken) {
       navigator.geolocation.clearWatch(this.watchID);
+      this.state.fetched = true;
       return;
     } else {
       const nextBatch = await Restaurant.getNextRests({ pageToken });
@@ -146,6 +152,7 @@ export class MapProvider extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
+    console.log("componentDidMount");
     const { currentLocation = null } = this.getCurrentLocation();
     const center = currentLocation;
 

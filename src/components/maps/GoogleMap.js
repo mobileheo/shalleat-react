@@ -81,6 +81,7 @@ class GoogleMap extends PureComponent {
             >
               <GoogleMapReact
                 bootstrapURLKeys={{ key: googleMapAPI }}
+                defaultCenter={currentLocation}
                 center={center}
                 zoom={zoom}
                 options={createMapOptions}

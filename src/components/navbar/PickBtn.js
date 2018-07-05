@@ -5,6 +5,17 @@ const DEFAULT_CLASS =
   "nav-link d-flex align-items-center bg-transparent border border-white mx-3 px-2";
 const WAIT_INTERVAL = 1500;
 
+const shuffle = a => {
+  let j, x, i;
+  for (i = a.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    x = a[i];
+    a[i] = a[j];
+    a[j] = x;
+  }
+  return a;
+};
+
 class PickBtn extends Component {
   componentWillMount() {
     clearTimeout(this.timerId);
@@ -13,52 +24,35 @@ class PickBtn extends Component {
   render() {
     return (
       <MapConsumer>
-        {({
-          setKeyword,
-          setTypeKeyword,
-          setZoom,
-          radius,
-          setRadius,
-          currentLocation,
-          setCenter
-        }) => {
+        {({ fetched, restaurants, popover, setPopover }) => {
           const handleClick = e => {
             e.preventDefault();
-            console.log(e);
-            // const { value: input } = e.currentTarget;
-            // const type = getTypeOnly(input);
-            // const newRadius = extractRadius(input) || radius;
-            // clearTimeout(this.timerId);
+            if (fetched) {
+              const places = shuffle(
+                restaurants.map(({ place_id }) => place_id)
+              );
+              // places.forEach((placeId, i) => {
+              //   const id = `#Popover-${placeId}`;
+              //   this.timerId = setTimeout(function() {
+              //     document.querySelector(id).classList.add("bg-primary");
+              //     document.querySelector(id).classList.add("text-dark");
+              //     // }, 100 * i * i * 0.1);
+              //   }, 10 * i * i ** 0.5);
+              //   this.timerId = setTimeout(function() {
+              //     document.querySelector(id).classList.remove("bg-primary");
+              //     document.querySelector(id).classList.remove("text-dark");
+              //     // }, 150 * i * i * 0.1);
+              //   }, 12 * i * i ** 0.5);
+              // });
+              const chosenId = places.pop();
+              console.log("chosenId => ", chosenId);
 
-            // this.timerId = setTimeout(() => {
-            //   setKeyword("");
-            //   setCenter(currentLocation);
-            //   setZoom(calcZoom(newRadius));
-            //   setRadius(newRadius);
-            //   setTypeKeyword(type);
-            // }, WAIT_INTERVAL);
+              const { isOpen } = popover;
+              console.log("isOpen => ", isOpen);
+              setPopover(chosenId, !isOpen);
+            }
           };
           return (
-            // <div className="form-group my-0 mr-6">
-            //   <div className="input-group">
-            //     <input
-            //       className="form-control "
-            //       type="search"
-            //       placeholder="Search"
-            //       aria-label="Search"
-            //       style={{ height: "36px" }}
-            //       onChange={handleClick}
-            //       onFocus={e => {
-            //         e.currentTarget.classList.add("border");
-            //         e.currentTarget.classList.add("border-secondary");
-            //       }}
-            //       onBlur={e => {
-            //         e.currentTarget.classList.remove("border");
-            //         e.currentTarget.classList.remove("border-secondary");
-            //       }}
-            //     />
-            //   </div>
-            // </div>
             <a
               className={DEFAULT_CLASS}
               onClick={handleClick}
@@ -69,7 +63,7 @@ class PickBtn extends Component {
                 e.currentTarget.classList.remove("border-secondary");
               }}
             >
-              Pick one for you
+              Pick one for me
             </a>
           );
         }}
