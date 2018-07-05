@@ -1,4 +1,4 @@
-# Project Title
+# Shall Eat?
 
 React web application that pick restaurants for you!
 
