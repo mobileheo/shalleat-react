@@ -1,6 +1,6 @@
 # Shall Eat?
 
-React web application that pick restaurants for you!
+React web application that picks restaurants for you!
 
 ## Getting Started
 
@@ -60,3 +60,24 @@ This application has not been deployed yet, but will be deployed soon on AWS and
 - moment
 - animejs
 - react-tippy
+
+## Usage
+
+There are two seach box, one at the navbar(main search box), another at the right above the review list.
+
+1.  Main search box
+
+- Type "`Keyword` in `radius`" eg. "`Korean restaurants` in `10km`"
+- This serach box support following units:
+  - mile,
+  - cm
+  - m
+  - km
+  - inch
+  - yard
+  - foot
+
+2.  Second search box
+
+- Type "`restaurant name`" eg. "`A&W`"
+- This will only display matching restaurants in reveiw list and markers on google map
