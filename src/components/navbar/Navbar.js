@@ -41,7 +41,7 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
         </span>
         <Animated
           animationIn="fadeInDown"
-          animationOut="bounceOutUp"
+          animationOut="fadeOutUp"
           animationInDelay={500}
           isVisible={!!user}
         >

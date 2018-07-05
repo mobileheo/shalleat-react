@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { MapConsumer } from "../context/MapContext";
+import { delay } from "../../helper/asyncHelper";
 
 const DEFAULT_CLASS =
   "nav-link d-flex align-items-center bg-transparent border border-white mx-3 px-2";
@@ -24,33 +25,39 @@ class PickBtn extends Component {
   render() {
     return (
       <MapConsumer>
-        {({ fetched, restaurants, popover, setPopover }) => {
-          const handleClick = e => {
+        {({
+          fetched,
+          restaurants,
+          setCenter,
+          setZoom,
+          popover,
+          setPopover
+        }) => {
+          const handleClick = async e => {
             e.preventDefault();
-            if (fetched) {
-              const places = shuffle(
-                restaurants.map(({ place_id }) => place_id)
-              );
-              // places.forEach((placeId, i) => {
-              //   const id = `#Popover-${placeId}`;
-              //   this.timerId = setTimeout(function() {
-              //     document.querySelector(id).classList.add("bg-primary");
-              //     document.querySelector(id).classList.add("text-dark");
-              //     // }, 100 * i * i * 0.1);
-              //   }, 10 * i * i ** 0.5);
-              //   this.timerId = setTimeout(function() {
-              //     document.querySelector(id).classList.remove("bg-primary");
-              //     document.querySelector(id).classList.remove("text-dark");
-              //     // }, 150 * i * i * 0.1);
-              //   }, 12 * i * i ** 0.5);
-              // });
-              const chosenId = places.pop();
-              console.log("chosenId => ", chosenId);
+            // if (fetched) {
+            const { chosenId, isOpen } = popover;
+            const places = shuffle(
+              restaurants.map(({ place_id: placeId, geometry }) => ({
+                placeId,
+                geometry
+              }))
+            );
+            setPopover(null, !isOpen);
+            places.forEach(async ({ placeId }, i) => {
+              const id = `#Popover-${placeId}`;
+              await delay((10 * i) ^ 1.3);
+              document.querySelector(id).classList.add("bg-primary");
+              document.querySelector(id).classList.add("text-dark");
+              await delay((10 * i) ^ 1.3);
+              document.querySelector(id).classList.remove("bg-primary");
+              document.querySelector(id).classList.remove("text-dark");
+            });
+            await delay((10 * places.length) ^ 1.3);
+            const { placeId, geometry } = places.pop();
+            setPopover(placeId, true);
 
-              const { isOpen } = popover;
-              console.log("isOpen => ", isOpen);
-              setPopover(chosenId, !isOpen);
-            }
+            // }
           };
           return (
             <a

@@ -96,7 +96,7 @@ export class MapProvider extends Component {
       console.log("geoSuccess 2");
       this.storeCurrentLocation(currentLocation);
       await this.setState({ currentLocation });
-      await this.findNearby();
+      // await this.findNearby();
     }
   };
 
@@ -113,7 +113,7 @@ export class MapProvider extends Component {
           loading: false,
           restaurants
         });
-        await this.concatNext(pageToken);
+        // await this.concatNext(pageToken);
       }
     } catch (error) {
       console.log(error);
