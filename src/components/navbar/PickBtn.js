@@ -3,7 +3,7 @@ import { MapConsumer } from "../context/MapContext";
 import { delay } from "../../helper/asyncHelper";
 
 const DEFAULT_CLASS =
-  "nav-link d-flex align-items-center bg-transparent border border-white mx-3 px-2";
+  "nav-link d-flex align-items-center bg-transparent border border-white mx-3 px-2 ";
 const WAIT_INTERVAL = 1500;
 
 const shuffle = a => {
@@ -35,31 +35,38 @@ class PickBtn extends Component {
         }) => {
           const handleClick = async e => {
             e.preventDefault();
-            // if (fetched) {
-            const { chosenId, isOpen } = popover;
-            const places = shuffle(
-              restaurants.map(({ place_id: placeId, geometry }) => ({
-                placeId,
-                geometry
-              }))
-            );
-            setPopover(null, !isOpen);
-            places.forEach(async ({ placeId }, i) => {
-              const id = `#Popover-${placeId}`;
-              await delay((10 * i) ^ 1.3);
-              document.querySelector(id).classList.add("bg-primary");
-              document.querySelector(id).classList.add("text-dark");
-              await delay((10 * i) ^ 1.3);
-              document.querySelector(id).classList.remove("bg-primary");
-              document.querySelector(id).classList.remove("text-dark");
-            });
-            await delay((10 * places.length) ^ 1.3);
-            const { placeId, geometry } = places.pop();
-            setPopover(placeId, true);
-
-            // }
+            try {
+              const { chosenId, isOpen } = popover;
+              const places = shuffle(
+                restaurants.map(({ place_id: placeId, geometry }) => ({
+                  placeId,
+                  geometry
+                }))
+              );
+              setPopover(null, !isOpen);
+              places.forEach(async ({ placeId }, i) => {
+                try {
+                  const id = `#Popover-${placeId}`;
+                  await delay((10 * i) ^ 1.3);
+                  document.querySelector(id).classList.add("bg-primary");
+                  document.querySelector(id).classList.add("text-dark");
+                  await delay((10.1 * i) ^ 1.3);
+                  document.querySelector(id).classList.remove("bg-primary");
+                  document.querySelector(id).classList.remove("text-dark");
+                } catch (error) {
+                  console.log(error);
+                }
+              });
+              await delay((10.1 * places.length) ^ 1.3);
+              const { placeId: selectedId, geometry } = places.pop();
+              setPopover(selectedId, true);
+            } catch (error) {
+              console.log(error);
+            }
           };
-          return (
+          return !fetched ? (
+            <a className={DEFAULT_CLASS + "disabled"}>Fetching restaurants</a>
+          ) : (
             <a
               className={DEFAULT_CLASS}
               onClick={handleClick}

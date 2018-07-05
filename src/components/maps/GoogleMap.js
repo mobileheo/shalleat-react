@@ -18,8 +18,17 @@ const restaurantMarkers = (
   setZoom
 ) =>
   filteredRests().map((r, i) => {
-    const { geometry, icon, name, place_id: placeId, photos, vicinity } = r;
+    const {
+      geometry,
+      icon,
+      name,
+      place_id: placeId,
+      photos,
+      vicinity,
+      opening_hours = {}
+    } = r;
     const { lat, lng } = geometry.location;
+    const { open_now: openNow = false } = opening_hours;
     return (
       <RestaurantMarker
         key={placeId}
@@ -38,6 +47,7 @@ const restaurantMarkers = (
         name={name}
         vicinity={vicinity}
         photos={photos}
+        openNow={openNow}
       />
     );
   });
@@ -86,13 +96,14 @@ class GoogleMap extends PureComponent {
                 zoom={zoom}
                 options={createMapOptions}
                 onClick={props => {
-                  console.log(props);
+                  // console.log(props);
                   // {x: 404, y: 600.671875, lat: 49.21146879917674, lng: -123.03999263803712, event: Proxy}
                 }}
                 onChange={props => {
                   // console.log(props);
                   setCenter(props.center);
                 }}
+                onZoomChanged={zoom}
               >
                 <CurrentMarker
                   lat={currentLocation.lat}

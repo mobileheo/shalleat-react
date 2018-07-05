@@ -15,10 +15,19 @@ const MARKER_STYLE = {
   transform: "translate(-50%, -50%)"
 };
 const BTN_CLASS =
-  "btn btn-secondary d-flex justify-content-center align-items-center";
-let BTN_STYLE = {
-  minWidth: "37px",
-  transition: "transform 0.25s ease-in-out"
+  "btn d-flex justify-content-center align-items-center text-white";
+const BTN_STYLE = openNow => {
+  return openNow
+    ? {
+        minWidth: "37px",
+        backgroundColor: "#39e4a9",
+        transition: "transform 0.25s ease-in-out"
+      }
+    : {
+        minWidth: "37px",
+        backgroundColor: "#424242",
+        transition: "transform 0.25s ease-in-out"
+      };
 };
 
 const scrollToTarget = chosenId => {
@@ -130,11 +139,12 @@ class RestaurantMarker extends React.PureComponent {
       setPopover,
       setCenter,
       setZoom,
-      index
+      index,
+      openNow
     } = this.props;
     const { chosenId, isOpen } = popover;
 
-    return loading ? (
+    return loading && false ? (
       <Spinner name="ball-scale-multiple" color="#2196f3" />
     ) : (
       <div
@@ -167,11 +177,11 @@ class RestaurantMarker extends React.PureComponent {
               style={
                 chosenId === placeId && isOpen
                   ? {
-                      ...BTN_STYLE,
-                      transform: "scale(1.2)"
+                      ...BTN_STYLE(openNow),
+                      transform: "scale(1.3)"
                     }
                   : {
-                      ...BTN_STYLE,
+                      ...BTN_STYLE(openNow),
                       transform: "scale(1.0)"
                     }
               }

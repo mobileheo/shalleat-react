@@ -59,7 +59,8 @@ class SearchBox extends Component {
           radius,
           setRadius,
           currentLocation,
-          setCenter
+          setCenter,
+          setPopover
         }) => {
           const handleInput = e => {
             e.preventDefault();
@@ -70,6 +71,7 @@ class SearchBox extends Component {
             clearTimeout(this.timerId);
 
             this.timerId = setTimeout(() => {
+              setPopover(null, false);
               setKeyword("");
               setCenter(currentLocation);
               setZoom(calcZoom(newRadius));
