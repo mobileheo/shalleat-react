@@ -62,9 +62,6 @@ class RadiusBar extends React.Component {
                     setZoom(zoom);
                   }, WAIT_INTERVAL);
                 }}
-                onScroll={e => {
-                  console.log(e.currentTarget.getBoundingClientRect());
-                }}
               />
             </div>
           );

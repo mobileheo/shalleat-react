@@ -32,7 +32,8 @@ class PickBtn extends Component {
           zoom,
           setZoom,
           popover,
-          setPopover
+          setPopover,
+          scrollToTop
         }) => {
           const handleClick = async e => {
             e.preventDefault();
@@ -60,12 +61,13 @@ class PickBtn extends Component {
                   console.log(error);
                 }
               });
-              this.timerId = await delay(Math.log(3000) * places.length * 4);
+              this.timerId = await delay(Math.log(3000) * places.length * 10);
               const { placeId: chosenId, geometry } = places.pop();
               const { location } = geometry;
               setCenter(location);
               setZoom(17);
-              setPopover(chosenId, true);
+              await setPopover(chosenId, true);
+              await scrollToTop();
             } catch (error) {
               console.log(error);
             }

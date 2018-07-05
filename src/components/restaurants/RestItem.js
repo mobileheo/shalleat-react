@@ -9,6 +9,7 @@ const LIST_STYLE = {
   transition: "background-color 0.25s ease-in-out",
   padding: "1rem"
 };
+
 const RestList = ({
   restaurant,
   index,
@@ -49,7 +50,7 @@ const RestList = ({
               )
             : CLASS_NAME.concat("text-dark collapsed")
         }
-        id={placeId}
+        id={`list-item-${placeId}`}
         style={
           openNow
             ? {

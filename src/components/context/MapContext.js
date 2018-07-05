@@ -70,7 +70,18 @@ export class MapProvider extends Component {
     keyword: "",
     setKeyword: keyword => this.setState({ keyword }),
     filteredRests: () =>
-      getFilterdList(this.state.restaurants, this.state.keyword)
+      getFilterdList(this.state.restaurants, this.state.keyword),
+    scrollToTop: () => {
+      const { chosenId } = this.state.popover;
+      console.log(chosenId);
+      const targetContainer = document.querySelector(".RestList");
+      const targetChild = document.querySelector(`#list-item-${chosenId}`);
+      // targetContainer.scrollTop = targetChild.offsetTop;
+      console.log("targetChild.offsetTop => ", targetChild.offsetTop);
+      console.log("targetContainer.offsetTop => ", targetContainer.offsetTop);
+      targetContainer.scrollTop =
+        targetChild.offsetTop - targetContainer.offsetTop;
+    }
   };
 
   getLocation() {

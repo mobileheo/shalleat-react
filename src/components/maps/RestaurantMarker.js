@@ -32,15 +32,6 @@ const btnStyle = openNow => {
       };
 };
 
-const scrollToTarget = chosenId => {
-  const targetContainer = document.querySelector(".RestList");
-  const targetChild = document.querySelector(`#${chosenId}`);
-  targetContainer.scrollTo({
-    top: targetChild.offsetTop - targetContainer.offsetTop,
-    behavior: "smooth"
-  });
-};
-
 const getSchedule = async (placeId, filters) => {
   try {
     const schedule = await Restaurant.getSchedule(placeId, filters);
@@ -142,7 +133,8 @@ class RestaurantMarker extends React.PureComponent {
       setCenter,
       setZoom,
       index,
-      openNow
+      openNow,
+      scrollToTop
     } = this.props;
     const { chosenId, isOpen } = popover;
 
@@ -188,21 +180,20 @@ class RestaurantMarker extends React.PureComponent {
                       transform: "scale(1.0)"
                     }
               }
-              onClick={() => {
+              onClick={async () => {
                 setCenter({ lat, lng });
                 setZoom(14);
 
                 if (isOpen) {
                   if (chosenId === placeId) {
-                    setPopover(placeId, !isOpen);
+                    await setPopover(placeId, !isOpen);
                   } else {
-                    setPopover(placeId, isOpen);
+                    await setPopover(placeId, isOpen);
                   }
                 } else {
-                  setPopover(placeId, !isOpen);
+                  await setPopover(placeId, !isOpen);
                 }
-
-                scrollToTarget(placeId);
+                await scrollToTop();
               }}
               alt={"marker-icon"}
             >

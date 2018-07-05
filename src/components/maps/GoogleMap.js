@@ -15,7 +15,8 @@ const restaurantMarkers = (
   center,
   setCenter,
   zoom,
-  setZoom
+  setZoom,
+  scrollToTop
 ) =>
   filteredRests().map((r, i) => {
     const {
@@ -31,23 +32,24 @@ const restaurantMarkers = (
     const { open_now: openNow = false } = opening_hours;
     return (
       <RestaurantMarker
-        key={placeId}
-        index={i}
-        placeId={placeId}
-        center={center}
-        setCenter={setCenter}
-        zoom={zoom}
-        setZoom={setZoom}
-        popover={popover}
-        setPopover={setPopover}
-        filters={["name", "opening_hours"]}
+        key={`marker-${placeId}`}
         lat={lat}
         lng={lng}
-        icon={icon}
         name={name}
-        vicinity={vicinity}
+        icon={icon}
+        zoom={zoom}
+        index={i}
+        center={center}
         photos={photos}
+        filters={["name", "opening_hours"]}
+        placeId={placeId}
         openNow={openNow}
+        popover={popover}
+        setZoom={setZoom}
+        vicinity={vicinity}
+        setCenter={setCenter}
+        setPopover={setPopover}
+        scrollToTop={scrollToTop}
       />
     );
   });
@@ -68,8 +70,7 @@ class GoogleMap extends PureComponent {
           filteredRests,
           popover,
           setPopover,
-          btnRotate,
-          setBtnRotateDeg
+          scrollToTop
         }) => {
           return !user ? (
             <Redirect to="/signin" />
@@ -96,7 +97,7 @@ class GoogleMap extends PureComponent {
                 zoom={zoom}
                 options={createMapOptions}
                 onClick={props => {
-                  // console.log(props);
+                  console.log(props);
                   // {x: 404, y: 600.671875, lat: 49.21146879917674, lng: -123.03999263803712, event: Proxy}
                 }}
                 onChange={props => {
@@ -122,8 +123,7 @@ class GoogleMap extends PureComponent {
                   setCenter,
                   zoom,
                   setZoom,
-                  btnRotate,
-                  setBtnRotateDeg
+                  scrollToTop
                 )}
               </GoogleMapReact>
             </div>

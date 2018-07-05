@@ -112,7 +112,7 @@ const RestaurantInfoBox = enhence(
       price_level: price = defaultMessage,
       website = defaultMessage
     } = detail;
-    console.log(schedule);
+
     if (chosenId === placeId && isOpen) {
       return (
         <div className="RestaurantInfoBox border border-info ">
