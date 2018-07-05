@@ -19,7 +19,13 @@ This application needs backend server that provides REST API to authenticate use
 ### Prerequisites
 
 1.  You need to install npm or yarn.
-2.  You need to get Google Map API and Google Place API here is link (https://cloud.google.com/maps-platform/)
+2.  You need to get Google Map API and Google Place API(for backend) here is link (https://cloud.google.com/maps-platform/)
+3.  Assign google map api key to `googleMapAPI`. You can find this variable by typing 👇 in terminal after you clone this repository.
+
+```
+$ cd ShallEat-React
+$ open src/requests/example_configuration.jsgit@github.com:sunny-heo/ShallEat-API.git
+```
 
 ### Installing
 
