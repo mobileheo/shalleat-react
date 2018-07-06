@@ -41,15 +41,7 @@ const addCurrLocationBtn = (currentLocation, setCenter, setPopover) => {
   }
 };
 
-const CurrentMarker = ({
-  lat,
-  lng,
-  text,
-  radius,
-  setCenter,
-  setZoom,
-  setPopover
-}) => {
+const CurrentMarker = ({ lat, lng, text, setCenter, setPopover }) => {
   const currLocation = { lat, lng };
   addCurrLocationBtn(currLocation, setCenter, setPopover);
   return (
