@@ -1,9 +1,10 @@
 import React from "react";
 import { compose, withState, lifecycle } from "recompose";
-import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
-import Photos from "./Photos";
 import moment from "moment";
 import "moment-precise-range-plugin";
+import { repeat } from "../../helper/asyncHelper";
+import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
+import Photos from "./Photos";
 
 const anchorTagStyle = {
   textOverflow: "ellipsis",
@@ -62,31 +63,34 @@ const getTodayHours = ({
 
 const currentYearDateTime = () => moment().format("YYYY-MM-DD HH:mm:ss");
 
-const calcRemainTime = ({ openTime = false, closeTime }) => {
+const calcRemainingTime = ({ openTime = false, closeTime }) => {
   return openTime
     ? moment(currentYearDateTime()).preciseDiff(openTime)
     : moment(currentYearDateTime()).preciseDiff(closeTime);
 };
 
-let timerID;
 const enhence = compose(
   withState("remainingTime", "setRemainingTime", ""),
+  withState("timerId", "setTimerId", "hello"),
   lifecycle({
-    componentDidMount() {
-      const { schedule, setRemainingTime } = this.props;
+    async componentDidMount() {
+      const { schedule, setRemainingTime, setTimerId } = this.props;
       const businessHours = getTodayHours(schedule);
+
       if (["Not available", "Open 24 hours"].includes(businessHours)) {
         return setRemainingTime(businessHours);
       } else {
-        setRemainingTime(calcRemainTime(businessHours));
-        timerID = setInterval(
-          () => setRemainingTime(calcRemainTime(businessHours)),
-          1000
+        const remainingTime = calcRemainingTime(businessHours);
+        const timerId = await repeat(
+          () => setRemainingTime(remainingTime),
+          1 // 1 second
         );
+        await setTimerId(timerId);
       }
     },
     componentWillUnmount() {
-      clearInterval(timerID);
+      const { timerId } = this.props;
+      clearInterval(timerId);
     }
   })
 );
