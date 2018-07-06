@@ -83,7 +83,7 @@ const enhence = compose(
         const remainingTime = calcRemainingTime(businessHours);
         const timerId = await repeat(
           () => setRemainingTime(remainingTime),
-          1 // 1 second
+          1000
         );
         await setTimerId(timerId);
       }
