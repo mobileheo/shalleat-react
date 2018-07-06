@@ -31,11 +31,10 @@ This application needs backend server that provides REST API to authenticate use
 2.  You need to get Google Map API(for frontend) ~~and Google Place API(for backend) here is link(https://cloud.google.com/maps-platform/)~~
 3.  Assign google map api key to `googleMapAPI`. You can find this variable by typing 👇 commands in terminal after you clone this repository.
 
-> ```
-> $ mv src/requests/example_configuration.js src/requests/configuration.js
->
-> $ open src/requests/configuration.js
-> ```
+```
+$ mv src/requests/example_configuration.js src/requests/configuration.js
+$ open src/requests/configuration.js
+```
 
 4.  After you store map api key, then follow next instruction.
 
@@ -43,9 +42,9 @@ This application needs backend server that provides REST API to authenticate use
 
 ~~This command to set up REST API server. (100% JavaScript)~~
 
-```
-$ git clone git@github.com:sunny-heo/ShallEat-API.git
-```
+> ```
+> $ git clone git@github.com:sunny-heo/ShallEat-API.git
+> ```
 
 \*\* Since the backend server is deployed, you don't have to set up this web api server.
 
