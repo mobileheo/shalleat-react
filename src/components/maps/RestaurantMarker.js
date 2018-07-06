@@ -67,7 +67,7 @@ const getPhoto = async (photoId, maxWidth) => {
 class RestaurantMarker extends React.PureComponent {
   state = {
     loading: true,
-    schedule: {},
+    schedule: null,
     detail: {},
     photoUrls: []
   };
@@ -138,7 +138,7 @@ class RestaurantMarker extends React.PureComponent {
     } = this.props;
     const { chosenId, isOpen } = popover;
 
-    return loading && false ? (
+    return loading ? (
       <Spinner name="ball-scale-multiple" color="#2196f3" />
     ) : (
       <div
