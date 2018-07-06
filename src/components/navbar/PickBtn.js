@@ -49,7 +49,7 @@ class PickBtn extends Component {
               setPopover(null, !isOpen);
               setZoom(radius);
               setCenter(currentLocation);
-              await delay(1000);
+              await delay(500);
               const offset = 3000 / places.length;
               places.forEach(async ({ placeId }, i) => {
                 try {
@@ -67,6 +67,7 @@ class PickBtn extends Component {
               const { location } = geometry;
               setCenter(location);
               setZoom(200);
+              await delay(500);
               await setPopover(chosenId, true);
               await scrollToTop();
             } catch (error) {

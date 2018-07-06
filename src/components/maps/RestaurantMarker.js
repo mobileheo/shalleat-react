@@ -31,34 +31,18 @@ const btnStyle = openNow => {
         backgroundColor: "#424242"
       };
 };
+const detailFields = [
+  "formatted_phone_number",
+  "international_phone_number",
+  "price_level",
+  "website",
+  "photos"
+];
 
 const getSchedule = async (placeId, filters) => {
   try {
     const schedule = await Restaurant.getSchedule(placeId, filters);
     return schedule;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const getDetail = async placeId => {
-  try {
-    const detail = await Restaurant.getDetail(placeId, [
-      "formatted_phone_number",
-      "international_phone_number",
-      "price_level",
-      "website",
-      "photos"
-    ]);
-    return detail;
-  } catch (error) {
-    console.log(error);
-  }
-};
-const getPhoto = async (photoId, maxWidth) => {
-  try {
-    const { photoUrl } = await Restaurant.getPhoto(photoId, maxWidth);
-    return photoUrl;
   } catch (error) {
     console.log(error);
   }
@@ -93,23 +77,9 @@ class RestaurantMarker extends React.PureComponent {
     const { placeId, filters } = this.props;
     try {
       const schedule = await getSchedule(placeId, filters);
-      const detail = await getDetail(placeId);
+      const detail = await Restaurant.getDetail(placeId, detailFields);
       await this.setDetail({ detail });
       await this.setSchedule({ schedule, loading: false });
-      const { photos } = detail;
-
-      if (photos) {
-        const photoUrls = photos.map(async ({ photo_reference: id }) => {
-          try {
-            return await getPhoto(id, 250);
-          } catch (error) {
-            console.log(error);
-          }
-        });
-        Promise.all(photoUrls).then(urls =>
-          this.setPhotoUrls({ photoUrls: urls })
-        );
-      }
     } catch (error) {
       console.log(error);
     }
@@ -137,7 +107,7 @@ class RestaurantMarker extends React.PureComponent {
       scrollToTop
     } = this.props;
     const { chosenId, isOpen } = popover;
-
+    const { photoUrls, detail } = this.state;
     return loading ? (
       <Spinner name="ball-scale-multiple" color="#2196f3" />
     ) : (
@@ -212,8 +182,8 @@ class RestaurantMarker extends React.PureComponent {
               vicinity={vicinity}
               schedule={schedule}
               popover={popover}
-              photoUrls={this.state.photoUrls}
-              detail={this.state.detail}
+              photoUrls={photoUrls}
+              detail={detail}
               lat={lat}
               lng={lng}
             />
