@@ -3,13 +3,8 @@ import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
 
-const calcZoom = radius => {
-  const scale = radius / 500;
-  return +(16 - Math.log(scale) / Math.log(2));
-};
-
-const RADIUS = 800;
-const ZOOM = calcZoom(RADIUS);
+const RADIUS = 250;
+// const ZOOM = calcZoom(RADIUS);
 
 const isContainKeyword = (r, keyword) => {
   let { name, opening_hours = false, types, vicinity } = r;
@@ -40,9 +35,13 @@ export class MapProvider extends Component {
     setCenter: center => {
       this.setState({ center });
     },
-    defaultZoom: ZOOM,
-    zoom: ZOOM,
-    setZoom: zoom => this.setState({ zoom }),
+    defaultZoom: this.calcZoom(RADIUS),
+    zoom: this.calcZoom(RADIUS),
+    // setZoom: zoom => this.setState({ zoom }),
+    setZoom: radius => {
+      const zoom = this.calcZoom(radius);
+      this.setState({ zoom });
+    },
     restaurants: [],
     setRestaurants: async radius => {
       try {
@@ -63,7 +62,6 @@ export class MapProvider extends Component {
     },
     popover: { chosenId: null, isOpen: false },
     setPopover: (chosenId, isOpen) => {
-      console.log("setPopover");
       const popover = { chosenId, isOpen };
       this.setState({ popover });
     },
@@ -73,16 +71,17 @@ export class MapProvider extends Component {
       getFilterdList(this.state.restaurants, this.state.keyword),
     scrollToTop: () => {
       const { chosenId } = this.state.popover;
-      console.log(chosenId);
       const targetContainer = document.querySelector(".RestList");
       const targetChild = document.querySelector(`#list-item-${chosenId}`);
-      // targetContainer.scrollTop = targetChild.offsetTop;
-      console.log("targetChild.offsetTop => ", targetChild.offsetTop);
-      console.log("targetContainer.offsetTop => ", targetContainer.offsetTop);
       targetContainer.scrollTop =
         targetChild.offsetTop - targetContainer.offsetTop;
     }
   };
+
+  calcZoom(radius) {
+    const scale = radius / 500;
+    return +(16 - Math.log(scale) / Math.log(2));
+  }
 
   getLocation() {
     if (navigator.geolocation) {
@@ -100,11 +99,9 @@ export class MapProvider extends Component {
   }
 
   geoSuccess = async position => {
-    console.log("geoSuccess");
     const { latitude: lat, longitude: lng } = position.coords;
     const currentLocation = { lat, lng };
     if (this._isMounted) {
-      console.log("geoSuccess 2");
       this.storeCurrentLocation(currentLocation);
       await this.setState({ currentLocation });
       await this.findNearby();
@@ -117,7 +114,7 @@ export class MapProvider extends Component {
 
     try {
       const firstBatch = await Restaurant.findNearby(filters);
-      console.log("firstBatch => ", firstBatch);
+
       if (firstBatch) {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
         await this.setState({
@@ -134,7 +131,7 @@ export class MapProvider extends Component {
   async concatNext(pageToken) {
     if (!pageToken) {
       navigator.geolocation.clearWatch(this.watchID);
-      this.state.fetched = true;
+      this.setState({ fetched: true });
       return;
     } else {
       const nextBatch = await Restaurant.getNextRests({ pageToken });
@@ -164,7 +161,6 @@ export class MapProvider extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
-    console.log("componentDidMount");
     const { currentLocation = null } = this.getCurrentLocation();
     const center = currentLocation;
 

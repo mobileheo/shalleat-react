@@ -4,7 +4,6 @@ import { delay } from "../../helper/asyncHelper";
 
 const DEFAULT_CLASS =
   "nav-link d-flex align-items-center bg-transparent border border-white mx-3 px-2 ";
-const WAIT_INTERVAL = 1500;
 
 const shuffle = a => {
   let j, x, i;
@@ -29,11 +28,12 @@ class PickBtn extends Component {
           fetched,
           restaurants,
           setCenter,
-          zoom,
+          radius,
           setZoom,
           popover,
           setPopover,
-          scrollToTop
+          scrollToTop,
+          currentLocation
         }) => {
           const handleClick = async e => {
             e.preventDefault();
@@ -47,8 +47,9 @@ class PickBtn extends Component {
               );
 
               setPopover(null, !isOpen);
-              setZoom(14);
-              await delay(1000);
+              setZoom(radius);
+              setCenter(currentLocation);
+              await delay(500);
               const offset = 3000 / places.length;
               places.forEach(async ({ placeId }, i) => {
                 try {
@@ -65,7 +66,8 @@ class PickBtn extends Component {
               const { placeId: chosenId, geometry } = places.pop();
               const { location } = geometry;
               setCenter(location);
-              setZoom(17);
+              setZoom(200);
+              await delay(500);
               await setPopover(chosenId, true);
               await scrollToTop();
             } catch (error) {

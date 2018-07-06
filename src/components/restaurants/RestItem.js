@@ -66,7 +66,7 @@ const RestList = ({
           e.preventDefault();
 
           setCenter({ lat, lng });
-          setZoom(16);
+          setZoom(300);
 
           if (isOpen) {
             if (chosenId === placeId) {

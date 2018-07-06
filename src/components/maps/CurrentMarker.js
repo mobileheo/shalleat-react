@@ -5,15 +5,6 @@ const WIDTH = "50px";
 const HEIGHT = WIDTH;
 
 const addSvgIcon = currLocationBtn => {
-  // currLocationBtn.innerHTML = `
-  //   <svg version="1.1" id="Layer_1" x="0px" y="0px"
-  //      viewBox="0 0 250 250" style="enable-background:new 0 0 250 250;" xml:space="preserve">
-  //   <style type="text/css">
-  //     .st0{fill:#FFFFFF;stroke:#000000;stroke-width:20;stroke-miterlimit:10;}
-  //   </style>
-  //   <polygon class="st0" points="0.5,128.3 251,-1 125.8,249.5 115.7,136.3 "/>
-  //   </svg>
-  //   `;
   currLocationBtn.innerHTML = `
   <i class="material-icons">
   my_location
@@ -23,7 +14,6 @@ const addSvgIcon = currLocationBtn => {
 
 const addStyle = currLocationBtn => {
   currLocationBtn.style.color = "#fff";
-  // currLocationBtn.style.background = "#9c27b0";
 };
 
 const convertFullScreenBtnToAnchor = fullScreenBtn => {
@@ -37,12 +27,7 @@ const convertFullScreenBtnToAnchor = fullScreenBtn => {
   return currLocationBtn;
 };
 
-const addCurrLocationBtn = (
-  currentLocation,
-  setCenter,
-  setZoom,
-  setPopover
-) => {
+const addCurrLocationBtn = (currentLocation, setCenter, setPopover) => {
   let child = document.querySelector(".gm-fullscreen-control");
   if (child) {
     const fullScreenBtn = child.parentNode;
@@ -50,19 +35,15 @@ const addCurrLocationBtn = (
     addSvgIcon(currLocationBtn);
     addStyle(currLocationBtn);
     currLocationBtn.addEventListener("click", async e => {
-      console.log(currentLocation);
-      await setCenter(currentLocation);
-      await setZoom(14);
-      console.log(setPopover);
       await setPopover(null, false);
+      await setCenter(currentLocation);
     });
   }
 };
 
-const CurrentMarker = ({ lat, lng, text, setCenter, setZoom, setPopover }) => {
-  // console.log(setPopover);
+const CurrentMarker = ({ lat, lng, text, setCenter, setPopover }) => {
   const currLocation = { lat, lng };
-  addCurrLocationBtn(currLocation, setCenter, setZoom, setPopover);
+  addCurrLocationBtn(currLocation, setCenter, setPopover);
   return (
     <Animated
       animationIn="zoomIn"

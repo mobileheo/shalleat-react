@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "react-tippy/dist/tippy.css";
 import { MapConsumer } from "../context/MapContext";
 const MIN_RADIUS = "0";
@@ -7,19 +7,26 @@ const RADIUS_STEP = "1";
 const WAIT_INTERVAL = 1000;
 const RADIUS = 1500;
 
-const calcZoom = radius => {
-  const scale = radius / 500;
-  return +(16 - Math.log(scale) / Math.log(2));
-};
-
-class RadiusBar extends React.Component {
+class RadiusBar extends Component {
   state = {
     currentRadius: RADIUS
   };
 
-  meterToKm = radius => {
+  meterToKm(radius) {
     return `Within ${(radius / 1000).toFixed(1)} km`;
-  };
+  }
+
+  handleOnChange(e, setRestaurants, setRadius, setZoom) {
+    const { currentTarget } = e;
+    const currentRadius = +currentTarget.value;
+    this.setState({ currentRadius });
+    setRadius(currentRadius);
+    clearTimeout(this.timerId);
+    this.timerId = setTimeout(() => {
+      setRestaurants(currentRadius);
+      setZoom(currentRadius);
+    }, WAIT_INTERVAL);
+  }
 
   componentWillMount() {
     clearTimeout(this.timerId);
@@ -50,18 +57,9 @@ class RadiusBar extends React.Component {
                 step={RADIUS_STEP}
                 value={radius}
                 style={{ transform: "translateY(-3.5px)" }}
-                onChange={e => {
-                  const { currentTarget } = e;
-                  const currentRadius = +currentTarget.value;
-                  this.setState({ currentRadius });
-                  setRadius(currentRadius);
-                  clearTimeout(this.timerId);
-                  this.timerId = setTimeout(() => {
-                    const zoom = calcZoom(currentRadius);
-                    setRestaurants(currentRadius);
-                    setZoom(zoom);
-                  }, WAIT_INTERVAL);
-                }}
+                onChange={e =>
+                  this.handleOnChange(e, setRestaurants, setRadius, setZoom)
+                }
               />
             </div>
           );

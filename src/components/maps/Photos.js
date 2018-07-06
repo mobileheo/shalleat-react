@@ -5,11 +5,13 @@ import {
   CarouselControl,
   CarouselIndicators
 } from "reactstrap";
+import Spinner from "react-spinkit";
+import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
 
 class Photos extends Component {
   constructor(props) {
     super(props);
-    this.state = { activeIndex: 0 };
+    this.state = { activeIndex: 0, photosFetched: false, photoUrls: [] };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
     this.goToIndex = this.goToIndex.bind(this);
@@ -27,19 +29,17 @@ class Photos extends Component {
 
   next() {
     if (this.animating) return;
+    const { activeIndex, photoUrls } = this.state;
     const nextIndex =
-      this.state.activeIndex === this.props.photoUrls.length - 1
-        ? 0
-        : this.state.activeIndex + 1;
+      activeIndex === photoUrls.length - 1 ? 0 : activeIndex + 1;
     this.setState({ activeIndex: nextIndex });
   }
 
   previous() {
     if (this.animating) return;
+    const { activeIndex, photoUrls } = this.state;
     const nextIndex =
-      this.state.activeIndex === 0
-        ? this.props.photoUrls.length - 1
-        : this.state.activeIndex - 1;
+      activeIndex === 0 ? photoUrls.length - 1 : activeIndex - 1;
     this.setState({ activeIndex: nextIndex });
   }
 
@@ -47,11 +47,27 @@ class Photos extends Component {
     if (this.animating) return;
     this.setState({ activeIndex: newIndex });
   }
+  componentDidMount() {
+    const { photos } = this.props.detail;
+    if (photos) {
+      const photoUrls = photos.map(async ({ photo_reference: id }) => {
+        try {
+          const { photoUrl } = await Restaurant.getPhoto(id, 250);
+          return photoUrl;
+        } catch (error) {
+          console.log(error);
+        }
+      });
+      Promise.all(photoUrls).then(photoUrls =>
+        this.setState({ photoUrls, photosFetched: true })
+      );
+    }
+  }
 
   render() {
-    const { activeIndex } = this.state;
-    const { photoUrls } = this.props;
+    const { activeIndex, photosFetched, photoUrls } = this.state;
     let items = [];
+
     const slides = photoUrls.map((url, i) => {
       items.push({ src: url });
       return (
@@ -73,7 +89,11 @@ class Photos extends Component {
       );
     });
 
-    return (
+    return !photosFetched ? (
+      <div className="d-flex justify-content-center my-5">
+        <Spinner name="cube-grid" color="#ff4081" />
+      </div>
+    ) : (
       <Carousel
         activeIndex={activeIndex}
         next={this.next}
@@ -101,77 +121,3 @@ class Photos extends Component {
 }
 
 export default Photos;
-
-// import React from "react";
-// import Img from "react-image";
-// import Slider from "react-slick";
-
-// // const Photos = ({ photoUrls }) => {
-// //   // return photoUrls.map((src, i) => (
-// //   //   <Img src={src} key={src + i}/>
-// //   // ));
-// //   console.log(photoUrls);
-// //   return <Img src={photoUrls} />;
-// // };
-
-// class Photos extends React.Component {
-//   render() {
-//     const { photoUrls, placeId } = this.props;
-//     return (
-//       <div
-//         id={`photo-container-${placeId}`}
-//         className="carousel slide"
-//         data-ride="carousel"
-//       >
-//         {/* <ol class="carousel-indicators">
-//           <li
-//             data-target="#carouselExampleIndicators"
-//             data-slide-to="0"
-//             class="active"
-//           />
-//           <li data-target="#carouselExampleIndicators" data-slide-to="1" />
-//           <li data-target="#carouselExampleIndicators" data-slide-to="2" />
-//         </ol> */}
-//         <div
-//           className="carousel-inner"
-//           onClick={e => {
-//             console.log(e);
-//           }}
-//         >
-//           {photoUrls.map((src, i) => (
-//             <div
-//               className={i === 0 ? "carousel-item active" : "carousel-item"}
-//               key={`${src}-${i}`}
-//             >
-//               <img
-//                 className="d-block w-100"
-//                 src={src}
-//                 alt={`${i + 1}th slide`}
-//               />
-//             </div>
-//           ))}
-//         </div>
-//         <a
-//           className="carousel-control-prev"
-//           href={`#photo-container-${placeId}`}
-//           role="button"
-//           data-slide="prev"
-//         >
-//           <span className="carousel-control-prev-icon" aria-hidden="true" />
-//           <span className="sr-only">Previous</span>
-//         </a>
-//         <a
-//           className="carousel-control-next"
-//           href={`#photo-container-${placeId}`}
-//           role="button"
-//           data-slide="next"
-//         >
-//           <span className="carousel-control-next-icon" aria-hidden="true" />
-//           <span className="sr-only">Next</span>
-//         </a>
-//       </div>
-//     );
-//   }
-// }
-
-// export default Photos;
