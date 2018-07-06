@@ -21,16 +21,6 @@ Each restaurants business hour will be shown as remaining time until closing or 
 
 > <img src="./gifs/info_box_demo.gif" width="300" height="500" />
 
-## Demo
-
-> 👇 Pick for me button demo
-
-> <img src="./gifs/pick_me_btn_demo.gif" width="500" height="300" />
-
-> 👇 Main search box demo
-
-> <img src="./gifs/main_search_box_demo.gif" width="500" height="300" />
-
 ## Getting Started
 
 This application needs backend server that provides REST API to authenticate users and recieve restaurant data. In Prerequisites, there is an instruction to clone that server as well.
