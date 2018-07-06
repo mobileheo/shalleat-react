@@ -182,7 +182,7 @@ class RestaurantMarker extends React.PureComponent {
               }
               onClick={async () => {
                 setCenter({ lat, lng });
-                setZoom(14);
+                setZoom(300);
 
                 if (isOpen) {
                   if (chosenId === placeId) {

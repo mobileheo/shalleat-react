@@ -28,11 +28,12 @@ class PickBtn extends Component {
           fetched,
           restaurants,
           setCenter,
-          zoom,
+          radius,
           setZoom,
           popover,
           setPopover,
-          scrollToTop
+          scrollToTop,
+          currentLocation
         }) => {
           const handleClick = async e => {
             e.preventDefault();
@@ -46,7 +47,8 @@ class PickBtn extends Component {
               );
 
               setPopover(null, !isOpen);
-              setZoom(14);
+              setZoom(radius);
+              setCenter(currentLocation);
               await delay(1000);
               const offset = 3000 / places.length;
               places.forEach(async ({ placeId }, i) => {
@@ -64,7 +66,7 @@ class PickBtn extends Component {
               const { placeId: chosenId, geometry } = places.pop();
               const { location } = geometry;
               setCenter(location);
-              setZoom(17);
+              setZoom(200);
               await setPopover(chosenId, true);
               await scrollToTop();
             } catch (error) {

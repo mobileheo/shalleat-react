@@ -3,19 +3,12 @@ import { MapConsumer } from "../context/MapContext";
 
 const WAIT_INTERVAL = 1500;
 const UNIT_REGEX = /(\d+\.?\d{0,9}|\.\d{0,2})(miles|mile|m|cm|km|inch|yard|foot)/;
-
-const calcZoom = radius => {
-  const scale = radius / 500;
-  return +(16 - Math.log(scale) / Math.log(2));
-};
-
 const getTypeOnly = input => {
   const [type] = input.split(" in");
   return type;
 };
 const extractRadius = input => {
   let [rangeStr, radius, unit] = input.match(UNIT_REGEX) || ["noMatch"];
-  console.log(rangeStr);
   if (radius) {
     switch (unit) {
       case "mile" || "miles":
@@ -74,7 +67,7 @@ class SearchBox extends Component {
               setPopover(null, false);
               setKeyword("");
               setCenter(currentLocation);
-              setZoom(calcZoom(newRadius));
+              setZoom(newRadius);
               setRadius(newRadius);
               setTypeKeyword(type);
             }, WAIT_INTERVAL);

@@ -62,6 +62,7 @@ class GoogleMap extends PureComponent {
         {({
           loading,
           currentLocation,
+          radius,
           center,
           setCenter,
           zoom,
@@ -110,6 +111,7 @@ class GoogleMap extends PureComponent {
                   lat={currentLocation.lat}
                   lng={currentLocation.lng}
                   text={user.firstName}
+                  radius={radius}
                   setCenter={setCenter}
                   setZoom={setZoom}
                   popover={popover}

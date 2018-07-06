@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "react-tippy/dist/tippy.css";
 import { MapConsumer } from "../context/MapContext";
 const MIN_RADIUS = "0";
@@ -7,12 +7,7 @@ const RADIUS_STEP = "1";
 const WAIT_INTERVAL = 1000;
 const RADIUS = 1500;
 
-const calcZoom = radius => {
-  const scale = radius / 500;
-  return +(16 - Math.log(scale) / Math.log(2));
-};
-
-class RadiusBar extends React.Component {
+class RadiusBar extends Component {
   state = {
     currentRadius: RADIUS
   };
@@ -57,9 +52,8 @@ class RadiusBar extends React.Component {
                   setRadius(currentRadius);
                   clearTimeout(this.timerId);
                   this.timerId = setTimeout(() => {
-                    const zoom = calcZoom(currentRadius);
                     setRestaurants(currentRadius);
-                    setZoom(zoom);
+                    setZoom(currentRadius);
                   }, WAIT_INTERVAL);
                 }}
               />
