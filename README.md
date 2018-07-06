@@ -1,7 +1,7 @@
 # Shall Eat?
 
 React web application that picks restaurants for you!
-Each restaurants business hour will be shown as remaining time until closing or opening. Also, this remaining time keeps updating every second. Thus, if somebody asks you "when will Sohyang Korean restaurant be opening?, you can say something like "Oh, the restaurant will be opening in 1hours 24munitues 25 seconds" or "the restaurant will be closing in 2hours 18munitues 38seconds" **without having to check current time and calculate the difference between current time and closing or opening hour.** I hope you will enjoy with ShallEat. Thank you 😁
+Each restaurants business hour will be shown as remaining time until closing or opening. Also, this remaining time keeps updating every second. Thus, if somebody asks you "when will Sohyang Korean restaurant be opening?, you can say something like "Oh, the restaurant will be opening in 1hours 24munitues 25 seconds" or "the restaurant will be closing in 2hours 18munitues 38seconds" **without having to check current time and calculate the difference between current time and closing or opening hour.** Furthermore, you can actually fetch up to 60 places, but Google restricts only 20 restaurants per request. In terms of functionality, <a href="https://github.com/sunny-heo/ShallEat-API"> ShallEat Web API server</a> can fetch 60 restaurants by sending requests to google recursively. However, this will quickly exceed daily requrest limit. Thus, I restrict that only 20 restaurnts render on the map. If you set up the backend server on your local machine with your place api key, you can get maximum 60 restuarants:) I hope you enjoy with ShallEat. Thank you 😁
 
 ## Demo
 
