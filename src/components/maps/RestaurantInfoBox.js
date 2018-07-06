@@ -80,9 +80,8 @@ const enhence = compose(
       if (["Not available", "Open 24 hours"].includes(businessHours)) {
         return setRemainingTime(businessHours);
       } else {
-        const remainingTime = calcRemainingTime(businessHours);
         const timerId = await repeat(
-          () => setRemainingTime(remainingTime),
+          () => setRemainingTime(calcRemainingTime(businessHours)),
           1000
         );
         await setTimerId(timerId);
