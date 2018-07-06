@@ -35,7 +35,7 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
               <Logo />
             </Animated>
             <Animated animationIn="tada" isVisible={true}>
-              <span className="ShallEatTitle ml-2">ShallEat</span>
+              <span className="ShallEatTitle ml-2">Shall Eat?</span>
             </Animated>
           </NavLink>
         </span>

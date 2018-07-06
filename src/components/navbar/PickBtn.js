@@ -4,7 +4,6 @@ import { delay } from "../../helper/asyncHelper";
 
 const DEFAULT_CLASS =
   "nav-link d-flex align-items-center bg-transparent border border-white mx-3 px-2 ";
-const WAIT_INTERVAL = 1500;
 
 const shuffle = a => {
   let j, x, i;

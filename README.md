@@ -30,7 +30,7 @@ $ mv src/requests/example_configuration.js src/requests/configuration.js
 $ open src/requests/configuration.js
 ```
 
-4.  After you store map api key, then do installation
+4.  After you store map api key, then follow next instruction.
 
 ### Installing
 
@@ -90,11 +90,11 @@ There are two seach box, one at the navbar(main search box), another at the righ
 
 - Type "`Keyword` in `radius`" eg. "`Korean restaurants` in `10km`"
 - This serach box support following units:
-  - mile,
+  - mile(miles)
   - cm
   - m
   - km
-  - inch
+  - inch(inches)
   - yard
   - foot
 
