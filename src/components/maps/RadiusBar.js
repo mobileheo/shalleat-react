@@ -12,9 +12,21 @@ class RadiusBar extends Component {
     currentRadius: RADIUS
   };
 
-  meterToKm = radius => {
+  meterToKm(radius) {
     return `Within ${(radius / 1000).toFixed(1)} km`;
-  };
+  }
+
+  handleOnChange(e, setRestaurants, setRadius, setZoom) {
+    const { currentTarget } = e;
+    const currentRadius = +currentTarget.value;
+    this.setState({ currentRadius });
+    setRadius(currentRadius);
+    clearTimeout(this.timerId);
+    this.timerId = setTimeout(() => {
+      setRestaurants(currentRadius);
+      setZoom(currentRadius);
+    }, WAIT_INTERVAL);
+  }
 
   componentWillMount() {
     clearTimeout(this.timerId);
@@ -45,17 +57,9 @@ class RadiusBar extends Component {
                 step={RADIUS_STEP}
                 value={radius}
                 style={{ transform: "translateY(-3.5px)" }}
-                onChange={e => {
-                  const { currentTarget } = e;
-                  const currentRadius = +currentTarget.value;
-                  this.setState({ currentRadius });
-                  setRadius(currentRadius);
-                  clearTimeout(this.timerId);
-                  this.timerId = setTimeout(() => {
-                    setRestaurants(currentRadius);
-                    setZoom(currentRadius);
-                  }, WAIT_INTERVAL);
-                }}
+                onChange={e =>
+                  this.handleOnChange(e, setRestaurants, setRadius, setZoom)
+                }
               />
             </div>
           );
