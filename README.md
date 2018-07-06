@@ -54,7 +54,7 @@ $ open src/requests/configuration.js
 If you do want to set up the backend server on your local machine, you need to update `fetchConfig.js` in requests directory. This command will open that file.
 
 ```
-  $ open ./src/requests/fetchConfig.js
+$ open ./src/requests/fetchConfig.js
 ```
 
 After the file opened, you need to comment out this line (`export const DOMAIN_URL = "https://shalleatapi.herokuapp.com";`) and uncomment this line (`export const DOMAIN_URL = "https://localhost:8080";`)
