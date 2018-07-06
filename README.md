@@ -1,6 +1,25 @@
 # Shall Eat?
 
 React web application that picks restaurants for you!
+Each restaurants business hour will be shown as remaining time until closing or opening. Also, this remaining time keeps updating every second. Thus, if somebody asks you "when will Sohyang Korean restaurant be opening?, you can say something like "Oh, the restaurant will be opening in 1hours 24munitues 25 seconds" or "the restaurant will be closing in 2hours 18munitues 38seconds" **without having to check current time and calculate the difference between current time and closing or opening hour.** I hope you will enjoy with ShallEat. Thank you 😁
+
+## Demo
+
+> 👇 Pick for me button demo. (green = {openNow: true), dark = {openNow: false})
+
+> <img src="./gifs/pick_me_btn_demo.gif" width="500" height="300" />
+
+> 👇 Main search box demo.
+
+> <img src="./gifs/main_search_box_demo.gif" width="500" height="300" />
+
+> 👇 Another main search box demo. (This search box accepts other mesures as well)
+
+> <img src="./gifs/main_search_box_demo_2.gif" width="500" height="300" />
+
+> 👇 Restaurant info box demo.
+
+> <img src="./gifs/info_box_demo.gif" width="300" height="500" />
 
 ## Demo
 
