@@ -20,6 +20,7 @@ const defaultStyle = {
   minWidth: "37px",
   transition: "transform 0.5s ease-in-out"
 };
+const filters = ["name", "opening_hours"];
 const btnStyle = openNow => {
   return openNow
     ? {
@@ -39,47 +40,22 @@ const detailFields = [
   "photos"
 ];
 
-const getSchedule = async (placeId, filters) => {
-  try {
-    const schedule = await Restaurant.getSchedule(placeId, filters);
-    return schedule;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 class RestaurantMarker extends React.PureComponent {
   state = {
-    loading: true,
+    markerLoading: true,
     schedule: null,
-    detail: {},
-    photoUrls: []
-  };
-
-  setSchedule = options => {
-    if (this._isMounted) {
-      this.setState(options);
-    }
-  };
-  setDetail = detail => {
-    if (this._isMounted) {
-      this.setState(detail);
-    }
-  };
-  setPhotoUrls = photoUrls => {
-    if (this._isMounted) {
-      this.setState(photoUrls);
-    }
+    detail: {}
   };
 
   async componentDidMount() {
-    this._isMounted = true;
-    const { placeId, filters } = this.props;
     try {
-      const schedule = await getSchedule(placeId, filters);
+      this._isMounted = true;
+      const { placeId } = this.props;
       const detail = await Restaurant.getDetail(placeId, detailFields);
-      await this.setDetail({ detail });
-      await this.setSchedule({ schedule, loading: false });
+      const schedule = await Restaurant.getSchedule(placeId, filters);
+      if (this._isMounted) {
+        await this.setState({ detail, schedule, markerLoading: false });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -90,25 +66,21 @@ class RestaurantMarker extends React.PureComponent {
   }
 
   render() {
-    const { loading, schedule } = this.state;
     const {
       placeId,
-      icon,
-      name,
-      lat,
-      lng,
-      vicinity,
-      popover,
-      setPopover,
-      setCenter,
-      setZoom,
+      location,
       index,
-      openNow,
-      scrollToTop
+      setZoom,
+      popover,
+      setCenter,
+      setPopover,
+      scrollToTop,
+      restaurant
     } = this.props;
+    const { opening_hours: openHours = {}, name } = restaurant;
+    const { open_now: openNow = false } = openHours;
     const { chosenId, isOpen } = popover;
-    const { photoUrls, detail } = this.state;
-    return loading ? (
+    return this.state.markerLoading ? (
       <Spinner name="ball-scale-multiple" color="#2196f3" />
     ) : (
       <div
@@ -151,7 +123,7 @@ class RestaurantMarker extends React.PureComponent {
                     }
               }
               onClick={async () => {
-                setCenter({ lat, lng });
+                setCenter(location);
                 setZoom(300);
 
                 if (isOpen) {
@@ -174,19 +146,8 @@ class RestaurantMarker extends React.PureComponent {
               </i>
             </button>
           </Animated>
-          {popover.chosenId === placeId && popover.isOpen ? (
-            <RestaurantInfoBox
-              placeId={placeId}
-              name={name}
-              icon={icon}
-              vicinity={vicinity}
-              schedule={schedule}
-              popover={popover}
-              photoUrls={photoUrls}
-              detail={detail}
-              lat={lat}
-              lng={lng}
-            />
+          {chosenId === placeId && isOpen ? (
+            <RestaurantInfoBox {...this.state} {...this.props} />
           ) : (
             <div />
           )}

@@ -9,6 +9,8 @@ import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import Photos from "./Photos";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
 
+const defaultMessage = "Not available";
+
 const anchorTagStyle = {
   textOverflow: "ellipsis",
   overflow: "hidden",
@@ -45,112 +47,99 @@ const enhence = compose(
     }
   })
 );
-const RestaurantInfoBox = enhence(
-  ({
-    placeId,
-    lat,
-    lng,
-    name,
-    schedule,
-    remainingTime,
-    popover,
-    detail,
-    vicinity = "Not available"
-  }) => {
-    const { chosenId, isOpen } = popover;
-    const { isOpenNow } = schedule;
-    const defaultMessage = "Not available";
-    const {
-      formatted_phone_number: phone = defaultMessage,
-      international_phone_number: intPhone = defaultMessage,
-      price_level: price = defaultMessage,
-      website = defaultMessage
-    } = detail;
+const RestaurantInfoBox = enhence(props => {
+  const { placeId, remainingTime } = props;
+  const { name, vicinity = "Not available" } = props.restaurant;
+  const { lat, lng } = props.location;
+  const { chosenId, isOpen } = props.popover;
+  const { isOpenNow } = props.schedule;
+  const {
+    formatted_phone_number: phone = defaultMessage,
+    international_phone_number: intPhone = defaultMessage,
+    price_level: price = defaultMessage,
+    website = defaultMessage
+  } = props.detail;
 
-    return chosenId === placeId && isOpen ? (
-      <Popover placement="auto" isOpen={isOpen} target={`Popover-${placeId}`}>
-        <div className="arrow">
-          <PopoverHeader>{name}</PopoverHeader>
+  return chosenId === placeId && isOpen ? (
+    <Popover placement="auto" isOpen={isOpen} target={`Popover-${placeId}`}>
+      <div className="arrow">
+        <PopoverHeader>{name}</PopoverHeader>
 
-          <PopoverBody>
-            {isOpenNow ? (
-              <div className={wrapperClass}>
-                <i className="material-icons mr-2" style={{ color: "#39e4a9" }}>
-                  battery_full
-                </i>
-                <span style={{ borderBottom: "solid #39e4a9 2px" }}>
-                  {remainingTime}
-                </span>
-              </div>
+        <PopoverBody>
+          {isOpenNow ? (
+            <div className={wrapperClass}>
+              <i className="material-icons mr-2" style={{ color: "#39e4a9" }}>
+                battery_full
+              </i>
+              <span style={{ borderBottom: "solid #39e4a9 2px" }}>
+                {remainingTime}
+              </span>
+            </div>
+          ) : (
+            <div className={wrapperClass}>
+              <i className="material-icons mr-2">battery_charging_full</i>
+              <span style={{ borderBottom: "solid #424242 2px" }}>
+                {remainingTime}
+              </span>
+            </div>
+          )}
+          <div className={wrapperClass}>
+            <i className="material-icons mr-2">attach_money</i>
+            {price === defaultMessage ? (
+              <span>{price}</span>
             ) : (
-              <div className={wrapperClass}>
-                <i className="material-icons mr-2">battery_charging_full</i>
-                <span style={{ borderBottom: "solid #424242 2px" }}>
-                  {remainingTime}
-                </span>
-              </div>
+              Array(price)
+                .fill()
+                .map((p, i) => (
+                  <span
+                    role="img"
+                    aria-label="money"
+                    key={`price-level-${i}`}
+                    style={{ fontSize: "3vh" }}
+                  >
+                    💰
+                  </span>
+                ))
             )}
-            <div className={wrapperClass}>
-              <i className="material-icons mr-2">attach_money</i>
-              {price === defaultMessage ? (
-                <span>{price}</span>
-              ) : (
-                Array(price)
-                  .fill()
-                  .map((p, i) => (
-                    <span
-                      role="img"
-                      aria-label="money"
-                      key={`price-level-${i}`}
-                      style={{ fontSize: "3vh" }}
-                    >
-                      💰
-                    </span>
-                  ))
-              )}
-            </div>
-
-            <div className={wrapperClass}>
-              <i className="material-icons mr-2">phone</i>
-              {phone === defaultMessage ? (
+          </div>
+          <div className={wrapperClass}>
+            <i className="material-icons mr-2">phone</i>
+            {phone === defaultMessage ? (
+              <span>{phone}</span>
+            ) : (
+              <a href={intPhone}>
                 <span>{phone}</span>
-              ) : (
-                <a href={intPhone}>
-                  <span>{phone}</span>
-                </a>
-              )}
-            </div>
-            <div className={wrapperClass}>
-              <i className="material-icons mr-2">location_on</i>
-              {vicinity === defaultMessage ? (
+              </a>
+            )}
+          </div>
+          <div className={wrapperClass}>
+            <i className="material-icons mr-2">location_on</i>
+            {vicinity === defaultMessage ? (
+              <span>{vicinity}</span>
+            ) : (
+              <a
+                href={`https://maps.google.com/maps/place/${lat},${lng}`}
+                style={anchorTagStyle}
+              >
                 <span>{vicinity}</span>
-              ) : (
-                <a
-                  href={`https://maps.google.com/maps/place/${lat},${lng}`}
-                  style={anchorTagStyle}
-                >
-                  <span>{vicinity}</span>
-                </a>
-              )}
-            </div>
-            <div className={wrapperClass}>
-              <i className="material-icons mr-2">web</i>
-              {website === defaultMessage ? (
+              </a>
+            )}
+          </div>
+          <div className={wrapperClass}>
+            <i className="material-icons mr-2">web</i>
+            {website === defaultMessage ? (
+              <span>{website}</span>
+            ) : (
+              <a href={website} style={anchorTagStyle}>
                 <span>{website}</span>
-              ) : (
-                <a href={website} style={anchorTagStyle}>
-                  <span>{website}</span>
-                </a>
-              )}
-            </div>
-            <Photos detail={detail} placeId={placeId} />
-          </PopoverBody>
-        </div>
-      </Popover>
-    ) : (
-      <div className="RestaurantInfoBox" />
-    );
-  }
-);
+              </a>
+            )}
+          </div>
+          <Photos {...props} />
+        </PopoverBody>
+      </div>
+    </Popover>
+  ) : null;
+});
 
 export default RestaurantInfoBox;

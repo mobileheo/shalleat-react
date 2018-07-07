@@ -12,4 +12,8 @@ body {
   .border-light-green {
     border-color: #39e4a9 !important;
   }
+  .popover {
+    max-width: 30vh;
+    transform: "translate(-50%, -50%)";
+  }
 }
