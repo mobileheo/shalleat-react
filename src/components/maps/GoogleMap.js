@@ -8,71 +8,33 @@ import Spinner from "../common/Spinner";
 import { MapConsumer } from "../context/MapContext";
 import createMapOptions from "../../helper/customGoogleMap";
 
-const restaurantMarkers = (
-  filteredRests,
-  popover,
-  setPopover,
-  center,
-  setCenter,
-  zoom,
-  setZoom,
-  scrollToTop
-) =>
-  filteredRests().map((r, i) => {
-    const {
-      geometry,
-      icon,
-      name,
-      place_id: placeId,
-      photos,
-      vicinity,
-      opening_hours = {}
-    } = r;
+const restaurantMarkers = cProps => {
+  const { filteredRests } = cProps;
+  return filteredRests().map((restaurant, i) => {
+    const { place_id: placeId, geometry } = restaurant;
     const { lat, lng } = geometry.location;
-    const { open_now: openNow = false } = opening_hours;
     return (
       <RestaurantMarker
         key={`marker-${placeId}`}
+        placeId={placeId}
         lat={lat}
         lng={lng}
-        name={name}
-        icon={icon}
-        zoom={zoom}
+        location={{ lat, lng }}
         index={i}
-        center={center}
-        photos={photos}
-        filters={["name", "opening_hours"]}
-        placeId={placeId}
-        openNow={openNow}
-        popover={popover}
-        setZoom={setZoom}
-        vicinity={vicinity}
-        setCenter={setCenter}
-        setPopover={setPopover}
-        scrollToTop={scrollToTop}
+        restaurant={restaurant}
+        {...cProps}
       />
     );
   });
+};
 
 class GoogleMap extends PureComponent {
   render() {
     const { user } = this.props;
     return (
       <MapConsumer>
-        {({
-          loading,
-          currentLocation,
-          radius,
-          center,
-          setCenter,
-          zoom,
-          setZoom,
-          restaurants,
-          filteredRests,
-          popover,
-          setPopover,
-          scrollToTop
-        }) => {
+        {cProps => {
+          const { loading, currentLocation, center, zoom } = cProps;
           return !user ? (
             <Redirect to="/signin" />
           ) : loading ? (
@@ -97,31 +59,14 @@ class GoogleMap extends PureComponent {
                 center={center}
                 zoom={zoom}
                 options={createMapOptions}
-                onClick={props => {
-                  console.log(props);
-                  // {x: 404, y: 600.671875, lat: 49.21146879917674, lng: -123.03999263803712, event: Proxy}
-                }}
               >
                 <CurrentMarker
                   lat={currentLocation.lat}
                   lng={currentLocation.lng}
                   text={user.firstName}
-                  radius={radius}
-                  setCenter={setCenter}
-                  setZoom={setZoom}
-                  popover={popover}
-                  setPopover={setPopover}
+                  {...cProps}
                 />
-                {restaurantMarkers(
-                  filteredRests,
-                  popover,
-                  setPopover,
-                  center,
-                  setCenter,
-                  zoom,
-                  setZoom,
-                  scrollToTop
-                )}
+                {restaurantMarkers({ ...cProps })}
               </GoogleMapReact>
             </div>
           );

@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
-
-const RADIUS = 250;
-// const ZOOM = calcZoom(RADIUS);
+const RADIUS = 600;
 
 const isContainKeyword = (r, keyword) => {
   let { name, opening_hours = false, types, vicinity } = r;
@@ -37,7 +35,6 @@ export class MapProvider extends Component {
     },
     defaultZoom: this.calcZoom(RADIUS),
     zoom: this.calcZoom(RADIUS),
-    // setZoom: zoom => this.setState({ zoom }),
     setZoom: radius => {
       const zoom = this.calcZoom(radius);
       this.setState({ zoom });

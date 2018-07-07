@@ -7,11 +7,11 @@ import {
 } from "reactstrap";
 import Spinner from "react-spinkit";
 import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
-
+const wrapperClass = "d-flex justify-content-start align-items-center mb-3 ";
 class Photos extends Component {
   constructor(props) {
     super(props);
-    this.state = { activeIndex: 0, photosFetched: false, photoUrls: [] };
+    this.state = { activeIndex: 0, photosFetched: false, photoUrls: null };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
     this.goToIndex = this.goToIndex.bind(this);
@@ -49,6 +49,7 @@ class Photos extends Component {
   }
   componentDidMount() {
     const { photos } = this.props.detail;
+    console.log(photos);
     if (photos) {
       const photoUrls = photos.map(async ({ photo_reference: id }) => {
         try {
@@ -61,6 +62,8 @@ class Photos extends Component {
       Promise.all(photoUrls).then(photoUrls =>
         this.setState({ photoUrls, photosFetched: true })
       );
+    } else {
+      this.setState({ photosFetched: true });
     }
   }
 
@@ -68,30 +71,42 @@ class Photos extends Component {
     const { activeIndex, photosFetched, photoUrls } = this.state;
     let items = [];
 
-    const slides = photoUrls.map((url, i) => {
-      items.push({ src: url });
-      return (
-        <CarouselItem
-          onExiting={this.onExiting}
-          onExited={this.onExited}
-          key={i}
-        >
-          <img
-            src={url}
-            className="rounded"
-            alt={url}
-            style={{
-              height: "250px",
-              width: "100%"
-            }}
-          />
-        </CarouselItem>
-      );
-    });
+    const slides = () =>
+      photoUrls.map((url, i) => {
+        items.push({ src: url });
+        return (
+          <CarouselItem
+            onExiting={this.onExiting}
+            onExited={this.onExited}
+            key={i}
+          >
+            <img
+              src={url}
+              className="rounded"
+              alt={url}
+              style={{
+                height: "25vh",
+                width: "100%"
+              }}
+            />
+          </CarouselItem>
+        );
+      });
 
     return !photosFetched ? (
-      <div className="d-flex justify-content-center my-5">
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          height: "25vh",
+          width: "100%"
+        }}
+      >
         <Spinner name="cube-grid" color="#ff4081" />
+      </div>
+    ) : !photoUrls ? (
+      <div className={wrapperClass}>
+        <i className="material-icons mr-2">photo</i>
+        <span>Not available</span>
       </div>
     ) : (
       <Carousel
@@ -104,7 +119,7 @@ class Photos extends Component {
           activeIndex={activeIndex}
           onClickHandler={this.goToIndex}
         />
-        {slides}
+        {slides()}
         <CarouselControl
           direction="prev"
           directionText="Previous"

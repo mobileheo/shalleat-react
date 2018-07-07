@@ -41,9 +41,16 @@ const addCurrLocationBtn = (currentLocation, setCenter, setPopover) => {
   }
 };
 
-const CurrentMarker = ({ lat, lng, text, setCenter, setPopover }) => {
-  const currLocation = { lat, lng };
-  addCurrLocationBtn(currLocation, setCenter, setPopover);
+const CurrentMarker = ({
+  currentLocation,
+  lat,
+  lng,
+  text,
+  setCenter,
+  setPopover
+}) => {
+  // const currLocation = { lat, lng };
+  addCurrLocationBtn(currentLocation, setCenter, setPopover);
   return (
     <Animated
       animationIn="zoomIn"
