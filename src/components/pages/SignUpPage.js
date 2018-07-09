@@ -1,15 +1,19 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
+import { withState } from "recompose";
 import User from "../../requests/user";
 import SignUpForm from "../users/SignUpForm";
 import { getAllFormData } from "../../helper/formHelper.js";
 import { delay } from "../../helper/asyncHelper";
 
-const SignUpPage = ({ updateUser }) => {
+const enhance = withState("redirect", "updateRedirect", false);
+const SignUpPage = enhance(({ user, updateUser }) => {
   const handleSignUp = async e => {
     e.preventDefault();
     try {
       const { currentTarget } = e;
       const userData = getAllFormData(currentTarget);
+      console.log(userData);
       await delay(1500);
       const user = await User.signUp(userData);
       updateUser(user);
@@ -17,11 +21,13 @@ const SignUpPage = ({ updateUser }) => {
       console.log(error);
     }
   };
-  return (
+  return user ? (
+    <Redirect to="/" />
+  ) : (
     <div className="SignUpPage w-50 mt-4 m-auto">
       <SignUpForm onSignUpClick={handleSignUp} />
     </div>
   );
-};
+});
 
 export default SignUpPage;

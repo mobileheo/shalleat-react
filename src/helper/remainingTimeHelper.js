@@ -1,10 +1,17 @@
 import moment from "moment";
 import "moment-precise-range-plugin";
+
 const timeFormatter = time => time.slice(0, 2) + ":" + time.slice(2);
 const addYearDateToHours = hours =>
   moment(moment().format(`YYYY-MM-DD ${hours}:00`));
 
 const currentYearDateTime = () => moment().format("YYYY-MM-DD HH:mm:ss");
+const calcDiff = (closeDay, openDay) => {
+  if (closeDay === openDay) return 0;
+  if (closeDay > openDay) return closeDay - openDay;
+  if (closeDay < openDay) return 1;
+};
+// closeDay >= openDay ? closeDay - openDay - 1 : 0; // only when business opens on saturday(6) and close on sunday(0);
 
 export const getTodayHours = ({
   notAvailable,
@@ -24,7 +31,7 @@ export const getTodayHours = ({
   if (isOpenToday) {
     if (isOpenNow) {
       const closeHours = timeFormatter(close.time);
-      const diff = Math.abs(close.day - open.day);
+      const diff = calcDiff(close.day, open.day); //close day >= open.day except close is 0 open is 6
       const yearDateHours = addYearDateToHours(closeHours);
       diff
         ? (closeTime = moment(yearDateHours).add(diff, "d"))
@@ -37,7 +44,8 @@ export const getTodayHours = ({
       } else {
         // Already closed today
         const nextOpenHours = timeFormatter(nextOpen.time);
-        const diff = Math.abs(nextOpen.day - close.day);
+        // const diff = Math.abs(nextOpen.day - close.day);
+        const diff = calcDiff(nextOpen.day, close.day);
         const yearDateHours = addYearDateToHours(nextOpenHours);
         diff
           ? (closeTime = moment(yearDateHours).add(diff, "d"))
@@ -45,8 +53,12 @@ export const getTodayHours = ({
       }
     }
   } else {
+    const date = new Date();
+    const today = date.getDay();
     const openhours = timeFormatter(nextOpen.time);
-    openTime = addYearDateToHours(openhours);
+    const diff = calcDiff(today, nextOpen.day);
+    const yearDateHours = addYearDateToHours(openhours);
+    openTime = moment(yearDateHours).add(diff, "d");
   }
   return { openTime, closeTime };
 };

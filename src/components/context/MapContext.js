@@ -31,6 +31,7 @@ export class MapProvider extends Component {
     setRadius: radius => this.setState({ radius }),
     center: null,
     setCenter: center => {
+      console.log(this.state.center);
       this.setState({ center });
     },
     defaultZoom: this.calcZoom(RADIUS),
@@ -84,7 +85,8 @@ export class MapProvider extends Component {
     if (navigator.geolocation) {
       this.watchID = navigator.geolocation.watchPosition(
         this.geoSuccess,
-        this.geoError
+        this.geoError,
+        { timeout: 5000 }
       );
     } else {
       alert("Geolocation is not supported by this browser.");

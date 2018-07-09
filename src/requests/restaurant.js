@@ -49,5 +49,15 @@ export default {
     } catch (error) {
       throw new Error(error);
     }
+  },
+  async getPhotos(photos, maxWidth) {
+    try {
+      return await postData(`${url}/photos`, {
+        photos,
+        maxWidth
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 };
