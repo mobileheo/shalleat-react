@@ -77,7 +77,7 @@ class Photos extends Component {
               style={{
                 height: "25vh",
                 width: "100%",
-                objectFit: "cover"
+                objectFit: "contain"
               }}
             />
           </CarouselItem>
