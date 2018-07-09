@@ -34,22 +34,16 @@ const addCurrLocationBtn = (currentLocation, setCenter, setPopover) => {
     const currLocationBtn = convertFullScreenBtnToAnchor(fullScreenBtn);
     addSvgIcon(currLocationBtn);
     addStyle(currLocationBtn);
-    currLocationBtn.addEventListener("click", async e => {
-      await setPopover(null, false);
-      await setCenter(currentLocation);
+    currLocationBtn.addEventListener("click", e => {
+      e.preventDefault();
+      console.log(currentLocation);
+      setPopover(null, false);
+      setCenter(currentLocation);
     });
   }
 };
 
-const CurrentMarker = ({
-  currentLocation,
-  lat,
-  lng,
-  text,
-  setCenter,
-  setPopover
-}) => {
-  // const currLocation = { lat, lng };
+const CurrentMarker = ({ currentLocation, text, setCenter, setPopover }) => {
   addCurrLocationBtn(currentLocation, setCenter, setPopover);
   return (
     <Animated

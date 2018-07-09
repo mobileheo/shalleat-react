@@ -47,30 +47,20 @@ class Photos extends Component {
     if (this.animating) return;
     this.setState({ activeIndex: newIndex });
   }
-  componentDidMount() {
+  async componentDidMount() {
     const { photos } = this.props.detail;
     console.log(photos);
     if (photos) {
-      const photoUrls = photos.map(async ({ photo_reference: id }) => {
-        try {
-          const { photoUrl } = await Restaurant.getPhoto(id, 250);
-          return photoUrl;
-        } catch (error) {
-          console.log(error);
-        }
-      });
-      Promise.all(photoUrls).then(photoUrls =>
-        this.setState({ photoUrls, photosFetched: true })
-      );
-    } else {
-      this.setState({ photosFetched: true });
+      const { photoUrls } = await Restaurant.getPhotos(photos, 250);
+      this.setState({ photoUrls });
     }
+    this.setState({ photosFetched: true });
   }
 
   render() {
     const { activeIndex, photosFetched, photoUrls } = this.state;
     let items = [];
-
+    console.log("photoUrls =>", photoUrls);
     const slides = () =>
       photoUrls.map((url, i) => {
         items.push({ src: url });
@@ -86,7 +76,8 @@ class Photos extends Component {
               alt={url}
               style={{
                 height: "25vh",
-                width: "100%"
+                width: "100%",
+                objectFit: "cover"
               }}
             />
           </CarouselItem>

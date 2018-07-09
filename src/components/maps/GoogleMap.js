@@ -59,6 +59,7 @@ class GoogleMap extends PureComponent {
                 center={center}
                 zoom={zoom}
                 options={createMapOptions}
+                layerTypes={["TrafficLayer", "TransitLayer"]}
               >
                 <CurrentMarker
                   lat={currentLocation.lat}

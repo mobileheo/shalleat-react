@@ -90,7 +90,7 @@ $ yarn start
 - react
 - recompose
 - google-map-react
-- daemonite-material
+- daemonite-materi
 - react-animated-css
 - react-star-ratings
 - reactstrap
