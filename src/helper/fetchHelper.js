@@ -1,7 +1,8 @@
-const headers = {
+const headers = new Headers({
   Accept: "application/json",
-  "Content-Type": "application/json"
-};
+  // "Access-Control-Allow-Headers": "Content-Type",
+  "Content-Type": "application/json; charset=UTF-8"
+});
 export const getData = async url => {
   try {
     const res = await fetch(url, {
