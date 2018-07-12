@@ -3,23 +3,31 @@
 React web application that picks restaurants for you! **Deployed on https://www.shalleat.com/.**
 Each restaurants business hour will be shown as remaining time until closing or opening. Also, this remaining time keeps updating every second. Thus, if somebody asks you "when will Sohyang Korean restaurant be opening?, you can say something like "Oh, the restaurant will be opening in 1hours 24munitues 25 seconds" or "the restaurant will be closing in 2hours 18munitues 38seconds" **without having to check current time and calculate the difference between current time and closing or opening hour.** Furthermore, you can actually fetch up to 60 places, but Google restricts only 20 restaurants per request. In terms of functionality, <a href="https://github.com/sunny-heo/ShallEat-API"> ShallEat Web API server</a> can fetch 60 restaurants by sending requests to google recursively. However, this will quickly exceed daily requrest limit. Thus, I restrict that only 20 restaurnts render on the map. If you set up the backend server on your local machine with your place api key, you can get maximum 60 restuarants:) I hope you enjoy with ShallEat. Thank you 😁
 
+## Component Layout
+
+<img src="./images/layout.png" width="600" height="500" />
+
+## Component Hierarchy
+
+<img src="./images/component_hierarchy.png" width="600" height="500" />
+
 ## Demo
 
 > 👇 Pick for me button demo. (green = {openNow: true), dark = {openNow: false})
 
-> <img src="./gifs/pick_me_btn_demo.gif" width="500" height="300" />
+> <img src="./gifs/pick_me_btn_demo.gif" width="600" height="400" />
 
 > 👇 Main search box demo.
 
-> <img src="./gifs/main_search_box_demo.gif" width="500" height="300" />
+> <img src="./gifs/main_search_box_demo.gif" width="600" height="400" />
 
 > 👇 Another main search box demo. (This search box accepts other mesures as well)
 
-> <img src="./gifs/main_search_box_demo_2.gif" width="500" height="300" />
+> <img src="./gifs/main_search_box_demo_2.gif" width="600" height="400" />
 
 > 👇 Restaurant info box demo.
 
-> <img src="./gifs/info_box_demo.gif" width="300" height="500" />
+> <img src="./gifs/info_box_demo.gif" width="400" height="600" />
 
 ## Getting Started
 
