@@ -59,7 +59,7 @@ const RestaurantInfoBox = enhence(props => {
     international_phone_number: intPhone = defaultMessage,
     price_level: price = defaultMessage,
     website = defaultMessage
-  } = props.detail;
+  } = props.details;
 
   return chosenId === placeId && isOpen ? (
     <Popover placement="auto" isOpen={isOpen} target={`Popover-${placeId}`}>

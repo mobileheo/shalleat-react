@@ -20,7 +20,7 @@ const defaultStyle = {
   minWidth: "37px",
   transition: "transform 0.5s ease-in-out"
 };
-const filters = ["name", "opening_hours"];
+
 const btnStyle = openNow => {
   return openNow
     ? {
@@ -32,29 +32,35 @@ const btnStyle = openNow => {
         backgroundColor: "#424242"
       };
 };
-const detailFields = [
+
+const FILTERS = [
+  "name",
+  "opening_hours",
   "formatted_phone_number",
   "international_phone_number",
   "price_level",
   "website",
-  "photos"
+  "photos",
+  "reviews"
 ];
 
 class RestaurantMarker extends React.PureComponent {
   state = {
     markerLoading: true,
     schedule: null,
-    detail: {}
+    details: {}
   };
 
   async componentDidMount() {
     try {
       this._isMounted = true;
       const { placeId } = this.props;
-      const detail = await Restaurant.getDetail(placeId, detailFields);
-      const schedule = await Restaurant.getSchedule(placeId, filters);
+      const { schedule, details } = await Restaurant.getDetails(
+        placeId,
+        FILTERS
+      );
       if (this._isMounted) {
-        await this.setState({ detail, schedule, markerLoading: false });
+        await this.setState({ details, schedule, markerLoading: false });
       }
     } catch (error) {
       console.log(error);

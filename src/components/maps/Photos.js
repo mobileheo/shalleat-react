@@ -48,7 +48,7 @@ class Photos extends Component {
     this.setState({ activeIndex: newIndex });
   }
   async componentDidMount() {
-    const { photos } = this.props.detail;
+    const { photos } = this.props.details;
     console.log(photos);
     if (photos) {
       const { photoUrls } = await Restaurant.getPhotos(photos, 250);

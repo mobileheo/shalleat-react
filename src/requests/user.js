@@ -4,6 +4,7 @@ import { getData, postData } from "../helper/fetchHelper";
 export default {
   async signIn(user) {
     try {
+      console.log(user);
       const signedInUser = await postData(`${BASE_URL}/users/signin`, user);
       return signedInUser;
     } catch (error) {

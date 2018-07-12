@@ -40,6 +40,16 @@ export default {
       throw new Error(error);
     }
   },
+  async getDetails(placeId, filters) {
+    try {
+      return await postData(`${url}/details`, {
+        placeId,
+        filters
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
   async getPhoto(photoId, maxWidth) {
     try {
       return await postData(`${url}/photo`, {
