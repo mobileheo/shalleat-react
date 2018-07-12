@@ -49,7 +49,6 @@ class Photos extends Component {
   }
   async componentDidMount() {
     const { photos } = this.props.details;
-    console.log(photos);
     if (photos) {
       const { photoUrls } = await Restaurant.getPhotos(photos, 250);
       this.setState({ photoUrls });

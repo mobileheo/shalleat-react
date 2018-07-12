@@ -1,6 +1,6 @@
 import React from "react";
-import { withState } from "recompose";
 import { Redirect } from "react-router-dom";
+import { withState } from "recompose";
 import User from "../../requests/user";
 import SignInForm from "../users/SignInForm";
 import { getAllFormData } from "../../helper/formHelper.js";

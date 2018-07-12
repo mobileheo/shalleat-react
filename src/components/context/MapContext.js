@@ -31,6 +31,7 @@ export class MapProvider extends Component {
     setRadius: radius => this.setState({ radius }),
     center: null,
     setCenter: center => {
+      console.log(this.state.center);
       this.setState({ center });
     },
     defaultZoom: this.calcZoom(RADIUS),
