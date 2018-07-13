@@ -1,6 +1,8 @@
 const headers = new Headers({
   Accept: "application/json",
   // "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Credentials": true,
   "Content-Type": "application/json; charset=UTF-8"
 });
 export const getData = async url => {
@@ -16,6 +18,7 @@ export const getData = async url => {
 };
 
 export const postData = async (url, data) => {
+  console.log({ url, data });
   try {
     const res = await fetch(url, {
       method: "POST",

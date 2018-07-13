@@ -1,6 +1,7 @@
 const createMapOptions = maps => {
   // console.log("maps => ", maps);
   return {
+    fullscreenControl: false,
     panControl: false,
     mapTypeControl: false,
     markerOptions: {

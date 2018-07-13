@@ -12,7 +12,8 @@ const HEIGHT = WIDTH;
 const MARKER_STYLE = {
   width: WIDTH,
   height: HEIGHT,
-  transform: "translate(-50%, -50%)"
+  transform: "translate(-50%, -50%)",
+  zIndex: "4"
 };
 const BTN_CLASS =
   "btn d-flex justify-content-center align-items-center text-white";
@@ -45,6 +46,10 @@ const FILTERS = [
 ];
 
 class RestaurantMarker extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.markerRef = React.createRef();
+  }
   state = {
     markerLoading: true,
     schedule: null,
@@ -71,6 +76,10 @@ class RestaurantMarker extends React.PureComponent {
     this._isMounted = false;
   }
 
+  handleParentZindex = () => {
+    this.markerRef.current.parentNode.style.zIndex = 10;
+  };
+
   render() {
     const {
       placeId,
@@ -92,6 +101,7 @@ class RestaurantMarker extends React.PureComponent {
       <div
         className="RestaurantMarker d-flex justify-content-center"
         style={MARKER_STYLE}
+        ref={this.markerRef}
       >
         <Tooltip
           title={name}
@@ -141,6 +151,7 @@ class RestaurantMarker extends React.PureComponent {
                 } else {
                   await setPopover(placeId, !isOpen);
                 }
+                this.handleParentZindex();
                 await scrollToTop();
               }}
               alt={"marker-icon"}
