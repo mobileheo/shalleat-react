@@ -85,8 +85,7 @@ export class MapProvider extends Component {
     if (navigator.geolocation) {
       this.watchID = navigator.geolocation.watchPosition(
         this.geoSuccess,
-        this.geoError,
-        { timeout: 5000 }
+        this.geoError
       );
     } else {
       alert("Geolocation is not supported by this browser.");

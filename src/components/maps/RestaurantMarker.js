@@ -53,6 +53,7 @@ class RestaurantMarker extends React.PureComponent {
   state = {
     markerLoading: true,
     schedule: null,
+    photoUrls: null,
     details: {}
   };
 

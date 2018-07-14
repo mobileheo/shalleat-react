@@ -48,18 +48,19 @@ class Photos extends Component {
     this.setState({ activeIndex: newIndex });
   }
   async componentDidMount() {
+    const { photoUrls: isPhotosAvailable, storePhotoUrls } = this.props;
     const { photos } = this.props.details;
-    if (photos) {
+    if (!isPhotosAvailable) {
       const { photoUrls } = await Restaurant.getPhotos(photos, 250);
-      this.setState({ photoUrls });
+      storePhotoUrls(photoUrls);
     }
     this.setState({ photosFetched: true });
   }
 
   render() {
-    const { activeIndex, photosFetched, photoUrls } = this.state;
+    const { activeIndex, photosFetched } = this.state;
+    const { photoUrls } = this.props;
     let items = [];
-    console.log("photoUrls =>", photoUrls);
     const slides = () =>
       photoUrls.map((url, i) => {
         items.push({ src: url });

@@ -6,6 +6,7 @@ import CurrentMarker from "./CurrentMarker";
 import RestaurantMarker from "./RestaurantMarker";
 import Spinner from "../common/Spinner";
 import { MapConsumer } from "../context/MapContext";
+import { RestProvider } from "../context/RestContext";
 import createMapOptions from "../../helper/customGoogleMap";
 
 const restaurantMarkers = cProps => {
@@ -14,16 +15,17 @@ const restaurantMarkers = cProps => {
     const { place_id: placeId, geometry } = restaurant;
     const { lat, lng } = geometry.location;
     return (
-      <RestaurantMarker
-        key={`marker-${placeId}`}
-        placeId={placeId}
-        lat={lat}
-        lng={lng}
-        location={{ lat, lng }}
-        index={i}
-        restaurant={restaurant}
-        {...cProps}
-      />
+      <RestProvider key={`marker-${placeId}`} lat={lat} lng={lng}>
+        <RestaurantMarker
+          placeId={placeId}
+          lat={lat}
+          lng={lng}
+          location={{ lat, lng }}
+          index={i}
+          restaurant={restaurant}
+          {...cProps}
+        />
+      </RestProvider>
     );
   });
 };
