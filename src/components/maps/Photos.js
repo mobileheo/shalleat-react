@@ -11,7 +11,7 @@ const wrapperClass = "d-flex justify-content-start align-items-center mb-3 ";
 class Photos extends Component {
   constructor(props) {
     super(props);
-    this.state = { activeIndex: 0, photosFetched: false, photoUrls: null };
+    this.state = { activeIndex: 0, photosFetched: false };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
     this.goToIndex = this.goToIndex.bind(this);
@@ -29,7 +29,8 @@ class Photos extends Component {
 
   next() {
     if (this.animating) return;
-    const { activeIndex, photoUrls } = this.state;
+    const { activeIndex } = this.state;
+    const { photoUrls } = this.props;
     const nextIndex =
       activeIndex === photoUrls.length - 1 ? 0 : activeIndex + 1;
     this.setState({ activeIndex: nextIndex });
@@ -37,7 +38,8 @@ class Photos extends Component {
 
   previous() {
     if (this.animating) return;
-    const { activeIndex, photoUrls } = this.state;
+    const { activeIndex } = this.state;
+    const { photoUrls } = this.props;
     const nextIndex =
       activeIndex === 0 ? photoUrls.length - 1 : activeIndex - 1;
     this.setState({ activeIndex: nextIndex });

@@ -13,8 +13,7 @@ const RestList = () => (
       filteredRests,
       popover,
       setPopover,
-      radius,
-      scrollTop
+      radius
     }) => {
       const restaurants = filteredRests();
       return loading ? null : restaurants.length === 0 ? (
