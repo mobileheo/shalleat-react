@@ -24,6 +24,7 @@ const getFilterdList = (arr, keyword) => {
 export class MapProvider extends Component {
   state = {
     loading: true,
+    setLoading: loading => this.setState({ loading }),
     fetched: false,
     currentLocation: null,
     defaultCenter: null,
@@ -31,7 +32,6 @@ export class MapProvider extends Component {
     setRadius: radius => this.setState({ radius }),
     center: null,
     setCenter: center => {
-      console.log(this.state.center);
       this.setState({ center });
     },
     defaultZoom: this.calcZoom(RADIUS),
@@ -40,11 +40,12 @@ export class MapProvider extends Component {
       const zoom = this.calcZoom(radius);
       this.setState({ zoom });
     },
-    restaurants: [],
-    setRestaurants: async radius => {
+    restaurants: null,
+    setRestaurants: async (radius = this.state.radius) => {
       try {
         await this.setState({ restaurants: [], radius });
         await this.findNearby();
+        // await this.setState({ loading: false });
       } catch (error) {
         console.log(error);
       }
@@ -73,6 +74,14 @@ export class MapProvider extends Component {
       const targetChild = document.querySelector(`#list-item-${chosenId}`);
       targetContainer.scrollTop =
         targetChild.offsetTop - targetContainer.offsetTop;
+    },
+    skipInitDetailsFecth: false,
+    setSkipInitDetailsFecth: () =>
+      this.setState({ skipInitDetailsFecth: true }),
+    reviews: {},
+    setReviews: review => {
+      const reviews = { ...this.state.reviews, ...review };
+      this.setState({ reviews });
     }
   };
 
@@ -85,8 +94,7 @@ export class MapProvider extends Component {
     if (navigator.geolocation) {
       this.watchID = navigator.geolocation.watchPosition(
         this.geoSuccess,
-        this.geoError,
-        { timeout: 5000 }
+        this.geoError
       );
     } else {
       alert("Geolocation is not supported by this browser.");
@@ -98,12 +106,16 @@ export class MapProvider extends Component {
   }
 
   geoSuccess = async position => {
-    const { latitude: lat, longitude: lng } = position.coords;
-    const currentLocation = { lat, lng };
-    if (this._isMounted) {
-      this.storeCurrentLocation(currentLocation);
+    try {
+      const { latitude: lat, longitude: lng } = position.coords;
+      const currentLocation = { lat, lng };
+      await this.storeCurrentLocation(currentLocation);
       await this.setState({ currentLocation });
-      await this.findNearby();
+      // await this.findNearby();
+      // await this.setState({ loading: false });
+      // await this.updateRestaurants();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -117,9 +129,9 @@ export class MapProvider extends Component {
       if (firstBatch) {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
         await this.setState({
-          loading: false,
           fetched: true,
-          restaurants
+          restaurants,
+          loading: false
         });
         // await this.concatNext(pageToken);
       }
@@ -128,20 +140,27 @@ export class MapProvider extends Component {
     }
   }
   async concatNext(pageToken) {
-    if (!pageToken) {
-      navigator.geolocation.clearWatch(this.watchID);
-      this.setState({ fetched: true });
-      return;
-    } else {
-      const nextBatch = await Restaurant.getNextRests({ pageToken });
-      let { restaurants } = this.state;
+    try {
+      if (!pageToken) {
+        navigator.geolocation.clearWatch(this.watchID);
+        this.setState({ fetched: true });
+        return;
+      } else {
+        const nextBatch = await Restaurant.getNextRests({ pageToken });
+        let { restaurants } = this.state;
 
-      if (nextBatch) {
-        const { next_page_token: nextToken = null, results: next } = nextBatch;
-        restaurants = restaurants.concat(next);
-        await this.setState({ restaurants });
-        await this.concatNext(nextToken);
+        if (nextBatch) {
+          const {
+            next_page_token: nextToken = null,
+            results: next
+          } = nextBatch;
+          restaurants = restaurants.concat(next);
+          await this.setState({ restaurants });
+          await this.concatNext(nextToken);
+        }
       }
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -158,21 +177,31 @@ export class MapProvider extends Component {
     return currentLocation || {};
   }
 
-  async componentDidMount() {
-    this._isMounted = true;
-    const { currentLocation = null } = this.getCurrentLocation();
-    const center = currentLocation;
-
-    if (currentLocation) {
-      await this.setState({ currentLocation, center });
+  async updateRestaurants() {
+    try {
       await this.findNearby();
-    } else {
-      await this.getLocation();
+      // await this.setState({ loading: false });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async componentDidMount() {
+    try {
+      const { currentLocation = null } = this.getCurrentLocation();
+      const center = currentLocation;
+      if (currentLocation) {
+        await this.setState({ currentLocation, center });
+      } else {
+        this.getLocation();
+      }
+      await this.updateRestaurants();
+    } catch (error) {
+      console.log(error);
     }
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
     navigator.geolocation.clearWatch(this.watchID);
   }
 

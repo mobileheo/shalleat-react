@@ -10,17 +10,9 @@ const LIST_STYLE = {
   padding: "1rem"
 };
 
-const RestList = ({
-  restaurant,
-  index,
-  popover,
-  setPopover,
-  center,
-  setCenter,
-  zoom,
-  setZoom,
-  scrollTop
-}) => {
+const RestItem = props => {
+  // console.log(props);
+  const { restaurant, index, popover, setPopover, setCenter, setZoom } = props;
   const {
     geometry,
     name,
@@ -114,9 +106,14 @@ const RestList = ({
           </div>
         </div>
       </a>
-      <ReveiwList chosenId={chosenId} placeId={placeId} isOpen={isOpen} />
+      <ReveiwList
+        chosenId={chosenId}
+        placeId={placeId}
+        isOpen={isOpen}
+        {...props}
+      />
     </Animated>
   );
 };
 
-export default RestList;
+export default RestItem;

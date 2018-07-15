@@ -13,7 +13,6 @@ const SignUpPage = enhance(({ user, updateUser }) => {
     try {
       const { currentTarget } = e;
       const userData = getAllFormData(currentTarget);
-      console.log(userData);
       await delay(1500);
       const user = await User.signUp(userData);
       updateUser(user);

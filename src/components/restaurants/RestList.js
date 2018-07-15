@@ -4,18 +4,9 @@ import RestItem from "./RestItem";
 
 const RestList = () => (
   <MapConsumer>
-    {({
-      center,
-      setCenter,
-      zoom,
-      setZoom,
-      loading,
-      filteredRests,
-      popover,
-      setPopover,
-      radius,
-      scrollTop
-    }) => {
+    {mcProps => {
+      // console.log(mcProps);
+      const { loading, filteredRests, radius } = mcProps;
       const restaurants = filteredRests();
       return loading ? null : restaurants.length === 0 ? (
         <a
@@ -33,17 +24,7 @@ const RestList = () => (
           style={{ overflow: "scroll" }}
         >
           {restaurants.map((r, i) => (
-            <RestItem
-              key={r.place_id}
-              index={i}
-              restaurant={r}
-              center={center}
-              setCenter={setCenter}
-              zoom={zoom}
-              setZoom={setZoom}
-              popover={popover}
-              setPopover={setPopover}
-            />
+            <RestItem key={r.place_id} index={i} restaurant={r} {...mcProps} />
           ))}
         </div>
       );

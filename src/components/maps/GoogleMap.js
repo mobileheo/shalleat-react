@@ -1,29 +1,29 @@
 import React, { PureComponent } from "react";
-import { Redirect } from "react-router-dom";
 import GoogleMapReact from "google-map-react";
 import { googleMapAPI } from "../../requests/configuration";
 import CurrentMarker from "./CurrentMarker";
 import RestaurantMarker from "./RestaurantMarker";
-import Spinner from "../common/Spinner";
 import { MapConsumer } from "../context/MapContext";
+import { RestProvider } from "../context/RestContext";
 import createMapOptions from "../../helper/customGoogleMap";
 
 const restaurantMarkers = cProps => {
-  const { filteredRests } = cProps;
+  const { filteredRests, loading } = cProps;
   return filteredRests().map((restaurant, i) => {
     const { place_id: placeId, geometry } = restaurant;
     const { lat, lng } = geometry.location;
-    return (
-      <RestaurantMarker
-        key={`marker-${placeId}`}
-        placeId={placeId}
-        lat={lat}
-        lng={lng}
-        location={{ lat, lng }}
-        index={i}
-        restaurant={restaurant}
-        {...cProps}
-      />
+    return loading ? null : (
+      <RestProvider key={`marker-${placeId}`} lat={lat} lng={lng}>
+        <RestaurantMarker
+          placeId={placeId}
+          lat={lat}
+          lng={lng}
+          location={{ lat, lng }}
+          index={i}
+          restaurant={restaurant}
+          {...cProps}
+        />
+      </RestProvider>
     );
   });
 };
@@ -33,26 +33,38 @@ class GoogleMap extends PureComponent {
     const { user } = this.props;
     return (
       <MapConsumer>
-        {cProps => {
-          const { loading, currentLocation, center, zoom } = cProps;
-          return !user ? (
-            <Redirect to="/signin" />
-          ) : loading ? (
-            <div
-              className="MapPage d-flex flex-column justify-content-center align-items-center w-100 mt-4"
-              style={{
-                height: "100vh",
-                width: "100%",
-                border: "1px soild black"
-              }}
-            >
-              <Spinner />
-            </div>
-          ) : (
+        {mcProps => {
+          const {
+            currentLocation,
+            center,
+            zoom,
+            setPopover,
+            setCenter
+          } = mcProps;
+          return (
             <div
               className="GoogleMap mb-8"
               style={{ height: "100%", width: "100%" }}
             >
+              <div
+                className="currentLocator mt-4 mr-3 btn d-flex justify-content-center"
+                style={{
+                  position: "absolute",
+                  minWidth: "25px",
+                  top: "0px",
+                  right: "0px",
+                  zIndex: 15,
+                  cursor: "pointer",
+                  padding: "10px 5px"
+                }}
+                onClick={e => {
+                  e.preventDefault();
+                  setPopover(null, false);
+                  setCenter(currentLocation);
+                }}
+              >
+                <i className="material-icons">my_location</i>
+              </div>
               <GoogleMapReact
                 bootstrapURLKeys={{ key: googleMapAPI }}
                 defaultCenter={currentLocation}
@@ -60,14 +72,15 @@ class GoogleMap extends PureComponent {
                 zoom={zoom}
                 options={createMapOptions}
                 layerTypes={["TrafficLayer", "TransitLayer"]}
+                onChange={({ center, zoom }) => setCenter(center)}
               >
                 <CurrentMarker
                   lat={currentLocation.lat}
                   lng={currentLocation.lng}
                   text={user.firstName}
-                  {...cProps}
+                  {...mcProps}
                 />
-                {restaurantMarkers({ ...cProps })}
+                {restaurantMarkers({ ...mcProps })}
               </GoogleMapReact>
             </div>
           );

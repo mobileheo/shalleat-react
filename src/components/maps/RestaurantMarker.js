@@ -12,7 +12,8 @@ const HEIGHT = WIDTH;
 const MARKER_STYLE = {
   width: WIDTH,
   height: HEIGHT,
-  transform: "translate(-50%, -50%)"
+  transform: "translate(-50%, -50%)",
+  zIndex: "4"
 };
 const BTN_CLASS =
   "btn d-flex justify-content-center align-items-center text-white";
@@ -45,22 +46,37 @@ const FILTERS = [
 ];
 
 class RestaurantMarker extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.markerRef = React.createRef();
+  }
   state = {
     markerLoading: true,
     schedule: null,
+    photoUrls: null,
     details: {}
   };
 
   async componentDidMount() {
     try {
       this._isMounted = true;
-      const { placeId } = this.props;
-      const { schedule, details } = await Restaurant.getDetails(
+      const {
         placeId,
-        FILTERS
-      );
-      if (this._isMounted) {
-        await this.setState({ details, schedule, markerLoading: false });
+        skipInitDetailsFecth,
+        setSkipInitDetailsFecth,
+        setReviews
+      } = this.props;
+      if (!skipInitDetailsFecth) {
+        setSkipInitDetailsFecth();
+      } else {
+        const { schedule, details } = await Restaurant.getDetails(
+          placeId,
+          FILTERS
+        );
+        setReviews({ [placeId]: details.reviews });
+        if (this._isMounted) {
+          await this.setState({ details, schedule, markerLoading: false });
+        }
       }
     } catch (error) {
       console.log(error);
@@ -70,6 +86,10 @@ class RestaurantMarker extends React.PureComponent {
   componentWillUnmount() {
     this._isMounted = false;
   }
+
+  handleParentZindex = () => {
+    this.markerRef.current.parentNode.style.zIndex = 10;
+  };
 
   render() {
     const {
@@ -86,12 +106,13 @@ class RestaurantMarker extends React.PureComponent {
     const { opening_hours: openHours = {}, name } = restaurant;
     const { open_now: openNow = false } = openHours;
     const { chosenId, isOpen } = popover;
-    return this.state.markerLoading ? (
+    return this.props.markerLoading ? (
       <Spinner name="ball-scale-multiple" color="#2196f3" />
     ) : (
       <div
         className="RestaurantMarker d-flex justify-content-center"
         style={MARKER_STYLE}
+        ref={this.markerRef}
       >
         <Tooltip
           title={name}
@@ -141,6 +162,7 @@ class RestaurantMarker extends React.PureComponent {
                 } else {
                   await setPopover(placeId, !isOpen);
                 }
+                this.handleParentZindex();
                 await scrollToTop();
               }}
               alt={"marker-icon"}

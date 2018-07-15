@@ -4,9 +4,19 @@ import { getData, postData } from "../helper/fetchHelper";
 export default {
   async signIn(user) {
     try {
-      console.log(user);
-      const signedInUser = await postData(`${BASE_URL}/users/signin`, user);
-      return signedInUser;
+      // console.log(user);
+      const { currentUser, token } = await postData(
+        `${BASE_URL}/users/signin`,
+        user
+      );
+      // document.cookie = `ShallEat=${"fdgdfg"}; Max-Age=3600; HttpOnly; Secure`;
+      // document.cookie = "ShallEat=hello; Max-Age=3600; HttpOnly; Secure";
+
+      document.cookie = `ShallEat=${token}`;
+
+      // console.log(currentUser, token);
+      return currentUser;
+      // return signedInUser;
     } catch (error) {
       throw new Error(error);
     }

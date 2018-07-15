@@ -1,20 +1,11 @@
 import React, { Component } from "react";
 import ReviewItem from "./ReviewItem";
-import Restaurant from "../../requests/restaurant";
-
-const filters = ["reviews"];
 
 class Review extends Component {
-  state = {
-    reviews: []
-  };
-  async componentDidMount() {
-    const { reviews } = await Restaurant.getDetail(this.props.placeId, filters);
-    this.setState({ reviews });
-  }
   render() {
-    const { chosenId, placeId, isOpen } = this.props;
-    const { reviews } = this.state;
+    const { chosenId, placeId, isOpen, reviews: ctxReviews } = this.props;
+    const reviews = ctxReviews[placeId];
+
     return chosenId === placeId && isOpen ? (
       <div className={chosenId === placeId && isOpen ? "" : "collapse"}>
         {reviews ? (

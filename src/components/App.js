@@ -1,12 +1,17 @@
 import React from "react";
 import { compose, withState, lifecycle } from "recompose";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 
 import NavBar from "./navbar/NavBar";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import MainPage from "./pages/MainPage";
-import { MapProvider } from "./context/MapContext";
+import { MapProvider, MapConsumer } from "./context/MapContext";
 import User from "../requests/user";
 
 const enhance = compose(
@@ -36,9 +41,22 @@ const App = enhance(({ user, updateUser }) => {
             <Route
               exact
               path="/"
-              render={props => (
-                <MainPage {...props} user={user} updateUser={updateUser} />
-              )}
+              render={props =>
+                !user ? (
+                  <Redirect to="/signin" />
+                ) : (
+                  <MapConsumer>
+                    {mcProps => (
+                      <MainPage
+                        {...props}
+                        {...mcProps}
+                        user={user}
+                        updateUser={updateUser}
+                      />
+                    )}
+                  </MapConsumer>
+                )
+              }
             />
             <Route
               exact
