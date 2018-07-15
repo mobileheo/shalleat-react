@@ -64,7 +64,7 @@ class RestaurantMarker extends React.PureComponent {
         placeId,
         skipInitDetailsFecth,
         setSkipInitDetailsFecth,
-        loading
+        setReviews
       } = this.props;
       if (!skipInitDetailsFecth) {
         setSkipInitDetailsFecth();
@@ -73,6 +73,7 @@ class RestaurantMarker extends React.PureComponent {
           placeId,
           FILTERS
         );
+        setReviews({ [placeId]: details.reviews });
         if (this._isMounted) {
           await this.setState({ details, schedule, markerLoading: false });
         }

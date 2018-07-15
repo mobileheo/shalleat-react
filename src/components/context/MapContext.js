@@ -76,7 +76,13 @@ export class MapProvider extends Component {
         targetChild.offsetTop - targetContainer.offsetTop;
     },
     skipInitDetailsFecth: false,
-    setSkipInitDetailsFecth: () => this.setState({ skipInitDetailsFecth: true })
+    setSkipInitDetailsFecth: () =>
+      this.setState({ skipInitDetailsFecth: true }),
+    reviews: {},
+    setReviews: review => {
+      const reviews = { ...this.state.reviews, ...review };
+      this.setState({ reviews });
+    }
   };
 
   calcZoom(radius) {

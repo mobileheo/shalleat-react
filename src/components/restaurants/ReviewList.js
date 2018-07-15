@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import ReviewItem from "./ReviewItem";
-import Restaurant from "../../requests/restaurant";
-
-const filters = ["reviews"];
 
 class Review extends Component {
   state = {
     reviews: []
   };
-  async componentDidMount() {
-    const { reviews } = await Restaurant.getDetail(this.props.placeId, filters);
-    this.setState({ reviews });
+  componentDidMount() {
+    const { reviews: ctxReviews, placeId } = this.props;
+    if (ctxReviews) {
+      const { reviews } = ctxReviews[placeId];
+      this.setState({ reviews });
+    }
   }
   render() {
     const { chosenId, placeId, isOpen } = this.props;
