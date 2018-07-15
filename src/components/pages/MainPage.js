@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import Spinner from "../common/Spinner";
 import GoogleMap from "../maps/GoogleMap";
 import RestList from "../restaurants/RestList";
 import RadiusBar from "../maps/RadiusBar";
 import SerachBar from "../maps/SearchBar";
-import Restaurant from "../../requests/restaurant";
 
 class MainPage extends Component {
   render() {

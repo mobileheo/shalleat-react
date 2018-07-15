@@ -8,7 +8,6 @@ import {
 import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import { RestConsumer } from "../context/RestContext";
 import Photos from "./Photos";
-import Restaurant from "../../requests/restaurant"; //class for fetch restaurant
 
 const defaultMessage = "Not available";
 

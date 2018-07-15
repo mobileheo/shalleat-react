@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
 
@@ -9,8 +8,6 @@ export class RestProvider extends Component {
     storePhotoUrls: (photoUrls = {}) => {
       this.setState({ photoUrls });
     }
-    // photosFetched: false,
-    // setPhotosFetched: () => this.setState({photosFetched: true})
   };
 
   render() {

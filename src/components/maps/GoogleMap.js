@@ -3,14 +3,12 @@ import GoogleMapReact from "google-map-react";
 import { googleMapAPI } from "../../requests/configuration";
 import CurrentMarker from "./CurrentMarker";
 import RestaurantMarker from "./RestaurantMarker";
-import Spinner from "../common/Spinner";
 import { MapConsumer } from "../context/MapContext";
 import { RestProvider } from "../context/RestContext";
 import createMapOptions from "../../helper/customGoogleMap";
 
 const restaurantMarkers = cProps => {
   const { filteredRests, loading } = cProps;
-  // console.log(loading);
   return filteredRests().map((restaurant, i) => {
     const { place_id: placeId, geometry } = restaurant;
     const { lat, lng } = geometry.location;

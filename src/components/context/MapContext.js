@@ -106,7 +106,6 @@ export class MapProvider extends Component {
   }
 
   geoSuccess = async position => {
-    console.log("geoSuccess");
     try {
       const { latitude: lat, longitude: lng } = position.coords;
       const currentLocation = { lat, lng };
@@ -175,14 +174,12 @@ export class MapProvider extends Component {
     const currentLocation = JSON.parse(
       window.sessionStorage.getItem("shalleat")
     );
-    console.log("currentLocation in getCurrentLocation => ", currentLocation);
     return currentLocation || {};
   }
 
   async updateRestaurants() {
     try {
       await this.findNearby();
-      await console.log("updateRestaurants()");
       // await this.setState({ loading: false });
     } catch (error) {
       console.log(error);
@@ -191,10 +188,8 @@ export class MapProvider extends Component {
 
   async componentDidMount() {
     try {
-      console.log("componentDidMount in MapContext");
       const { currentLocation = null } = this.getCurrentLocation();
       const center = currentLocation;
-      console.log(currentLocation);
       if (currentLocation) {
         await this.setState({ currentLocation, center });
       } else {
@@ -207,8 +202,6 @@ export class MapProvider extends Component {
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
-    console.log("componentWillUnmount");
     navigator.geolocation.clearWatch(this.watchID);
   }
 
