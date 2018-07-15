@@ -24,6 +24,7 @@ const getFilterdList = (arr, keyword) => {
 export class MapProvider extends Component {
   state = {
     loading: true,
+    setLoading: loading => this.setState({ loading }),
     fetched: false,
     currentLocation: null,
     defaultCenter: null,
@@ -175,6 +176,10 @@ export class MapProvider extends Component {
     } else {
       await this.getLocation();
     }
+
+    // if (!loading && restaurants.length === 0) {
+    // this.state.setRestaurants();
+    // }
   }
 
   componentWillUnmount() {

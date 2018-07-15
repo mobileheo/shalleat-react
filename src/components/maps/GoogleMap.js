@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import { Redirect } from "react-router-dom";
 import GoogleMapReact from "google-map-react";
 import { googleMapAPI } from "../../requests/configuration";
 import CurrentMarker from "./CurrentMarker";
