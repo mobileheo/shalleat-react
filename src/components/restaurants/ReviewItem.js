@@ -3,7 +3,6 @@ import { Animated } from "react-animated-css";
 import RestRating from "./RestRating";
 
 const ReviewItem = ({ author, rating, time, text, index }) => {
-  console.log(author);
   return (
     <Animated
       animationIn="fadeInLeft"

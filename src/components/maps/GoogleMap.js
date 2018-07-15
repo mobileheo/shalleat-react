@@ -35,13 +35,38 @@ class GoogleMap extends PureComponent {
     const { user } = this.props;
     return (
       <MapConsumer>
-        {cProps => {
-          const { loading, currentLocation, center, zoom } = cProps;
+        {mcProps => {
+          const {
+            currentLocation,
+            center,
+            zoom,
+            setPopover,
+            setCenter
+          } = mcProps;
           return (
             <div
               className="GoogleMap mb-8"
               style={{ height: "100%", width: "100%" }}
             >
+              <div
+                className="currentLocator mt-4 mr-3 btn d-flex justify-content-center"
+                style={{
+                  position: "absolute",
+                  minWidth: "25px",
+                  top: "0px",
+                  right: "0px",
+                  zIndex: 15,
+                  cursor: "pointer",
+                  padding: "10px 5px"
+                }}
+                onClick={e => {
+                  e.preventDefault();
+                  setPopover(null, false);
+                  setCenter(currentLocation);
+                }}
+              >
+                <i className="material-icons">my_location</i>
+              </div>
               <GoogleMapReact
                 bootstrapURLKeys={{ key: googleMapAPI }}
                 defaultCenter={currentLocation}
@@ -49,14 +74,15 @@ class GoogleMap extends PureComponent {
                 zoom={zoom}
                 options={createMapOptions}
                 layerTypes={["TrafficLayer", "TransitLayer"]}
+                onChange={({ center, zoom }) => setCenter(center)}
               >
                 <CurrentMarker
                   lat={currentLocation.lat}
                   lng={currentLocation.lng}
                   text={user.firstName}
-                  {...cProps}
+                  {...mcProps}
                 />
-                {restaurantMarkers({ ...cProps })}
+                {restaurantMarkers({ ...mcProps })}
               </GoogleMapReact>
             </div>
           );

@@ -38,7 +38,10 @@ class MainPage extends Component {
           </div>
         </div>
         <div className="d-flex h-100">
-          <div className="GoogleMap-container w-75 pt-2">
+          <div
+            className="GoogleMap-container w-75 pt-2"
+            style={{ position: "relative" }}
+          >
             <GoogleMap user={this.props.user} />
           </div>
           <div className="RestList-container w-25 ml-3">

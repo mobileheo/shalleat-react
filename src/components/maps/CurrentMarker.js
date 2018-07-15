@@ -4,47 +4,7 @@ import { Animated } from "react-animated-css";
 const WIDTH = "50px";
 const HEIGHT = WIDTH;
 
-const addSvgIcon = currLocationBtn => {
-  currLocationBtn.innerHTML = `
-  <i class="material-icons">
-  my_location
-  </i>
-    `;
-};
-
-const addStyle = currLocationBtn => {
-  currLocationBtn.style.color = "#fff";
-};
-
-const convertFullScreenBtnToAnchor = fullScreenBtn => {
-  let temp = fullScreenBtn.outerHTML.replace(
-    `draggable="false" title="Toggle fullscreen view" aria-label="Toggle fullscreen view"`,
-    `class="bg-light text-dark" id="current-Location-btn"`
-  );
-
-  fullScreenBtn.outerHTML = temp;
-  const currLocationBtn = document.querySelector("#current-Location-btn");
-  return currLocationBtn;
-};
-
-const addCurrLocationBtn = (currentLocation, setCenter, setPopover) => {
-  let child = document.querySelector(".gm-fullscreen-control");
-  if (child) {
-    const fullScreenBtn = child.parentNode;
-    const currLocationBtn = convertFullScreenBtnToAnchor(fullScreenBtn);
-    addSvgIcon(currLocationBtn);
-    addStyle(currLocationBtn);
-    currLocationBtn.addEventListener("click", e => {
-      e.preventDefault();
-      console.log(currentLocation);
-      setPopover(null, false);
-      setCenter(currentLocation);
-    });
-  }
-};
-
-const CurrentMarker = ({ currentLocation, text, setCenter, setPopover }) => {
-  addCurrLocationBtn(currentLocation, setCenter, setPopover);
+const CurrentMarker = ({ text }) => {
   return (
     <Animated
       animationIn="zoomIn"
