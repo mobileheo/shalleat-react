@@ -40,12 +40,12 @@ export class MapProvider extends Component {
       const zoom = this.calcZoom(radius);
       this.setState({ zoom });
     },
-    restaurants: [],
+    restaurants: null,
     setRestaurants: async (radius = this.state.radius) => {
       try {
         await this.setState({ restaurants: [], radius });
         await this.findNearby();
-        console.log("setRestaurants");
+        // await this.setState({ loading: false });
       } catch (error) {
         console.log(error);
       }
@@ -55,7 +55,6 @@ export class MapProvider extends Component {
       try {
         await this.setState({ restaurants: [], typeKeyword });
         await this.findNearby();
-        console.log("setTypeKeyword");
       } catch (error) {
         console.log(error);
       }
@@ -76,10 +75,8 @@ export class MapProvider extends Component {
       targetContainer.scrollTop =
         targetChild.offsetTop - targetContainer.offsetTop;
     },
-    reviews: [],
-    setReviews: reviews => {
-      this.setState({ reviews });
-    }
+    skipInitDetailsFecth: false,
+    setSkipInitDetailsFecth: () => this.setState({ skipInitDetailsFecth: true })
   };
 
   calcZoom(radius) {
@@ -103,12 +100,17 @@ export class MapProvider extends Component {
   }
 
   geoSuccess = async position => {
-    const { latitude: lat, longitude: lng } = position.coords;
-    const currentLocation = { lat, lng };
-    if (this._isMounted) {
-      this.storeCurrentLocation(currentLocation);
+    console.log("geoSuccess");
+    try {
+      const { latitude: lat, longitude: lng } = position.coords;
+      const currentLocation = { lat, lng };
+      await this.storeCurrentLocation(currentLocation);
       await this.setState({ currentLocation });
-      console.log("this.geoSuccess");
+      // await this.findNearby();
+      // await this.setState({ loading: false });
+      // await this.updateRestaurants();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -123,11 +125,9 @@ export class MapProvider extends Component {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
         await this.setState({
           fetched: true,
-          restaurants
+          restaurants,
+          loading: false
         });
-        // await this.setState({
-        //   loading: false
-        // });
         // await this.concatNext(pageToken);
       }
     } catch (error) {
@@ -135,20 +135,27 @@ export class MapProvider extends Component {
     }
   }
   async concatNext(pageToken) {
-    if (!pageToken) {
-      navigator.geolocation.clearWatch(this.watchID);
-      this.setState({ fetched: true });
-      return;
-    } else {
-      const nextBatch = await Restaurant.getNextRests({ pageToken });
-      let { restaurants } = this.state;
+    try {
+      if (!pageToken) {
+        navigator.geolocation.clearWatch(this.watchID);
+        this.setState({ fetched: true });
+        return;
+      } else {
+        const nextBatch = await Restaurant.getNextRests({ pageToken });
+        let { restaurants } = this.state;
 
-      if (nextBatch) {
-        const { next_page_token: nextToken = null, results: next } = nextBatch;
-        restaurants = restaurants.concat(next);
-        await this.setState({ restaurants });
-        await this.concatNext(nextToken);
+        if (nextBatch) {
+          const {
+            next_page_token: nextToken = null,
+            results: next
+          } = nextBatch;
+          restaurants = restaurants.concat(next);
+          await this.setState({ restaurants });
+          await this.concatNext(nextToken);
+        }
       }
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -162,28 +169,40 @@ export class MapProvider extends Component {
     const currentLocation = JSON.parse(
       window.sessionStorage.getItem("shalleat")
     );
+    console.log("currentLocation in getCurrentLocation => ", currentLocation);
     return currentLocation || {};
   }
 
-  async componentDidMount() {
-    this._isMounted = true;
-    const { currentLocation = null } = this.getCurrentLocation();
-    const center = currentLocation;
-
-    if (currentLocation) {
-      await this.setState({ currentLocation, center });
-      console.log("componentDidMount in MapContext");
-    } else {
-      await this.getLocation();
+  async updateRestaurants() {
+    try {
+      await this.findNearby();
+      await console.log("updateRestaurants()");
+      // await this.setState({ loading: false });
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    // if (!loading && restaurants.length === 0) {
-    // this.state.setRestaurants();
-    // }
+  async componentDidMount() {
+    try {
+      console.log("componentDidMount in MapContext");
+      const { currentLocation = null } = this.getCurrentLocation();
+      const center = currentLocation;
+      console.log(currentLocation);
+      if (currentLocation) {
+        await this.setState({ currentLocation, center });
+      } else {
+        this.getLocation();
+      }
+      await this.updateRestaurants();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+    console.log("componentWillUnmount");
     navigator.geolocation.clearWatch(this.watchID);
   }
 

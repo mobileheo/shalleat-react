@@ -60,17 +60,22 @@ class RestaurantMarker extends React.PureComponent {
   async componentDidMount() {
     try {
       this._isMounted = true;
-      const { placeId, reviews: ctxReviews, setReviews } = this.props;
-      console.log("componentDidMount in Marker");
-      const { schedule, details } = await Restaurant.getDetails(
+      const {
         placeId,
-        FILTERS
-      );
-
-      if (this._isMounted) {
-        ctxReviews.push({ [placeId]: details.reviews });
-        setReviews(ctxReviews);
-        await this.setState({ details, schedule, markerLoading: false });
+        skipInitDetailsFecth,
+        setSkipInitDetailsFecth,
+        loading
+      } = this.props;
+      if (!skipInitDetailsFecth) {
+        setSkipInitDetailsFecth();
+      } else {
+        const { schedule, details } = await Restaurant.getDetails(
+          placeId,
+          FILTERS
+        );
+        if (this._isMounted) {
+          await this.setState({ details, schedule, markerLoading: false });
+        }
       }
     } catch (error) {
       console.log(error);
@@ -100,7 +105,7 @@ class RestaurantMarker extends React.PureComponent {
     const { opening_hours: openHours = {}, name } = restaurant;
     const { open_now: openNow = false } = openHours;
     const { chosenId, isOpen } = popover;
-    return this.state.markerLoading ? (
+    return this.props.markerLoading ? (
       <Spinner name="ball-scale-multiple" color="#2196f3" />
     ) : (
       <div

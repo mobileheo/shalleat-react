@@ -26,9 +26,7 @@ const enhence = compose(
     async componentDidMount() {
       const { schedule, setRemainingTime, setTimerId } = this.props;
       const businessHours = getTodayHours(schedule);
-      console.log(schedule);
       const edgeCases = ["Not available", "Open 24 hours"];
-
       if (edgeCases.includes(businessHours)) {
         setRemainingTime(businessHours);
       } else {

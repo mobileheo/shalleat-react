@@ -10,7 +10,7 @@ import createMapOptions from "../../helper/customGoogleMap";
 
 const restaurantMarkers = cProps => {
   const { filteredRests, loading } = cProps;
-  console.log(loading);
+  // console.log(loading);
   return filteredRests().map((restaurant, i) => {
     const { place_id: placeId, geometry } = restaurant;
     const { lat, lng } = geometry.location;
@@ -37,18 +37,7 @@ class GoogleMap extends PureComponent {
       <MapConsumer>
         {cProps => {
           const { loading, currentLocation, center, zoom } = cProps;
-          return loading ? (
-            <div
-              className="MapPage d-flex flex-column justify-content-center align-items-center w-100 mt-4"
-              style={{
-                height: "100vh",
-                width: "100%",
-                border: "1px soild black"
-              }}
-            >
-              <Spinner />
-            </div>
-          ) : (
+          return (
             <div
               className="GoogleMap mb-8"
               style={{ height: "100%", width: "100%" }}

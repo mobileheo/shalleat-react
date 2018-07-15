@@ -50,13 +50,24 @@ class Photos extends Component {
     this.setState({ activeIndex: newIndex });
   }
   async componentDidMount() {
-    const { photoUrls: isPhotosAvailable, storePhotoUrls } = this.props;
-    const { photos } = this.props.details;
-    if (!isPhotosAvailable) {
-      const { photoUrls } = await Restaurant.getPhotos(photos, 250);
-      storePhotoUrls(photoUrls);
+    try {
+      this._isMounted = true;
+      const { photoUrls: isPhotosAvailable, storePhotoUrls } = this.props;
+      const { photos } = this.props.details;
+
+      if (!isPhotosAvailable && photos) {
+        const { photoUrls } = await Restaurant.getPhotos(photos, 250);
+        await storePhotoUrls(photoUrls);
+      }
+      if (this._isMounted) {
+        await this.setState({ photosFetched: true });
+      }
+    } catch (error) {
+      console.log(error);
     }
-    this.setState({ photosFetched: true });
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {

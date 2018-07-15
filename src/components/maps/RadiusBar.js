@@ -28,7 +28,7 @@ class RadiusBar extends Component {
     }, WAIT_INTERVAL);
   }
 
-  componentWillMount() {
+  componentWillUnmount() {
     clearTimeout(this.timerId);
   }
 
