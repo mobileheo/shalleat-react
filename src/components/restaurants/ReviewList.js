@@ -2,19 +2,10 @@ import React, { Component } from "react";
 import ReviewItem from "./ReviewItem";
 
 class Review extends Component {
-  state = {
-    reviews: []
-  };
-  componentDidMount() {
-    const { reviews: ctxReviews, placeId } = this.props;
-    if (ctxReviews) {
-      const { reviews } = ctxReviews[placeId];
-      this.setState({ reviews });
-    }
-  }
   render() {
-    const { chosenId, placeId, isOpen } = this.props;
-    const { reviews } = this.state;
+    const { chosenId, placeId, isOpen, reviews: ctxReviews } = this.props;
+    const reviews = ctxReviews[placeId];
+
     return chosenId === placeId && isOpen ? (
       <div className={chosenId === placeId && isOpen ? "" : "collapse"}>
         {reviews ? (
