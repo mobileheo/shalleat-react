@@ -31,7 +31,6 @@ export class MapProvider extends Component {
     setRadius: radius => this.setState({ radius }),
     center: null,
     setCenter: center => {
-      console.log(this.state.center);
       this.setState({ center });
     },
     defaultZoom: this.calcZoom(RADIUS),
@@ -41,10 +40,11 @@ export class MapProvider extends Component {
       this.setState({ zoom });
     },
     restaurants: [],
-    setRestaurants: async radius => {
+    setRestaurants: async (radius = this.state.radius) => {
       try {
         await this.setState({ restaurants: [], radius });
         await this.findNearby();
+        console.log("setRestaurants");
       } catch (error) {
         console.log(error);
       }
@@ -54,6 +54,7 @@ export class MapProvider extends Component {
       try {
         await this.setState({ restaurants: [], typeKeyword });
         await this.findNearby();
+        console.log("setTypeKeyword");
       } catch (error) {
         console.log(error);
       }
@@ -73,6 +74,10 @@ export class MapProvider extends Component {
       const targetChild = document.querySelector(`#list-item-${chosenId}`);
       targetContainer.scrollTop =
         targetChild.offsetTop - targetContainer.offsetTop;
+    },
+    reviews: [],
+    setReviews: reviews => {
+      this.setState({ reviews });
     }
   };
 
@@ -102,7 +107,7 @@ export class MapProvider extends Component {
     if (this._isMounted) {
       this.storeCurrentLocation(currentLocation);
       await this.setState({ currentLocation });
-      await this.findNearby();
+      console.log("this.geoSuccess");
     }
   };
 
@@ -116,10 +121,12 @@ export class MapProvider extends Component {
       if (firstBatch) {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
         await this.setState({
-          loading: false,
           fetched: true,
           restaurants
         });
+        // await this.setState({
+        //   loading: false
+        // });
         // await this.concatNext(pageToken);
       }
     } catch (error) {
@@ -164,7 +171,7 @@ export class MapProvider extends Component {
 
     if (currentLocation) {
       await this.setState({ currentLocation, center });
-      await this.findNearby();
+      console.log("componentDidMount in MapContext");
     } else {
       await this.getLocation();
     }

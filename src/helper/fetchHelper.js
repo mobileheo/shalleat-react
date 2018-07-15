@@ -18,7 +18,6 @@ export const getData = async url => {
 };
 
 export const postData = async (url, data) => {
-  console.log("PostData");
   try {
     let res = await fetch(url, {
       method: "POST",

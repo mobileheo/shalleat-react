@@ -60,12 +60,16 @@ class RestaurantMarker extends React.PureComponent {
   async componentDidMount() {
     try {
       this._isMounted = true;
-      const { placeId } = this.props;
+      const { placeId, reviews: ctxReviews, setReviews } = this.props;
+      console.log("componentDidMount in Marker");
       const { schedule, details } = await Restaurant.getDetails(
         placeId,
         FILTERS
       );
+
       if (this._isMounted) {
+        ctxReviews.push({ [placeId]: details.reviews });
+        setReviews(ctxReviews);
         await this.setState({ details, schedule, markerLoading: false });
       }
     } catch (error) {

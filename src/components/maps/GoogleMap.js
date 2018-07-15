@@ -10,11 +10,12 @@ import { RestProvider } from "../context/RestContext";
 import createMapOptions from "../../helper/customGoogleMap";
 
 const restaurantMarkers = cProps => {
-  const { filteredRests } = cProps;
+  const { filteredRests, loading } = cProps;
+  console.log(loading);
   return filteredRests().map((restaurant, i) => {
     const { place_id: placeId, geometry } = restaurant;
     const { lat, lng } = geometry.location;
-    return (
+    return loading ? null : (
       <RestProvider key={`marker-${placeId}`} lat={lat} lng={lng}>
         <RestaurantMarker
           placeId={placeId}
@@ -37,9 +38,7 @@ class GoogleMap extends PureComponent {
       <MapConsumer>
         {cProps => {
           const { loading, currentLocation, center, zoom } = cProps;
-          return !user ? (
-            <Redirect to="/signin" />
-          ) : loading ? (
+          return loading ? (
             <div
               className="MapPage d-flex flex-column justify-content-center align-items-center w-100 mt-4"
               style={{
