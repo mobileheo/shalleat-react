@@ -3,6 +3,7 @@ import { withState } from "recompose";
 import { Animated } from "react-animated-css";
 import { NavLink } from "react-router-dom";
 import { Nav, NavItem } from "reactstrap";
+import { BrowserView, MobileView } from "react-device-detect";
 import Logo from "./Logo";
 import NavDrawer from "./NavDrawer";
 import SearchBox from "./SearchBox";
@@ -77,7 +78,10 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
                   e.currentTarget.classList.remove("border-secondary");
                 }}
               >
-                Sign out
+                <BrowserView>Sign out</BrowserView>
+                <MobileView>
+                  <i className="material-icons">exit_to_app</i>
+                </MobileView>
               </NavLink>
             </NavItem>
           </Animated>

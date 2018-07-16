@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { isMobile } from "react-device-detect";
 import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
@@ -87,7 +88,9 @@ export class MapProvider extends Component {
 
   calcZoom(radius) {
     const scale = radius / 500;
-    return +(16 - Math.log(scale) / Math.log(2));
+    return isMobile
+      ? +(14 - Math.log(scale) / Math.log(2))
+      : +(16 - Math.log(scale) / Math.log(2));
   }
 
   getLocation() {
@@ -111,9 +114,8 @@ export class MapProvider extends Component {
       const currentLocation = { lat, lng };
       await this.storeCurrentLocation(currentLocation);
       await this.setState({ currentLocation });
-      // await this.findNearby();
-      // await this.setState({ loading: false });
-      // await this.updateRestaurants();
+      await this.findNearby();
+      await this.setState({ loading: false });
     } catch (error) {
       console.log(error);
     }
@@ -122,7 +124,6 @@ export class MapProvider extends Component {
   async findNearby() {
     const { currentLocation, radius, typeKeyword } = this.state;
     const filters = { ...currentLocation, radius, typeKeyword };
-
     try {
       const firstBatch = await Restaurant.findNearby(filters);
 
@@ -177,25 +178,17 @@ export class MapProvider extends Component {
     return currentLocation || {};
   }
 
-  async updateRestaurants() {
-    try {
-      await this.findNearby();
-      // await this.setState({ loading: false });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   async componentDidMount() {
     try {
       const { currentLocation = null } = this.getCurrentLocation();
       const center = currentLocation;
       if (currentLocation) {
         await this.setState({ currentLocation, center });
+        await this.findNearby();
+        await this.setState({ loading: false });
       } else {
         this.getLocation();
       }
-      await this.updateRestaurants();
     } catch (error) {
       console.log(error);
     }
