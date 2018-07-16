@@ -131,7 +131,8 @@ export class MapProvider extends Component {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
         await this.setState({
           fetched: true,
-          restaurants
+          restaurants,
+          loading: false
         });
         // await this.concatNext(pageToken);
       }
