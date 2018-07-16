@@ -90,7 +90,7 @@ class PickBtn extends Component {
             >
               <BrowserView> Pick one for me</BrowserView>
               <MobileView>
-                <i class="material-icons">restaurant</i>
+                <i className="material-icons">restaurant</i>
               </MobileView>
             </a>
           );
