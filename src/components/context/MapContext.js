@@ -94,33 +94,17 @@ export class MapProvider extends Component {
   }
 
   getLocation() {
-    console.log(" getLocation() ");
-    // this.watchID = navigator.geolocation.watchPosition(
-    //   pos => {
-    //     var crd = pos.coords;
-    //     console.log(crd);
-    //     // this.updateLocation(crd.latitude, crd.longitude);
-    //   }
-    //   // {
-    //   //   enableHighAccuracy: true,
-    //   //   timeout: 1000,
-    //   //   maximumAge: 0,
-    //   //   distanceFilter: 5
-    //   // }
-    // );
     if (navigator.geolocation) {
       this.watchID = navigator.geolocation.watchPosition(
         this.geoSuccess,
         this.geoError
       );
-      console.log("navigator.geolocation => ", navigator.geolocation);
     } else {
       alert("Geolocation is not supported by this browser.");
     }
   }
 
   geoError() {
-    console.log("geoError");
     alert("Geocoder failed.");
   }
 
