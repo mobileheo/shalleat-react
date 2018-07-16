@@ -48,6 +48,7 @@ body {
     }
     .MainPage {
       margin: 0.5rem 0.5rem !important;
+
       .map-review-wrapper {
         flex-wrap: wrap;
         .GoogleMap-container {
@@ -66,6 +67,7 @@ body {
       }
       .RadiusBar-container {
         width: 100% !important;
+        margin: 0 1rem;
       }
       .SearchBar-container {
         display: none;

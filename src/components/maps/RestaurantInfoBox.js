@@ -115,7 +115,7 @@ const RestaurantInfoBox = enhence(props => {
                   {phone === defaultMessage ? (
                     <span>{phone}</span>
                   ) : (
-                    <a href={intPhone}>
+                    <a href={`tel:${intPhone}`}>
                       <span>{phone}</span>
                     </a>
                   )}
