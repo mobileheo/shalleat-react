@@ -40,11 +40,12 @@ export default {
       throw new Error(error);
     }
   },
-  async getDetails(placeId, filters) {
+  async getDetails(placeId, filters, day) {
     try {
       return await postData(`${url}/details`, {
         placeId,
-        filters
+        filters,
+        day
       });
     } catch (error) {
       throw new Error(error);

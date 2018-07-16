@@ -69,9 +69,12 @@ class RestaurantMarker extends React.PureComponent {
       if (!skipInitDetailsFecth) {
         setSkipInitDetailsFecth();
       } else {
+        const date = new Date();
+        const day = date.getDay();
         const { schedule, details } = await Restaurant.getDetails(
           placeId,
-          FILTERS
+          FILTERS,
+          day
         );
         setReviews({ [placeId]: details.reviews });
         if (this._isMounted) {
