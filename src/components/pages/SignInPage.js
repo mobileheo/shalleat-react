@@ -23,7 +23,15 @@ const SignInPage = enhance(({ user, updateUser }) => {
   return user ? (
     <Redirect to="/" />
   ) : (
-    <div className="SignInPage w-25 m-auto">
+    // <div className="SignInPage w-50 m-auto">
+    //   <SignInForm onSignInClick={handleSignIn} />
+    // </div>
+    <div
+      className="SignInPage d-flex flex-column justify-content-center align-items-center w-100"
+      style={{
+        height: "94vh"
+      }}
+    >
       <SignInForm onSignInClick={handleSignIn} />
     </div>
   );
