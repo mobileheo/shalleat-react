@@ -91,17 +91,33 @@ export class MapProvider extends Component {
   }
 
   getLocation() {
+    console.log(" getLocation() ");
+    // this.watchID = navigator.geolocation.watchPosition(
+    //   pos => {
+    //     var crd = pos.coords;
+    //     console.log(crd);
+    //     // this.updateLocation(crd.latitude, crd.longitude);
+    //   }
+    //   // {
+    //   //   enableHighAccuracy: true,
+    //   //   timeout: 1000,
+    //   //   maximumAge: 0,
+    //   //   distanceFilter: 5
+    //   // }
+    // );
     if (navigator.geolocation) {
       this.watchID = navigator.geolocation.watchPosition(
         this.geoSuccess,
         this.geoError
       );
+      console.log("navigator.geolocation => ", navigator.geolocation);
     } else {
       alert("Geolocation is not supported by this browser.");
     }
   }
 
   geoError() {
+    console.log("geoError");
     alert("Geocoder failed.");
   }
 
@@ -111,9 +127,8 @@ export class MapProvider extends Component {
       const currentLocation = { lat, lng };
       await this.storeCurrentLocation(currentLocation);
       await this.setState({ currentLocation });
-      // await this.findNearby();
-      // await this.setState({ loading: false });
-      // await this.updateRestaurants();
+      await this.findNearby();
+      await this.setState({ loading: false });
     } catch (error) {
       console.log(error);
     }
@@ -122,7 +137,6 @@ export class MapProvider extends Component {
   async findNearby() {
     const { currentLocation, radius, typeKeyword } = this.state;
     const filters = { ...currentLocation, radius, typeKeyword };
-
     try {
       const firstBatch = await Restaurant.findNearby(filters);
 
@@ -130,8 +144,7 @@ export class MapProvider extends Component {
         const { next_page_token: pageToken, results: restaurants } = firstBatch;
         await this.setState({
           fetched: true,
-          restaurants,
-          loading: false
+          restaurants
         });
         // await this.concatNext(pageToken);
       }
@@ -177,25 +190,17 @@ export class MapProvider extends Component {
     return currentLocation || {};
   }
 
-  async updateRestaurants() {
-    try {
-      await this.findNearby();
-      // await this.setState({ loading: false });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   async componentDidMount() {
     try {
       const { currentLocation = null } = this.getCurrentLocation();
       const center = currentLocation;
       if (currentLocation) {
         await this.setState({ currentLocation, center });
+        await this.findNearby();
+        await this.setState({ loading: false });
       } else {
         this.getLocation();
       }
-      await this.updateRestaurants();
     } catch (error) {
       console.log(error);
     }
