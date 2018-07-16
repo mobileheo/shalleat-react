@@ -47,7 +47,7 @@ class GoogleMap extends PureComponent {
               style={{ height: "100%", width: "100%" }}
             >
               <div
-                className="currentLocator mt-4 mr-3 btn d-flex justify-content-center"
+                className="currentLocator mt-3 mr-3 btn d-flex justify-content-center"
                 style={{
                   position: "absolute",
                   minWidth: "25px",

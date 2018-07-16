@@ -1,15 +1,25 @@
 import React from "react";
+import { isMobile } from "react-device-detect";
 import { Button } from "../common/Buttons";
 
-const SignInForm = ({ onSignInClick }) => (
+const SignInForm = ({ onSignInClick, onGuestModeClick }) => (
   <div
     className="SignInForm shadow-sm bg-white rounded"
-    style={{
-      width: "450px",
-      height: "auto",
-      minHeight: "500px",
-      padding: "48px 40px 36px"
-    }}
+    style={
+      isMobile
+        ? {
+            // height: "auto",
+            // width: "95vw",
+            // minHeight: "390px",
+            padding: "48px 40px"
+          }
+        : {
+            width: "450px",
+            height: "auto",
+            minHeight: "390px",
+            padding: "48px 40px"
+          }
+    }
   >
     <h1 className="display-4 auth-title">Sign in</h1>
     <form onSubmit={onSignInClick}>
@@ -31,7 +41,7 @@ const SignInForm = ({ onSignInClick }) => (
         <a
           className="text-info disabled"
           href="#"
-          for="findEmail"
+          htmlFor="findEmail"
           style={{
             cursor: "not-allowed",
             opacity: "0.5",
@@ -58,7 +68,7 @@ const SignInForm = ({ onSignInClick }) => (
         <a
           className="text-info disabled"
           href="#"
-          for="findPassword"
+          htmlFor="findPassword"
           style={{
             cursor: "not-allowed",
             opacity: "0.5",
@@ -69,17 +79,21 @@ const SignInForm = ({ onSignInClick }) => (
         </a>
       </div>
       <div
-        className="d-flex justify-content-end align-items-center"
-        style={{ marginTop: "2.25rem" }}
+        className="d-flex justify-content-between align-items-center flex-wrap"
+        style={{ marginTop: "2rem" }}
       >
         <Button
           class="btn btn-secondary text-capitalize"
           name="sign in"
           type="submit"
         />
-      </div>
-      <div className="d-flex" style={{ marginTop: "2.25rem" }}>
-        <a className="text-info" href="#" for="findEmail">
+        <a
+          href=""
+          className="text-info"
+          htmlFor="triggerGuestMode"
+          onClick={onGuestModeClick}
+          style={isMobile ? { marginTop: "1rem" } : {}}
+        >
           Don't wanna sign in? Use Guest mode.
         </a>
       </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { withState } from "recompose";
+import { isMobile } from "react-device-detect";
 import User from "../../requests/user";
 import SignUpForm from "../users/SignUpForm";
 import { getAllFormData } from "../../helper/formHelper.js";
@@ -23,7 +24,16 @@ const SignUpPage = enhance(({ user, updateUser }) => {
   return user ? (
     <Redirect to="/" />
   ) : (
-    <div className="SignUpPage w-50 mt-4 m-auto">
+    <div
+      className="SignInPage d-flex flex-column justify-content-center align-items-center w-100"
+      style={
+        isMobile
+          ? {}
+          : {
+              height: "94vh"
+            }
+      }
+    >
       <SignUpForm onSignUpClick={handleSignUp} />
     </div>
   );

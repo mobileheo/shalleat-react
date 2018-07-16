@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { withState } from "recompose";
+import { isMobile } from "react-device-detect";
 import User from "../../requests/user";
 import SignInForm from "../users/SignInForm";
 import { getAllFormData } from "../../helper/formHelper.js";
@@ -20,19 +21,28 @@ const SignInPage = enhance(({ user, updateUser }) => {
       console.log(error);
     }
   };
+  const handleGuestMode = e => {
+    e.preventDefault();
+    const guest = { firstName: "Guest" };
+    updateUser(guest);
+  };
   return user ? (
     <Redirect to="/" />
   ) : (
-    // <div className="SignInPage w-50 m-auto">
-    //   <SignInForm onSignInClick={handleSignIn} />
-    // </div>
     <div
       className="SignInPage d-flex flex-column justify-content-center align-items-center w-100"
-      style={{
-        height: "94vh"
-      }}
+      style={
+        isMobile
+          ? {}
+          : {
+              height: "94vh"
+            }
+      }
     >
-      <SignInForm onSignInClick={handleSignIn} />
+      <SignInForm
+        onSignInClick={handleSignIn}
+        onGuestModeClick={handleGuestMode}
+      />
     </div>
   );
 });

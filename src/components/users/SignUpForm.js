@@ -1,8 +1,26 @@
 import React from "react";
+import { isMobile } from "react-device-detect";
 import { Button } from "../common/Buttons";
 
 const SignUpForm = ({ onSignUpClick }) => (
-  <div className="SignUpForm mt-4">
+  <div
+    className="SignUpForm shadow-sm bg-white rounded"
+    style={
+      isMobile
+        ? {
+            // height: "auto",
+            // width: "95vw",
+            // minHeight: "390px",
+            padding: "48px 40px"
+          }
+        : {
+            width: "450px",
+            height: "auto",
+            minHeight: "390px",
+            padding: "48px 40px"
+          }
+    }
+  >
     <h1 className="display-4 auth-title">Sign Up</h1>
     <form onSubmit={onSignUpClick}>
       <div className="form-group">
@@ -83,6 +101,7 @@ const SignUpForm = ({ onSignUpClick }) => (
       </div>
       <Button
         class="btn btn-secondary text-capitalize"
+        style={{ marginTop: "2rem" }}
         name="sign up"
         type="submit"
       />

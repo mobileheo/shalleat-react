@@ -36,6 +36,15 @@ body {
         margin: 0 !important;
         margin-left: 0.5rem !important;
       }
+      .fadeOutUp {
+        display: none;
+      }
+    }
+    .SignInPage {
+      .SignInForm,
+      .SignUpForm {
+        box-shadow: none !important;
+      }
     }
     .MainPage {
       margin: 0.5rem 0.5rem !important;

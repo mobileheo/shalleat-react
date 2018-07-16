@@ -48,7 +48,7 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
         >
           <SearchBox />
         </Animated>
-        <Nav className="ml-auto" navbar>
+        <Nav className="" navbar>
           <Animated
             animationIn="fadeInLeft"
             animationOut="fadeOutRight"
