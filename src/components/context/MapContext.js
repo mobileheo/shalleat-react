@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { isMobile } from "react-device-detect";
 import Restaurant from "../../requests/restaurant";
 
 const { Consumer, Provider } = React.createContext({});
@@ -87,7 +88,9 @@ export class MapProvider extends Component {
 
   calcZoom(radius) {
     const scale = radius / 500;
-    return +(16 - Math.log(scale) / Math.log(2));
+    return isMobile
+      ? +(14 - Math.log(scale) / Math.log(2))
+      : +(16 - Math.log(scale) / Math.log(2));
   }
 
   getLocation() {
