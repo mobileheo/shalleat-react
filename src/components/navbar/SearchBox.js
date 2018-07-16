@@ -73,7 +73,7 @@ class SearchBox extends Component {
             }, WAIT_INTERVAL);
           };
           return (
-            <div className="form-group my-0 mr-6">
+            <div className="SearchBox form-group my-0 mr-6">
               <div className="input-group">
                 <input
                   className="form-control "

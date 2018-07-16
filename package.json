@@ -13,6 +13,7 @@
     "popper.js": "^1.14.3",
     "react": "^16.4.1",
     "react-animated-css": "^1.0.4",
+    "react-device-detect": "^1.5.8",
     "react-dom": "^16.4.1",
     "react-pure-lifecycle": "^2.2.0",
     "react-router-dom": "^4.3.1",
@@ -29,6 +30,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "sass": "sass --watch src/styles/scss:src/styles/css",
-    "sass:build": "sass — update src/styles/scss:src/styles/css"
+    "sass:build": "sass  — update src/styles/scss:src/styles/css"
   }
 }

@@ -1,3 +1,6 @@
+$break-medium: 768px;
+$break-large: 1200px;
+
 body {
   .auth-title {
     text-align: center;
@@ -16,4 +19,56 @@ body {
     max-width: 30vh;
     transform: "translate(-50%, -50%)";
   }
+
+  @media screen and (max-width: $break-medium) {
+    .NavBar {
+      .navbar-brand {
+        margin-right: 0.5rem !important;
+      }
+      .ShallEatTitle,
+      .navbar-toggler {
+        display: none !important;
+      }
+      .SearchBox {
+        width: 39vw;
+      }
+      .nav-link {
+        margin: 0 !important;
+        margin-left: 0.5rem !important;
+      }
+    }
+    .MainPage {
+      margin: 0.5rem 0.5rem !important;
+      .map-review-wrapper {
+        flex-wrap: wrap;
+        .GoogleMap-container {
+          width: 100% !important;
+          height: 70%;
+        }
+        .RestList-container {
+          height: 50%;
+          width: 100% !important;
+          margin: 0 !important;
+          margin-top: 0.5rem !important;
+          .RestList {
+            padding: 0 !important;
+          }
+        }
+      }
+      .RadiusBar-container {
+        width: 100% !important;
+      }
+      .SearchBar-container {
+        display: none;
+      }
+      .meta-data-container {
+        .RestItem-title {
+          width: 65vw !important;
+        }
+      }
+    }
+  }
+  // @media screen and (min-width: $break-large) {
+  //   float: right;
+  // }
 }

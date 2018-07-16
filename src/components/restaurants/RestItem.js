@@ -11,7 +11,6 @@ const LIST_STYLE = {
 };
 
 const RestItem = props => {
-  // console.log(props);
   const { restaurant, index, popover, setPopover, setCenter, setZoom } = props;
   const {
     geometry,
@@ -77,7 +76,7 @@ const RestItem = props => {
               restaurant
             </i>
             <span
-              className="font-weight-bold mr-1"
+              className="RestItem-title font-weight-bold mr-1"
               style={{
                 fontSize: "2.3vh",
                 width: "15vw",

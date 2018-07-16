@@ -35,14 +35,14 @@ class MainPage extends Component {
             <SerachBar />
           </div>
         </div>
-        <div className="d-flex h-100">
+        <div className="map-review-wrapper d-flex h-100">
           <div
             className="GoogleMap-container w-75 pt-2"
             style={{ position: "relative" }}
           >
             <GoogleMap user={this.props.user} />
           </div>
-          <div className="RestList-container w-25 ml-3">
+          <div className="RestList-container w-25 ml-3 mt-2">
             <RestList />
           </div>
         </div>

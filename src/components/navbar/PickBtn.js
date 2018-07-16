@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { MapConsumer } from "../context/MapContext";
+import { BrowserView, MobileView } from "react-device-detect";
 import { delay } from "../../helper/asyncHelper";
 
 const DEFAULT_CLASS =
@@ -87,7 +88,10 @@ class PickBtn extends Component {
                 e.currentTarget.classList.remove("border-secondary");
               }}
             >
-              Pick one for me
+              <BrowserView> Pick one for me</BrowserView>
+              <MobileView>
+                <i class="material-icons">restaurant</i>
+              </MobileView>
             </a>
           );
         }}
