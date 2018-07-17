@@ -9,7 +9,7 @@ import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import { RestConsumer } from "../context/RestContext";
 import Photos from "./Photos";
 
-const defaultMessage = "Not available";
+const DEFAULT_MESSAGE = "Not available";
 
 const anchorTagStyle = {
   textOverflow: "ellipsis",
@@ -17,6 +17,8 @@ const anchorTagStyle = {
   whiteSpace: "nowrap"
 };
 const wrapperClass = "d-flex justify-content-start align-items-center mb-3 ";
+const placeSearchURL = placeId =>
+  `https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${placeId}`;
 
 const enhence = compose(
   withState("remainingTime", "setRemainingTime", ""),
@@ -53,10 +55,10 @@ const RestaurantInfoBox = enhence(props => {
   const { chosenId, isOpen } = props.popover;
   const { isOpenNow } = props.schedule;
   const {
-    formatted_phone_number: phone = defaultMessage,
-    international_phone_number: intPhone = defaultMessage,
-    price_level: price = defaultMessage,
-    website = defaultMessage
+    formatted_phone_number: phone = DEFAULT_MESSAGE,
+    international_phone_number: intPhone = DEFAULT_MESSAGE,
+    price_level: price = DEFAULT_MESSAGE,
+    website = DEFAULT_MESSAGE
   } = props.details;
   return (
     <RestConsumer>
@@ -93,7 +95,7 @@ const RestaurantInfoBox = enhence(props => {
                 )}
                 <div className={wrapperClass}>
                   <i className="material-icons mr-2">attach_money</i>
-                  {price === defaultMessage ? (
+                  {price === DEFAULT_MESSAGE ? (
                     <span>{price}</span>
                   ) : (
                     Array(price)
@@ -112,7 +114,7 @@ const RestaurantInfoBox = enhence(props => {
                 </div>
                 <div className={wrapperClass}>
                   <i className="material-icons mr-2">phone</i>
-                  {phone === defaultMessage ? (
+                  {phone === DEFAULT_MESSAGE ? (
                     <span>{phone}</span>
                   ) : (
                     <a href={`tel:${intPhone}`}>
@@ -122,20 +124,17 @@ const RestaurantInfoBox = enhence(props => {
                 </div>
                 <div className={wrapperClass}>
                   <i className="material-icons mr-2">location_on</i>
-                  {vicinity === defaultMessage ? (
+                  {vicinity === DEFAULT_MESSAGE ? (
                     <span>{vicinity}</span>
                   ) : (
-                    <a
-                      href={`https://maps.google.com/maps/place/${lat},${lng}`}
-                      style={anchorTagStyle}
-                    >
+                    <a href={placeSearchURL(placeId)} style={anchorTagStyle}>
                       <span>{vicinity}</span>
                     </a>
                   )}
                 </div>
                 <div className={wrapperClass}>
                   <i className="material-icons mr-2">web</i>
-                  {website === defaultMessage ? (
+                  {website === DEFAULT_MESSAGE ? (
                     <span>{website}</span>
                   ) : (
                     <a href={website} style={anchorTagStyle}>
