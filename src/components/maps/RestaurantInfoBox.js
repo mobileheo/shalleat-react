@@ -64,7 +64,7 @@ const RestaurantInfoBox = enhence(props => {
       {rcProps => {
         return chosenId === placeId && isOpen ? (
           <Popover
-            placement="auto"
+            placement="left"
             isOpen={isOpen}
             target={`Popover-${placeId}`}
           >
