@@ -5,7 +5,6 @@ import CurrentMarker from "./CurrentMarker";
 import RestaurantMarker from "./RestaurantMarker";
 import { MapConsumer } from "../context/MapContext";
 import { RestProvider } from "../context/RestContext";
-import { Animated } from "react-animated-css";
 import createMapOptions from "../../helper/customGoogleMap";
 
 const restaurantMarkers = cProps => {
@@ -78,6 +77,7 @@ class GoogleMap extends PureComponent {
                   lng={currentLocation.lng}
                   text={user.firstName}
                   {...mcProps}
+                  style={{ border: "solid 5px black" }}
                 />
                 {restaurantMarkers({ ...mcProps })}
               </GoogleMapReact>

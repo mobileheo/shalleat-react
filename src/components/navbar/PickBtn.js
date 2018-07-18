@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { MapConsumer } from "../context/MapContext";
-import Spinner from "../common/Spinner";
+import Loader from "react-loader-spinner";
 import { BrowserView, MobileView } from "react-device-detect";
 import { delay } from "../../helper/asyncHelper";
 
@@ -101,8 +101,9 @@ class PickBtn extends Component {
             }
           };
           return !fetched ? (
+            // return true ? (
             <a className={DEFAULT_CLASS + "disabled"}>
-              <Spinner />
+              <Loader type="ThreeDots" color="#fff" height={60} width={60} />
             </a>
           ) : (
             <a
