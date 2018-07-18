@@ -16,8 +16,6 @@ const restaurantMarkers = cProps => {
       <RestProvider key={`marker-${placeId}`} lat={lat} lng={lng}>
         <RestaurantMarker
           placeId={placeId}
-          lat={lat}
-          lng={lng}
           location={{ lat, lng }}
           index={i}
           restaurant={restaurant}
@@ -47,7 +45,7 @@ class GoogleMap extends PureComponent {
               style={{ height: "100%", width: "100%" }}
             >
               <div
-                className="currentLocator mt-4 mr-3 btn d-flex justify-content-center"
+                className="currentLocator mt-3 mr-3 btn d-flex justify-content-center"
                 style={{
                   position: "absolute",
                   minWidth: "25px",
@@ -79,6 +77,7 @@ class GoogleMap extends PureComponent {
                   lng={currentLocation.lng}
                   text={user.firstName}
                   {...mcProps}
+                  style={{ border: "solid 5px black" }}
                 />
                 {restaurantMarkers({ ...mcProps })}
               </GoogleMapReact>

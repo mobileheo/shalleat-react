@@ -28,7 +28,12 @@ const animation = e => {
 
 export const Button = props => {
   return (
-    <button onClick={animation} type={props.type} className={props.class}>
+    <button
+      onClick={animation}
+      type={props.type}
+      className={props.class}
+      style={props.style}
+    >
       {props.name}
     </button>
   );

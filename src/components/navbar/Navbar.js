@@ -30,7 +30,7 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
   return (
     <div className="NavBar">
       <header className="navbar navbar-dark navbar-full bg-dark doc-navbar-default">
-        <span className="navbar-brand mr-auto">
+        <span className="navbar-brand">
           <NavLink exact to="/" className="navbar-brand mx-0 bg-transparent">
             <Animated animationIn="rotateIn" isVisible={true}>
               <Logo />
@@ -48,7 +48,7 @@ const NavBar = enhance(({ user, updateUser, hovered, toggleHover }) => {
         >
           <SearchBox />
         </Animated>
-        <Nav className="ml-auto" navbar>
+        <Nav className="" navbar>
           <Animated
             animationIn="fadeInLeft"
             animationOut="fadeOutRight"

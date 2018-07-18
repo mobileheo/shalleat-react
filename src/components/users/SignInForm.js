@@ -1,9 +1,27 @@
 import React from "react";
+import { isMobile } from "react-device-detect";
 import { Button } from "../common/Buttons";
 
-const SignInForm = ({ onSignInClick }) => (
-  <div className="SignInForm mt-4">
-    <h1 className="display-4 auth-title">Sign In</h1>
+const SignInForm = ({ onSignInClick, onGuestModeClick }) => (
+  <div
+    className="SignInForm shadow-sm bg-white rounded"
+    style={
+      isMobile
+        ? {
+            // height: "auto",
+            // width: "95vw",
+            // minHeight: "390px",
+            padding: "48px 40px"
+          }
+        : {
+            width: "450px",
+            height: "auto",
+            minHeight: "390px",
+            padding: "48px 40px"
+          }
+    }
+  >
+    <h1 className="display-4 auth-title">Sign in</h1>
     <form onSubmit={onSignInClick}>
       <div className="form-group">
         <div className="floating-label">
@@ -19,6 +37,20 @@ const SignInForm = ({ onSignInClick }) => (
           />
         </div>
       </div>
+      <div className="d-flex justify-content-end align-items-center">
+        <a
+          className="text-info disabled"
+          href="#"
+          htmlFor="findEmail"
+          style={{
+            cursor: "not-allowed",
+            opacity: "0.5",
+            textDecoration: "none"
+          }}
+        >
+          Forgot email?
+        </a>
+      </div>
       <div className="form-group">
         <div className="floating-label">
           <label htmlFor="password">Password</label>
@@ -32,11 +64,39 @@ const SignInForm = ({ onSignInClick }) => (
           />
         </div>
       </div>
-      <Button
-        class="btn btn-secondary text-capitalize"
-        name="sign in"
-        type="submit"
-      />
+      <div className="d-flex justify-content-end align-items-center">
+        <a
+          className="text-info disabled"
+          href="#"
+          htmlFor="findPassword"
+          style={{
+            cursor: "not-allowed",
+            opacity: "0.5",
+            textDecoration: "none"
+          }}
+        >
+          Forgot password?
+        </a>
+      </div>
+      <div
+        className="d-flex justify-content-between align-items-center flex-wrap"
+        style={{ marginTop: "2rem" }}
+      >
+        <Button
+          class="btn btn-secondary text-capitalize"
+          name="sign in"
+          type="submit"
+        />
+        <a
+          href=""
+          className="text-info"
+          htmlFor="triggerGuestMode"
+          onClick={onGuestModeClick}
+          style={isMobile ? { marginTop: "1rem" } : {}}
+        >
+          Don't wanna sign in? Use Guest mode.
+        </a>
+      </div>
     </form>
   </div>
 );

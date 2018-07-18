@@ -3,6 +3,7 @@ const headers = new Headers({
   // "Access-Control-Allow-Headers": "Content-Type",
   // "X-Frame-Options": "ALLOW-FROM https://shalleatapi.herokuapp.com/",
   // "Access-Control-Allow-Origin": "https://shalleat.com",
+  // "Access-Control-Allow-Origin": "*",
   "Content-Type": "application/json; charset=UTF-8"
 });
 export const getData = async url => {

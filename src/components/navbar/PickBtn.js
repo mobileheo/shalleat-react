@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { MapConsumer } from "../context/MapContext";
+import Loader from "react-loader-spinner";
 import { BrowserView, MobileView } from "react-device-detect";
 import { delay } from "../../helper/asyncHelper";
 
@@ -18,6 +19,9 @@ const shuffle = a => {
 };
 
 class PickBtn extends Component {
+  state = {
+    prevChosenId: null
+  };
   componentWillMount() {
     clearTimeout(this.timerId);
   }
@@ -34,11 +38,14 @@ class PickBtn extends Component {
           popover,
           setPopover,
           scrollToTop,
-          currentLocation
+          currentLocation,
+          markers
         }) => {
           const handleClick = async e => {
             e.preventDefault();
+            // console.log(markers);
             try {
+              const { prevChosenId } = this.state;
               const { isOpen } = popover;
               const places = shuffle(
                 restaurants.map(({ place_id: placeId, geometry }) => ({
@@ -46,7 +53,10 @@ class PickBtn extends Component {
                   geometry
                 }))
               );
-
+              // const newPlaces = shuffle([...markers]);
+              // console.log(newPlaces);
+              // newPlaces[0].current.style.border = "solid 5px black";
+              // console.log(markers[0] === newPlaces[0]);
               setPopover(null, !isOpen);
               setZoom(radius);
               setCenter(currentLocation);
@@ -57,7 +67,13 @@ class PickBtn extends Component {
                   const id = `#Popover-${placeId}`;
                   await delay(Math.log(offset * i) * i * 4);
                   document.querySelector(id).classList.add("bg-secondary");
+                  document
+                    .querySelector(id)
+                    .closest(".RestaurantMarker").parentNode.style.zIndex = 10;
                   await delay(Math.log(offset * i) * i * 4);
+                  document
+                    .querySelector(id)
+                    .closest(".RestaurantMarker").parentNode.style.zIndex = 4;
                   document.querySelector(id).classList.remove("bg-secondary");
                 } catch (error) {
                   console.log(error);
@@ -66,6 +82,15 @@ class PickBtn extends Component {
               this.timerId = await delay(Math.log(3000) * places.length * 10);
               const { placeId: chosenId, geometry } = places.pop();
               const { location } = geometry;
+              if (prevChosenId) {
+                document
+                  .querySelector(`#Popover-${prevChosenId}`)
+                  .closest(".RestaurantMarker").parentNode.style.zIndex = 4;
+              }
+              document
+                .querySelector(`#Popover-${chosenId}`)
+                .closest(".RestaurantMarker").parentNode.style.zIndex = 10;
+              this.setState({ prevChosenId: chosenId });
               setCenter(location);
               setZoom(200);
               await delay(500);
@@ -76,7 +101,10 @@ class PickBtn extends Component {
             }
           };
           return !fetched ? (
-            <a className={DEFAULT_CLASS + "disabled"}>Fetching restaurants</a>
+            // return true ? (
+            <a className={DEFAULT_CLASS + "disabled"}>
+              <Loader type="ThreeDots" color="#fff" height={60} width={60} />
+            </a>
           ) : (
             <a
               className={DEFAULT_CLASS}

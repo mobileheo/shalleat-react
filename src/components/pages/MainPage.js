@@ -37,7 +37,7 @@ class MainPage extends Component {
         </div>
         <div className="map-review-wrapper d-flex h-100">
           <div
-            className="GoogleMap-container w-75 pt-2"
+            className="GoogleMap-container w-75 mt-2 shadow-sm bg-white rounded"
             style={{ position: "relative" }}
           >
             <GoogleMap user={this.props.user} />
