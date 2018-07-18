@@ -73,7 +73,10 @@ class SearchBox extends Component {
             }, WAIT_INTERVAL);
           };
           return (
-            <div className="SearchBox form-group my-0 mr-6">
+            <div
+              className="SearchBox form-group my-0 mr-6"
+              style={{ width: "30vw" }}
+            >
               <div className="input-group">
                 <input
                   className="form-control "
