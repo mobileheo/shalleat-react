@@ -51,7 +51,6 @@ const enhence = compose(
 const RestaurantInfoBox = enhence(props => {
   const { placeId, remainingTime } = props;
   const { name, vicinity = "Not available" } = props.restaurant;
-  const { lat, lng } = props.location;
   const { chosenId, isOpen } = props.popover;
   const { isOpenNow } = props.schedule;
   const {

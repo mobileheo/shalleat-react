@@ -83,6 +83,17 @@ export class MapProvider extends Component {
     setReviews: review => {
       const reviews = { ...this.state.reviews, ...review };
       this.setState({ reviews });
+    },
+    prevChosenMarkerRef: null,
+    setPrevChosenMarkerRef: prevChosenMarkerRef =>
+      this.setState({ prevChosenMarkerRef }),
+    currChosenMarkerRef: null,
+    setCurrChosenMarkerRef: currChosenMarkerRef =>
+      this.setState({ currChosenMarkerRef }),
+    markers: [],
+    setMarkers: marker => {
+      const markers = [...this.state.markers, marker];
+      this.setState({ markers });
     }
   };
 

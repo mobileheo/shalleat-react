@@ -16,8 +16,6 @@ const restaurantMarkers = cProps => {
       <RestProvider key={`marker-${placeId}`} lat={lat} lng={lng}>
         <RestaurantMarker
           placeId={placeId}
-          lat={lat}
-          lng={lng}
           location={{ lat, lng }}
           index={i}
           restaurant={restaurant}

@@ -17,21 +17,9 @@ const MARKER_STYLE = {
 };
 const BTN_CLASS =
   "btn d-flex justify-content-center align-items-center text-white";
-const defaultStyle = {
+const DEFAULT_STYLE = {
   minWidth: "37px",
   transition: "transform 0.5s ease-in-out"
-};
-
-const btnStyle = openNow => {
-  return openNow
-    ? {
-        ...defaultStyle,
-        backgroundColor: "#39e4a9"
-      }
-    : {
-        ...defaultStyle,
-        backgroundColor: "#424242"
-      };
 };
 
 const FILTERS = [
@@ -44,6 +32,18 @@ const FILTERS = [
   "photos",
   "reviews"
 ];
+
+const btnStyle = openNow => {
+  return openNow
+    ? {
+        ...DEFAULT_STYLE,
+        backgroundColor: "#39e4a9"
+      }
+    : {
+        ...DEFAULT_STYLE,
+        backgroundColor: "#424242"
+      };
+};
 
 class RestaurantMarker extends React.PureComponent {
   constructor(props) {
@@ -64,7 +64,8 @@ class RestaurantMarker extends React.PureComponent {
         placeId,
         skipInitDetailsFecth,
         setSkipInitDetailsFecth,
-        setReviews
+        setReviews,
+        setMarkers
       } = this.props;
       if (!skipInitDetailsFecth) {
         setSkipInitDetailsFecth();
@@ -77,6 +78,7 @@ class RestaurantMarker extends React.PureComponent {
           day
         );
         setReviews({ [placeId]: details.reviews });
+        setMarkers(this.markerRef);
         if (this._isMounted) {
           await this.setState({ details, schedule, markerLoading: false });
         }
@@ -91,7 +93,19 @@ class RestaurantMarker extends React.PureComponent {
   }
 
   handleParentZindex = () => {
-    this.markerRef.current.parentNode.style.zIndex = 10;
+    const {
+      prevChosenMarkerRef,
+      setPrevChosenMarkerRef,
+      currChosenMarkerRef,
+      markerRef
+    } = this.props;
+    // if (prevChosenMarkerRef || prevChosenMarkerRef === this.markerRef)
+    if (prevChosenMarkerRef || prevChosenMarkerRef === currChosenMarkerRef)
+      prevChosenMarkerRef.current.parentNode.style.zIndex = 4;
+    // this.markerRef.current.parentNode.style.zIndex = 10;
+    currChosenMarkerRef.current.parentNode.style.zIndex = 10;
+    setPrevChosenMarkerRef(this.markerRef);
+    console.log(markerRef);
   };
 
   render() {
@@ -104,7 +118,8 @@ class RestaurantMarker extends React.PureComponent {
       setCenter,
       setPopover,
       scrollToTop,
-      restaurant
+      restaurant,
+      setCurrChosenMarkerRef
     } = this.props;
     const { opening_hours: openHours = {}, name } = restaurant;
     const { open_now: openNow = false } = openHours;
@@ -143,7 +158,7 @@ class RestaurantMarker extends React.PureComponent {
               style={
                 chosenId === placeId && isOpen
                   ? {
-                      ...defaultStyle,
+                      ...DEFAULT_STYLE,
                       backgroundColor: "#ff4081",
                       transform: "scale(1.3)"
                     }
@@ -155,7 +170,7 @@ class RestaurantMarker extends React.PureComponent {
               onClick={async () => {
                 setCenter(location);
                 setZoom(300);
-
+                setCurrChosenMarkerRef(this.markerRef);
                 if (isOpen) {
                   if (chosenId === placeId) {
                     await setPopover(placeId, !isOpen);
