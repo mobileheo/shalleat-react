@@ -19,6 +19,9 @@ const shuffle = a => {
 };
 
 class PickBtn extends Component {
+  state = {
+    prevChosenId: null
+  };
   componentWillMount() {
     clearTimeout(this.timerId);
   }
@@ -42,6 +45,7 @@ class PickBtn extends Component {
             e.preventDefault();
             // console.log(markers);
             try {
+              const { prevChosenId } = this.state;
               const { isOpen } = popover;
               const places = shuffle(
                 restaurants.map(({ place_id: placeId, geometry }) => ({
@@ -49,9 +53,9 @@ class PickBtn extends Component {
                   geometry
                 }))
               );
-              const newPlaces = shuffle([...markers]);
-              console.log(newPlaces);
-              newPlaces[0].current.style.border = "solid 5px black";
+              // const newPlaces = shuffle([...markers]);
+              // console.log(newPlaces);
+              // newPlaces[0].current.style.border = "solid 5px black";
               // console.log(markers[0] === newPlaces[0]);
               setPopover(null, !isOpen);
               setZoom(radius);
@@ -63,9 +67,14 @@ class PickBtn extends Component {
                   const id = `#Popover-${placeId}`;
                   await delay(Math.log(offset * i) * i * 4);
                   document.querySelector(id).classList.add("bg-secondary");
+                  document
+                    .querySelector(id)
+                    .closest(".RestaurantMarker").parentNode.style.zIndex = 10;
                   await delay(Math.log(offset * i) * i * 4);
+                  document
+                    .querySelector(id)
+                    .closest(".RestaurantMarker").parentNode.style.zIndex = 4;
                   document.querySelector(id).classList.remove("bg-secondary");
-                  // console.log(document.querySelector(id).parentNode);
                 } catch (error) {
                   console.log(error);
                 }
@@ -73,6 +82,15 @@ class PickBtn extends Component {
               this.timerId = await delay(Math.log(3000) * places.length * 10);
               const { placeId: chosenId, geometry } = places.pop();
               const { location } = geometry;
+              if (prevChosenId) {
+                document
+                  .querySelector(`#Popover-${prevChosenId}`)
+                  .closest(".RestaurantMarker").parentNode.style.zIndex = 4;
+              }
+              document
+                .querySelector(`#Popover-${chosenId}`)
+                .closest(".RestaurantMarker").parentNode.style.zIndex = 10;
+              this.setState({ prevChosenId: chosenId });
               setCenter(location);
               setZoom(200);
               await delay(500);

@@ -78,7 +78,7 @@ class RestaurantMarker extends React.PureComponent {
           day
         );
         setReviews({ [placeId]: details.reviews });
-        setMarkers(this.markerRef);
+        // setMarkers(this.markerRef);
         if (this._isMounted) {
           await this.setState({ details, schedule, markerLoading: false });
         }
@@ -139,50 +139,57 @@ class RestaurantMarker extends React.PureComponent {
             height: "inherit"
           }}
         >
-          <button
-            data-tippy
-            id={`Popover-${placeId}`}
-            className={
-              chosenId === placeId && isOpen
-                ? BTN_CLASS.concat(" border border-white")
-                : BTN_CLASS.concat(" border border-transparent")
-            }
-            style={
-              chosenId === placeId && isOpen
-                ? {
-                    ...DEFAULT_STYLE,
-                    backgroundColor: "#ff4081",
-                    transform: "scale(1.3)"
-                  }
-                : {
-                    ...btnStyle(openNow),
-                    transform: "scale(1.0)"
-                  }
-            }
-            onClick={async () => {
-              setCenter(location);
-              setZoom(300);
-              setCurrChosenMarkerRef(this.markerRef);
-              if (isOpen) {
-                if (chosenId === placeId) {
-                  await setPopover(placeId, !isOpen);
-                } else {
-                  await setPopover(placeId, isOpen);
-                }
-              } else {
-                await setPopover(placeId, !isOpen);
-              }
-              this.handleParentZindex();
-              await scrollToTop();
-            }}
-            alt={"marker-icon"}
+          <Animated
+            animationIn="bounceIn"
+            animationOut="bounceOut"
+            animationInDelay={index * 150}
+            isVisible={true}
           >
-            <i className="material-icons">
-              {chosenId === placeId && isOpen
-                ? "restaurant_menu"
-                : "restaurant"}
-            </i>
-          </button>
+            <button
+              data-tippy
+              id={`Popover-${placeId}`}
+              className={
+                chosenId === placeId && isOpen
+                  ? BTN_CLASS.concat(" border border-white")
+                  : BTN_CLASS.concat(" border border-transparent")
+              }
+              style={
+                chosenId === placeId && isOpen
+                  ? {
+                      ...DEFAULT_STYLE,
+                      backgroundColor: "#ff4081",
+                      transform: "scale(1.3)"
+                    }
+                  : {
+                      ...btnStyle(openNow),
+                      transform: "scale(1.0)"
+                    }
+              }
+              onClick={async () => {
+                setCenter(location);
+                setZoom(300);
+                setCurrChosenMarkerRef(this.markerRef);
+                if (isOpen) {
+                  if (chosenId === placeId) {
+                    await setPopover(placeId, !isOpen);
+                  } else {
+                    await setPopover(placeId, isOpen);
+                  }
+                } else {
+                  await setPopover(placeId, !isOpen);
+                }
+                this.handleParentZindex();
+                await scrollToTop();
+              }}
+              alt={"marker-icon"}
+            >
+              <i className="material-icons">
+                {chosenId === placeId && isOpen
+                  ? "restaurant_menu"
+                  : "restaurant"}
+              </i>
+            </button>
+          </Animated>
           {chosenId === placeId && isOpen ? (
             <RestaurantInfoBox {...this.state} {...this.props} />
           ) : (
