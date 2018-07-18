@@ -5,6 +5,7 @@ import CurrentMarker from "./CurrentMarker";
 import RestaurantMarker from "./RestaurantMarker";
 import { MapConsumer } from "../context/MapContext";
 import { RestProvider } from "../context/RestContext";
+import { Animated } from "react-animated-css";
 import createMapOptions from "../../helper/customGoogleMap";
 
 const restaurantMarkers = cProps => {
@@ -13,15 +14,25 @@ const restaurantMarkers = cProps => {
     const { place_id: placeId, geometry } = restaurant;
     const { lat, lng } = geometry.location;
     return loading ? null : (
-      <RestProvider key={`marker-${placeId}`} lat={lat} lng={lng}>
-        <RestaurantMarker
-          placeId={placeId}
-          location={{ lat, lng }}
-          index={i}
-          restaurant={restaurant}
-          {...cProps}
-        />
-      </RestProvider>
+      <Animated
+        animationIn="bounceIn"
+        animationOut="bounceOut"
+        animationInDelay={i * 150}
+        isVisible={true}
+        key={`marker-${placeId}`}
+        lat={lat}
+        lng={lng}
+      >
+        <RestProvider>
+          <RestaurantMarker
+            placeId={placeId}
+            location={{ lat, lng }}
+            index={i}
+            restaurant={restaurant}
+            {...cProps}
+          />
+        </RestProvider>
+      </Animated>
     );
   });
 };

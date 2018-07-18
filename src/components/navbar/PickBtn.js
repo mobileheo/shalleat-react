@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { MapConsumer } from "../context/MapContext";
+import Spinner from "../common/Spinner";
 import { BrowserView, MobileView } from "react-device-detect";
 import { delay } from "../../helper/asyncHelper";
 
@@ -34,10 +35,12 @@ class PickBtn extends Component {
           popover,
           setPopover,
           scrollToTop,
-          currentLocation
+          currentLocation,
+          markers
         }) => {
           const handleClick = async e => {
             e.preventDefault();
+            // console.log(markers);
             try {
               const { isOpen } = popover;
               const places = shuffle(
@@ -46,7 +49,10 @@ class PickBtn extends Component {
                   geometry
                 }))
               );
-
+              const newPlaces = shuffle([...markers]);
+              console.log(newPlaces);
+              newPlaces[0].current.style.border = "solid 5px black";
+              // console.log(markers[0] === newPlaces[0]);
               setPopover(null, !isOpen);
               setZoom(radius);
               setCenter(currentLocation);
@@ -59,6 +65,7 @@ class PickBtn extends Component {
                   document.querySelector(id).classList.add("bg-secondary");
                   await delay(Math.log(offset * i) * i * 4);
                   document.querySelector(id).classList.remove("bg-secondary");
+                  // console.log(document.querySelector(id).parentNode);
                 } catch (error) {
                   console.log(error);
                 }
@@ -76,7 +83,9 @@ class PickBtn extends Component {
             }
           };
           return !fetched ? (
-            <a className={DEFAULT_CLASS + "disabled"}>Fetching restaurants</a>
+            <a className={DEFAULT_CLASS + "disabled"}>
+              <Spinner />
+            </a>
           ) : (
             <a
               className={DEFAULT_CLASS}
