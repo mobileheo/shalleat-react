@@ -79,6 +79,18 @@ Install packages with npm or yarn
 $ npm install
 $ yarn install
 ```
+Before running server, you need to compile Sass files to css files with these command
+
+```
+$ npm run sass
+$ yarn run sass
+```
+
+After the compilation, exit the process by pressing
+
+```
+control + c
+```
 
 Run server
 
